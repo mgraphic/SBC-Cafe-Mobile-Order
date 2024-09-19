@@ -9,7 +9,12 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "test:store": "ng test --project=cafe-store --watch=true --browsers=ChromeHeadless",
+    "store": "ng serve --project=cafe-store",
+    "store:dev": "ng serve --project=cafe-store -o",
+    "admin": "ng serve --project=cafe-admin",
+    "admin:dev": "ng serve --project=cafe-admin -o"
   },
   "private": true,
   "dependencies": {

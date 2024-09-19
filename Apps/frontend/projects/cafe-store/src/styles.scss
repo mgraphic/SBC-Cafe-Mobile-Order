@@ -1,4 +1,43 @@
 /* You can add global styles to this file, and also import other style files */
 
+/* Fonts */
+@font-face {
+  font-family: poppins-light;
+  src: url("/fonts/Poppins/Poppins-Light.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: poppins;
+  src: url("/fonts/Poppins/Poppins-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: poppins-medium;
+  src: url("/fonts/Poppins/Poppins-Medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: poppins-bold;
+  src: url("/fonts/Poppins/Poppins-Bold.ttf") format("truetype");
+}
+
+/* Colors: */
+$primary: #6e441b;
+$secondary: #e1c2a2;
+
+/* Global */
+body {
+  font-family: poppins;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: poppins-bold;
+}
+
 /* Importing Bootstrap SCSS file. */
-@import 'bootstrap/scss/bootstrap';
+@import "bootstrap/scss/bootstrap";
