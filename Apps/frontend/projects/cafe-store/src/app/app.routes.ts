@@ -6,4 +6,9 @@ export const routes: Routes = [
     path: '',
     component: HomeComponent,
   },
+  {
+    path: 'menu',
+    loadComponent: () =>
+      import('./views/menu/menu.component').then((m) => m.MenuComponent),
+  },
 ];
