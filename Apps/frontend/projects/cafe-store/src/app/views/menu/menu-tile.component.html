@@ -1,0 +1,19 @@
+<div class="item">
+  <img [src]="item().image" alt="coffee" />
+  <h4>{{ item().name }}</h4>
+
+  <div class="info">
+    @if(item().price > 0){
+    <span class="price pricing">{{ item().price | currency }}</span>
+    } @else {
+    <span class="free pricing">Free</span>
+    }
+
+    <button
+      class="btn btn-sm btn-outline-primary select"
+      (click)="onSelect.emit(item())"
+    >
+      Select
+    </button>
+  </div>
+</div>
