@@ -1,0 +1,40 @@
+@import "../../../styles";
+
+.back {
+  width: 100%;
+  border-radius: 0;
+}
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 0;
+
+  img {
+    width: 75%;
+    height: 10rem;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 0.5rem;
+  }
+
+  .info {
+    font-family: poppins-medium;
+
+    .price {
+      color: $primary;
+    }
+
+    .free {
+      color: $gray-500;
+      font-style: italic;
+    }
+
+    .pricing::after {
+      content: " | ";
+      margin: 0 0.7rem;
+      color: $secondary;
+      font-style: normal;
+    }
+  }
+}
