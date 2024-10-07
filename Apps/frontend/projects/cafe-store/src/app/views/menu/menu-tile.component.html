@@ -1,5 +1,5 @@
 <div class="item">
-  <img [src]="item().image" alt="coffee" />
+  <img [src]="item().image" alt="coffee" (click)="onSelect.emit(item())" />
   <h4>{{ item().name }}</h4>
 
   <div class="info">

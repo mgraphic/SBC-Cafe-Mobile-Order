@@ -1,5 +1,5 @@
 import { Component, input, output } from '@angular/core';
-import { ProductItem } from './menu.component';
+import { ProductItem } from '../../shared/product.model';
 import { SharedModule } from '../../shared/shared.module';
 
 @Component({
