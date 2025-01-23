@@ -1,0 +1,94 @@
+@import "../../../styles";
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 0;
+
+  img {
+    width: 75%;
+    height: 10rem;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 0.5rem;
+  }
+
+  .info {
+    font-family: poppins-medium;
+
+    .price {
+      color: $primary;
+    }
+
+    .free {
+      color: $gray-500;
+      font-style: italic;
+    }
+
+    .pricing::after {
+      content: " | ";
+      margin: 0 0.7rem;
+      color: $secondary;
+      font-style: normal;
+    }
+  }
+}
+
+table {
+  h4 {
+    margin: 0;
+    font-size: 1rem;
+  }
+  img {
+    width: 20vw;
+    height: 20vw;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+  }
+
+  td {
+    &.image {
+      align-content: center;
+      text-align: center;
+    }
+
+    &.info {
+      align-content: center;
+    }
+
+    &.remove,
+    &.quantity {
+      align-content: center;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    &.remove {
+      border-bottom: none;
+    }
+
+    &.checkout {
+      padding-top: 2rem !important;
+      align-content: center;
+      text-align: center;
+      border-bottom: none;
+    }
+
+    &.total {
+      padding-top: 2rem !important;
+      align-content: center;
+      text-align: center;
+      border-bottom: none;
+    }
+  }
+}
+
+.no-items {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: $primary;
+  padding: 2rem;
+}

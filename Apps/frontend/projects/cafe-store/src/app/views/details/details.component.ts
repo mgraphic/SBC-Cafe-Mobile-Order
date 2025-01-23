@@ -5,6 +5,7 @@ import { demoItems } from '../../shared/demo-items';
 import { NavigationService } from '../../shared/navigation.service';
 import { ProductItem } from '../../shared/product.model';
 import { SharedModule } from '../../shared/shared.module';
+import { CartService } from '../../shared/cart.service';
 
 @Component({
   selector: 'app-details',
@@ -18,6 +19,7 @@ export class DetailsComponent implements OnInit {
 
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly navigationService = inject(NavigationService);
+  private readonly cartService = inject(CartService);
 
   ngOnInit(): void {
     this.item = demoItems.find(
@@ -28,5 +30,9 @@ export class DetailsComponent implements OnInit {
 
   goBack() {
     this.navigationService.goBack('/menu');
+  }
+
+  addToCart(item: ProductItem): void {
+    this.cartService.addToCart({ ...item, quantity: 1 });
   }
 }

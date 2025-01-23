@@ -1,0 +1,64 @@
+@if (cartItems.length <= 0) {
+<div class="no-items">No items in cart</div>
+}@else {
+<table class="table table-border">
+  <tbody>
+    @for (item of cartItems; track item.id){
+    <tr>
+      <td rowspan="2" class="image">
+        <img alt="coffee" [src]="item.image" />
+      </td>
+      <td rowspan="2" class="info">
+        <h4>{{ item.name }}</h4>
+
+        <div class="info">
+          @if(item!.price > 0){
+          <span class="price pricing">{{ item?.price | currency }}</span>
+          } @else {
+          <span class="free pricing">Free</span>
+          }
+        </div>
+      </td>
+      <td class="remove">
+        <button
+          class="btn btn-text text-red"
+          (click)="cartService.deleteFromCart(item)"
+        >
+          <i class="bi bi-trash3"></i>
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td class="quantity">
+        <button
+          class="btn btn-sm btn-text text-red"
+          (click)="cartService.removeFromCart(item)"
+        >
+          <i class="bi bi-dash-circle-fill"></i>
+        </button>
+        Qty: {{ item.quantity }}
+        <button
+          class="btn btn-sm btn-text text-green"
+          (click)="cartService.addToCart(item)"
+        >
+          <i class="bi bi-plus-circle-fill"></i>
+        </button>
+      </td>
+    </tr>
+    }
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="2" class="checkout">
+        <button class="btn btn-primary">Checkout</button>
+      </td>
+      <td class="total">
+        <h4>Subtotal</h4>
+        <span class="price pricing">{{
+          cartService.getTotalPrice() | currency
+        }}</span>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+}

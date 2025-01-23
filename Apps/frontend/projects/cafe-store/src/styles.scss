@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import "bootstrap-icons/font/bootstrap-icons.css";
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
 
@@ -28,11 +29,15 @@
 $primary: #6e441b;
 $secondary: #e1c2a2;
 $premiere: #36b9d0;
+$green: #0c925c;
+$red: #c00000;
 
 $custome-colors: (
   "primary": $primary,
   "secondary": $secondary,
   "premiere": $premiere,
+  "green": $green,
+  "red": $red,
 );
 
 $theme-colors: map-merge($theme-colors, $custome-colors);

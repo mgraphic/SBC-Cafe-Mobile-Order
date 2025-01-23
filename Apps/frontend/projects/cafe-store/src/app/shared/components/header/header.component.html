@@ -1,12 +1,13 @@
 <header>
-  <img src="/SBC_PNG-2-2-2.png" alt="South Bay Church" />
+  <img src="/SBC_PNG-2-2-2.png" alt="South Bay Church" routerLink="/menu" />
   <div>
-    <button class="btn btn-sm btn-primary position-relative">
+    <button class="btn btn-sm btn-primary position-relative" routerLink="/cart">
+      @if (cartItemsCount() > 0) {
       <span
         class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-premiere text-primary border border-1 border-primary"
-        >4</span
+        >{{ cartItemsCount() }}</span
       >
-      Cart
+      } Cart
     </button>
   </div>
 </header>
