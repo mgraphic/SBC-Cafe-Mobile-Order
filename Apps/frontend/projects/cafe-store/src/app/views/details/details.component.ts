@@ -10,7 +10,7 @@ import { CartService } from '../../shared/cart.service';
 @Component({
   selector: 'app-details',
   standalone: true,
-  imports: [JsonPipe, SharedModule],
+  imports: [SharedModule],
   templateUrl: './details.component.html',
   styleUrl: './details.component.scss',
 })
