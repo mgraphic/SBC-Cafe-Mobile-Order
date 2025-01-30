@@ -17,35 +17,3 @@ https://github.com/users/mgraphic/projects/2
 ## Repository
 
 https://github.com/mgraphic/SBC-Cafe-Mobile-Order
-
----
-
-## Local Setup
-
-### Run App
-
-**Store Frontend**
-
-```bash
-npm run store
-```
-
-**Admin Frontend**
-
-```bash
-npm run admin
-```
-
-### Testing
-
-**Store Frontend**
-
-```bash
-npm test cafe-store
-```
-
-**Admin Frontend**
-
-```bash
-npm test cafe-admin
-```

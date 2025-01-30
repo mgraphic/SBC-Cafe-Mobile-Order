@@ -24,7 +24,7 @@ export class DetailsComponent implements OnInit {
   ngOnInit(): void {
     this.item = demoItems.find(
       (item: ProductItem): boolean =>
-        item.slug == this.activatedRoute.snapshot.params['slug']
+        item.slug === this.activatedRoute.snapshot.params['slug']
     );
   }
 
