@@ -10,7 +10,7 @@ import { CartService } from '../../shared/cart.service';
 @Component({
   selector: 'app-details',
   standalone: true,
-  imports: [JsonPipe, SharedModule],
+  imports: [SharedModule],
   templateUrl: './details.component.html',
   styleUrl: './details.component.scss',
 })
@@ -24,7 +24,7 @@ export class DetailsComponent implements OnInit {
   ngOnInit(): void {
     this.item = demoItems.find(
       (item: ProductItem): boolean =>
-        item.slug == this.activatedRoute.snapshot.params['slug']
+        item.slug === this.activatedRoute.snapshot.params['slug']
     );
   }
 

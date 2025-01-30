@@ -9,12 +9,14 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "test:store": "ng test --project=cafe-store --watch=true --browsers=ChromeHeadless",
+    "test": "ng test --coverage",
+    "test:watch": "ng test --watch",
     "store": "ng serve --project=cafe-store",
     "store:dev": "ng serve --project=cafe-store -o",
+    "store:test": "ng test --project=cafe-store --watch",
     "admin": "ng serve --project=cafe-admin",
-    "admin:dev": "ng serve --project=cafe-admin -o"
+    "admin:dev": "ng serve --project=cafe-admin -o",
+    "admin:test": "ng test --project=cafe-admin --watch"
   },
   "private": true,
   "dependencies": {
@@ -35,17 +37,14 @@
     "zone.js": "~0.14.10"
   },
   "devDependencies": {
+    "@angular-builders/jest": "19.0.0",
     "@angular-devkit/build-angular": "^18.2.4",
     "@angular/cli": "^18.2.3",
     "@angular/compiler-cli": "^18.2.0",
     "@angular/localize": "^18.2.0",
-    "@types/jasmine": "~5.1.0",
-    "jasmine-core": "~5.2.0",
-    "karma": "~6.4.0",
-    "karma-chrome-launcher": "~3.2.0",
-    "karma-coverage": "~2.2.0",
-    "karma-jasmine": "~5.1.0",
-    "karma-jasmine-html-reporter": "~2.1.0",
+    "@briebug/jest-schematic": "^6.0.0",
+    "@types/jest": "29.5.14",
+    "jest": "^29.7.0",
     "typescript": "~5.5.2"
   }
 }
