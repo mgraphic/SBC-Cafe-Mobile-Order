@@ -9,12 +9,14 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "test:store": "ng test --project=cafe-store --watch=true",
+    "test": "ng test --coverage",
+    "test:watch": "ng test --watch",
     "store": "ng serve --project=cafe-store",
     "store:dev": "ng serve --project=cafe-store -o",
+    "store:test": "ng test --project=cafe-store --watch",
     "admin": "ng serve --project=cafe-admin",
-    "admin:dev": "ng serve --project=cafe-admin -o"
+    "admin:dev": "ng serve --project=cafe-admin -o",
+    "admin:test": "ng test --project=cafe-admin --watch"
   },
   "private": true,
   "dependencies": {
