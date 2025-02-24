@@ -28,3 +28,14 @@ services:
         image: cafe-admin
         ports:
             - 8081:80
+
+    cafe-service:
+        build:
+            context: ./Apps/backend/cafe-service
+            dockerfile: Dockerfile
+        image: 'cafe-service'
+        restart: on-failure
+        ports:
+            - '3000:3000'
+        volumes:
+            - .:/code

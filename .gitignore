@@ -1,1 +1,5 @@
 notes.txt
+node_modules/
+coverage/
+dist/
+*.log
