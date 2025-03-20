@@ -1,0 +1,50 @@
+services:
+    # Database
+    dynamodb-local:
+        image: amazon/dynamodb-local
+        working_dir: /home/dynamodblocal
+        restart: always
+
+        healthcheck:
+            test:
+                [
+                    'CMD-SHELL',
+                    'if [ "$(curl -s -o /dev/null -I -w ''%{http_code}'' http://localhost:8000)" == "400" ]; then exit 0; else exit 1; fi',
+                ]
+            interval: 5s
+            timeout: 5s
+            retries: 10
+
+        expose:
+            - 8000
+
+        volumes:
+            - './docker/dynamodb:/home/dynamodblocal/data'
+
+        ports:
+            - '8000:8000'
+
+    # Initialize
+    db-init:
+        depends_on:
+            dynamodb-local:
+                condition: service_healthy
+
+        image: amazon/aws-cli
+        working_dir: /
+
+        volumes:
+            - type: bind
+              source: ./local
+              target: /upload
+
+        environment:
+            AWS_ACCESS_KEY_ID: dummyaccesskey
+            AWS_SECRET_ACCESS_KEY: dummysecretkey
+            AWS_DEFAULT_REGION: dummy-region
+            AWS_ENDPOINT_URL: http://dynamodb-local:8000
+
+        entrypoint: /bin/sh -c
+        command: >-
+            "aws dynamodb create-table --cli-input-json file://upload/create.users.json
+            && aws dynamodb batch-write-item --request-items file://upload/import.users.json"

@@ -1,0 +1,21 @@
+{
+    "Users": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "id": {
+                        "S": "8c6b03599d60daa46b8be691f0542dee250e885777d5f9b43abc488e7de752d3"
+                    },
+                    "email": { "S": "admin@local" },
+                    "firstName": { "S": "Admin" },
+                    "lastName": { "S": "Admin" },
+                    "authKey": {
+                        "S": "eyJlbmNyeXB0ZWQiOiJmZGQ3N2UwYyIsInNhbHQiOiI4YTJlYzhmYTcyODFmY2MwIiwidGFnIjoiYWY0ZDgzM2I2YzQyMTU0OTIwMWRkYzZjMDAyYjFjMmUifQ=="
+                    },
+                    "createdAt": { "S": "2025-03-04T05:13:11.406" },
+                    "isActive": { "BOOL": true }
+                }
+            }
+        }
+    ]
+}
