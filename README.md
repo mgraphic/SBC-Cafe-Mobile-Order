@@ -45,3 +45,40 @@ docker compose build
 # Only run all containers
 docker compose up -d
 ```
+
+Other docker commands...
+
+```sh
+# List containers
+docker ps
+
+# Stop and remove containers
+docker compose down
+
+# Remove all images
+docker rmi -f $(docker images -aq)
+
+# Stop all the containers
+docker stop $(docker ps -a -q)
+
+# Remove all the containers
+docker rm $(docker ps -a -q)
+```
+
+To build and run local DB container, use the following command...
+
+```sh
+# To build and run local DB and iniitialize the schema and data for the first time
+docker compose -f docker-compose.local.yml up db-init -d
+
+# Run the local DB without initializing the data
+docker compose -f docker-compose.local.yml up dynamodb-local -d
+
+# List defined tables (requires AWS-CLI installation)
+AWS_ACCESS_KEY_ID=dummyaccesskey AWS_SECRET_ACCESS_KEY=dummysecretkey aws dynamodb list-tables --endpoint-url http://localhost:8000 --region dummy-region
+```
+
+## References
+
+-   [AWS-CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) Installation
+-   [Docker Desktop](https://www.docker.com/products/docker-desktop/) Installation

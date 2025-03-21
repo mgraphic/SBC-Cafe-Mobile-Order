@@ -1,16 +1,5 @@
-# Build and run all containers
-# docker compose up --build -d
-
-# Build specified container
-# docker compose build <service-name>
-
-# List containers
-# docker ps
-
-# Stop and remove containers
-# docker compose down
-
 services:
+    # Frontend
     cafe-store:
         build:
             context: ./Apps/frontend
@@ -29,6 +18,7 @@ services:
         ports:
             - 8081:80
 
+    # Backend
     cafe-service:
         build:
             context: ./Apps/backend/cafe-service
