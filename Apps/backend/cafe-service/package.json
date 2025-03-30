@@ -1,6 +1,6 @@
 {
     "name": "cafe-service",
-    "version": "1.0.0",
+    "version": "0.0.0",
     "main": "src/index.ts",
     "type": "module",
     "engines": {
@@ -16,18 +16,16 @@
         "docker:build": "docker build -t cafe-service ."
     },
     "keywords": [],
-    "author": "",
+    "author": "keith@kmarshall.com",
     "license": "ISC",
     "description": "",
     "devDependencies": {
         "@types/express": "^5.0.1",
         "@types/helmet": "^0.0.48",
         "@types/jest": "^29.5.14",
-        "@types/jsonwebtoken": "^9.0.9",
         "@types/node": "^22.13.14",
         "@types/supertest": "^6.0.3",
         "jest": "^29.7.0",
-        "node-polyfill-webpack-plugin": "^4.1.0",
         "nodemon": "^3.1.9",
         "supertest": "^7.1.0",
         "ts-jest": "^29.3.0",
@@ -43,8 +41,6 @@
         "@mgraphic/cipher-token": "^1.1.1",
         "dotenv": "^16.4.7",
         "express": "^4.21.2",
-        "express-rate-limit": "^7.5.0",
-        "helmet": "^8.1.0",
-        "jsonwebtoken": "^9.0.2"
+        "helmet": "^8.1.0"
     }
 }
