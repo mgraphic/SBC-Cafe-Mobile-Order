@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response, Router } from 'express';
-import { demoItems } from '../shared/demo-items';
 import { environment } from '../environment';
 import { getMenu } from '../handlers/product.handler';
 

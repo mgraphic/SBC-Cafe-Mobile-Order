@@ -2,7 +2,7 @@ import request from 'supertest';
 import express from 'express';
 import { storeRouter } from './store.routes';
 import { environment } from '../environment';
-import { demoItems } from '../shared/demo-items';
+import demoItems from '../shared/demo-items.json';
 
 const app = express();
 app.use('/store', storeRouter);

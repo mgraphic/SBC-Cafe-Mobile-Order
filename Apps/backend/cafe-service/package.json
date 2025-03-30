@@ -1,40 +1,50 @@
 {
     "name": "cafe-service",
     "version": "1.0.0",
-    "main": "index.js",
+    "main": "src/index.ts",
+    "type": "module",
+    "engines": {
+        "node": ">=20.17.0"
+    },
     "scripts": {
-        "start": "nodemon --exec ts-node src/index.ts",
-        "build": "NODE_ENV=production webpack",
+        "start": "nodemon -e ts -w ./src -x npm run watch:serve",
         "prod": "node build/index.cjs",
-        "test": "jest --watch --coverage"
+        "build": "NODE_ENV=production webpack",
+        "test": "jest --coverage",
+        "test:watch": "jest --watch",
+        "watch:serve": "node --loader ts-node/esm src/index.ts",
+        "docker:build": "docker build -t cafe-service ."
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "description": "",
-    "engines": {
-        "node": ">=20.17.0"
-    },
     "devDependencies": {
-        "@types/express": "^5.0.0",
+        "@types/express": "^5.0.1",
         "@types/helmet": "^0.0.48",
         "@types/jest": "^29.5.14",
-        "@types/node": "^22.13.5",
-        "@types/supertest": "^6.0.2",
+        "@types/jsonwebtoken": "^9.0.9",
+        "@types/node": "^22.13.14",
+        "@types/supertest": "^6.0.3",
         "jest": "^29.7.0",
+        "node-polyfill-webpack-plugin": "^4.1.0",
         "nodemon": "^3.1.9",
-        "supertest": "^7.0.0",
-        "ts-jest": "^29.2.6",
+        "supertest": "^7.1.0",
+        "ts-jest": "^29.3.0",
         "ts-loader": "^9.5.2",
         "ts-node": "^10.9.2",
-        "typescript": "^5.7.3",
+        "typescript": "^5.8.2",
         "webpack": "^5.98.0",
         "webpack-cli": "^6.0.1",
         "webpack-node-externals": "^3.0.0"
     },
     "dependencies": {
+        "@aws-sdk/client-dynamodb": "^3.777.0",
+        "@mgraphic/cipher-token": "^1.1.1",
         "dotenv": "^16.4.7",
         "express": "^4.21.2",
-        "helmet": "^8.0.0"
+        "express-rate-limit": "^7.5.0",
+        "helmet": "^8.1.0",
+        "jsonwebtoken": "^9.0.2"
     }
 }

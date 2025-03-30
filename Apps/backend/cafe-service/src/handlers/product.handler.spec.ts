@@ -1,5 +1,6 @@
 import { getMenu } from './product.handler';
-import { demoItems } from '../shared/demo-items';
+// import { demoItems } from '../shared/demo-items';
+import demoItems from '../shared/demo-items.json';
 
 describe('getMenu', () => {
     let mockResponse: any;
