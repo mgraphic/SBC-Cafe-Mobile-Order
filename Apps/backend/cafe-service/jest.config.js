@@ -1,7 +1,7 @@
+import { createDefaultPreset } from 'ts-jest';
+
 /** @type {import('ts-jest').JestConfigWithTsJest} **/
-module.exports = {
-  testEnvironment: "node",
-  transform: {
-    "^.+\.tsx?$": ["ts-jest",{}],
-  },
+export default {
+    ...createDefaultPreset(),
+    preset: 'ts-jest/presets/default-esm',
 };

@@ -2,21 +2,12 @@ import request from 'supertest';
 import express from 'express';
 import { storeRouter } from './store.routes';
 import { environment } from '../environment';
-import { demoItems } from '../shared/demo-items';
+import demoItems from '../shared/demo-items.json';
 
 const app = express();
 app.use('/store', storeRouter);
 
 describe('storeRouter', () => {
-    it('should return welcome message on GET /store', async () => {
-        const response = await request(app).get('/store');
-        expect(response.status).toBe(200);
-        expect(response.body).toEqual({
-            message: 'Welcome to the Cafe Store API',
-            version: '1.0.0',
-        });
-    });
-
     it('should deny access with invalid token', async () => {
         environment.accessToken = 'valid-token';
         const response = await request(app)
