@@ -30,7 +30,7 @@ class UsersService {
 
     public addUser(user: IUser): void {
         if (!this.userExists(user.userName)) {
-            this.usersDb.set(user.userName, user);
+            this.usersDb.set(user.userName.toLowerCase(), user);
         }
     }
 

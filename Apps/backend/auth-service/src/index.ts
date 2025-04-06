@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import helmet from 'helmet';
 import { environment } from './environment';
 import rateLimit from 'express-rate-limit';
-import { autheRouter } from './routers/auth.routes';
+import { authRouter } from './routers/auth.routes';
 // @ts-ignore
 import pkg from '../package.json' with { type: 'json' };
 import cors from 'cors';
@@ -27,7 +27,7 @@ app.get('/', (_: unknown, res: Response) => {
 });
 
 // Routes
-app.use('/api/v1', autheRouter);
+app.use('/api/v1', authRouter);
 
 app.listen(environment.port, () => {
     console.log(`Auth Service is running on port ${environment.port}`);

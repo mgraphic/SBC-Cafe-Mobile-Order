@@ -2,14 +2,14 @@ import { NextFunction, Request, Response, Router } from 'express';
 import { login, logout, refresh, register } from '../handlers/auth.handler';
 import { verifyAccessToken } from '../shared/jwt-utils';
 
-export const autheRouter: Router = Router();
+export const authRouter: Router = Router();
 
 // Public API
-autheRouter.post('/login', login);
-autheRouter.get('/logout', logout);
-autheRouter.get('/refresh', refresh);
+authRouter.post('/login', login);
+authRouter.get('/logout', logout);
+authRouter.get('/refresh', refresh);
 
-autheRouter.use((req: Request, res: Response, next: NextFunction): void => {
+authRouter.use((req: Request, res: Response, next: NextFunction): void => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
@@ -29,4 +29,4 @@ autheRouter.use((req: Request, res: Response, next: NextFunction): void => {
 });
 
 // Private API
-autheRouter.post('/register', register);
+authRouter.post('/register', register);
