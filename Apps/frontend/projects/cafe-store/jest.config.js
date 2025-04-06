@@ -9,7 +9,7 @@ module.exports = {
   transform: {
     "^.+.tsx?$": [
       "ts-jest",
-      { tsconfig: "<rootDir>/projects/cafe-admin/tsconfig.spec.json" },
+      { tsconfig: "<rootDir>/projects/cafe-store/tsconfig.spec.json" },
     ],
   },
 };

@@ -18,6 +18,12 @@ https://github.com/users/mgraphic/projects/2
 
 https://github.com/mgraphic/SBC-Cafe-Mobile-Order
 
+## Demo
+
+Login as demo admin user:
+**Username/Email:** admin@local
+**User Password:** demo
+
 ## Docker
 
 To build and/or run a specific container, refer to the container service name...

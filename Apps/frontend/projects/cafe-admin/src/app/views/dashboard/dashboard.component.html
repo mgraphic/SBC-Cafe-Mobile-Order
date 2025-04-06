@@ -1,0 +1,6 @@
+<p>dashboard works!</p>
+<p>You must be logged in to see this page</p>
+
+@if(user()){
+<p>{{ user()?.firstName }} {{ user()?.lastName }} ({{ user()?.email }})</p>
+}
