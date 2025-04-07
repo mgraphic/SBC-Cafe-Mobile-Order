@@ -7,7 +7,11 @@ export interface IUser {
     refreshTokens: string[];
 }
 
-export type JwtUserPayload = Pick<
-    IUser,
-    'userName' | 'email' | 'firstName' | 'lastName'
->;
+export const jwtPayloadFields = [
+    'userName',
+    'email',
+    'firstName',
+    'lastName',
+] as const;
+
+export type JwtUserPayload = Pick<IUser, (typeof jwtPayloadFields)[number]>;

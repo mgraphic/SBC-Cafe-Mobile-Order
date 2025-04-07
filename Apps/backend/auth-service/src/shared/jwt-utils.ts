@@ -2,19 +2,17 @@ import jwt from 'jsonwebtoken';
 import { environment } from '../environment';
 import { User } from './user';
 import { CookieOptions } from 'express';
-import { JwtUserPayload } from './model';
+import { jwtPayloadFields, JwtUserPayload } from './model';
 
 // Tokens
 export const ACCESS_TOKEN_EXPIRY = '15m';
 export const REFRESH_TOKEN_EXPIRY = '8d';
 
 export function generateAccessToken(user: User): string {
-    const { userName, email, firstName, lastName } = user.getUserData();
-    const accessToken = jwt.sign(
-        { userName, email, firstName, lastName } as JwtUserPayload,
-        environment.accessTokenSecret,
-        { expiresIn: ACCESS_TOKEN_EXPIRY }
-    );
+    const jwtPayload = extractJwtPayload(user);
+    const accessToken = jwt.sign(jwtPayload, environment.accessTokenSecret, {
+        expiresIn: ACCESS_TOKEN_EXPIRY,
+    });
 
     return accessToken;
 }
@@ -32,12 +30,10 @@ export function verifyAccessToken(token: string): JwtUserPayload | false {
 }
 
 export function generateRefreshToken(user: User): string {
-    const { userName, email, firstName, lastName } = user.getUserData();
-    const accessToken = jwt.sign(
-        { userName, email, firstName, lastName } as JwtUserPayload,
-        environment.refreshTokenSecret,
-        { expiresIn: REFRESH_TOKEN_EXPIRY }
-    );
+    const jwtPayload = extractJwtPayload(user);
+    const accessToken = jwt.sign(jwtPayload, environment.refreshTokenSecret, {
+        expiresIn: REFRESH_TOKEN_EXPIRY,
+    });
 
     return accessToken;
 }
@@ -54,6 +50,16 @@ export function verifyRefreshToken(token: string): JwtUserPayload | false {
     return verified;
 }
 
+function extractJwtPayload(user: User): JwtUserPayload {
+    const userData = user.getUserData();
+    const jwtPayload = jwtPayloadFields.reduce<JwtUserPayload>(
+        (acc, field) => ({ ...acc, [field]: userData[field] }),
+        {} as JwtUserPayload
+    );
+
+    return jwtPayload;
+}
+
 // Cookies
 export const JWT_COOKIE_EXPIRY = 8 * 24 * 60 * 60 * 1000; // 8 days
 export const JWT_COOKIE_OPTIONS: CookieOptions = {
@@ -63,5 +69,5 @@ export const JWT_COOKIE_OPTIONS: CookieOptions = {
     maxAge: JWT_COOKIE_EXPIRY,
 };
 export const JWT_CLEARCOOKIE_OPTIONS: CookieOptions = JSON.parse(
-    JSON.stringify({ JWT_COOKIE_OPTIONS, maxAge: undefined })
+    JSON.stringify({ ...JWT_COOKIE_OPTIONS, maxAge: undefined })
 );
