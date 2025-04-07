@@ -29,3 +29,14 @@ services:
             - '3000:3000'
         volumes:
             - .:/code
+
+    auth-service:
+        build:
+            context: ./Apps/backend/auth-service
+            dockerfile: Dockerfile
+        image: 'auth-service'
+        restart: on-failure
+        ports:
+            - '3100:3100'
+        volumes:
+            - .:/code
