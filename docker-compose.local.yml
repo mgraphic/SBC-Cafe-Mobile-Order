@@ -1,3 +1,6 @@
+include:
+    - docker-compose.yml
+
 services:
     # Database
     dynamodb-local:
@@ -48,3 +51,28 @@ services:
         command: >-
             "aws dynamodb create-table --cli-input-json file://upload/create.users.json
             && aws dynamodb batch-write-item --request-items file://upload/import.users.json"
+
+    # Demo
+    store:
+        image: nginx:latest
+        container_name: demo-store-proxy
+        ports:
+            - '80:80'
+        volumes:
+            - ./local/demo-store-proxy.nginx.conf:/etc/nginx/nginx.conf:ro
+        depends_on:
+            - cafe-store
+            - cafe-service
+            - auth-service
+
+    admin:
+        image: nginx:latest
+        container_name: demo-admin-proxy
+        ports:
+            - '81:80'
+        volumes:
+            - ./local/demo-admin-proxy.nginx.conf:/etc/nginx/nginx.conf:ro
+        depends_on:
+            - cafe-admin
+            - cafe-service
+            - auth-service

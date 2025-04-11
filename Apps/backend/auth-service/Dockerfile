@@ -8,6 +8,8 @@ RUN npm ci
 
 RUN npm run build
 
-EXPOSE 3000
+ENV PORT=3100
+
+EXPOSE 3100
 
 CMD ["npm", "run", "prod"]
