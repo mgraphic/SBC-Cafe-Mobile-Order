@@ -27,7 +27,7 @@ Once you downloaded this code base or cloned it directly from [Git](https://git-
 Run this command to build and run the demo:
 
 ```sh
-docker compose -f docker-compose.local.yml up store admin -d
+docker compose -f docker-compose.local.yml up --build store admin -d
 ```
 
 Open the browser to view both the [store](http://localhost:80) and [admin](http://localhost:81) sites:
