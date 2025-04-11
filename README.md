@@ -20,9 +20,32 @@ https://github.com/mgraphic/SBC-Cafe-Mobile-Order
 
 ## Demo
 
+To run the demo directly from your computer, you will need Docker Desktop installed. This is a free software available to download at [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+
+Once you downloaded this code base or cloned it directly from [Git](https://git-scm.com/downloads) you can run the commands below from a terminal or command console to create the demo platform. Be sure that Docker Desktop is open and running.
+
+Run this command to build and run the demo:
+
+```sh
+docker compose -f docker-compose.local.yml up store admin -d
+```
+
+Open the browser to view both the [store](http://localhost:80) and [admin](http://localhost:81) sites:
+
+```sh
+open http://localhost:80
+open http://localhost:81
+```
+
 Login as demo admin user:
 **Username/Email:** admin@local
 **User Password:** demo
+
+When you want to shut everything down, use the following command to stop and remove all the demo containers:
+
+```sh
+docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && docker rmi -f $(docker images -aq)
+```
 
 ## Docker
 
@@ -88,3 +111,4 @@ AWS_ACCESS_KEY_ID=dummyaccesskey AWS_SECRET_ACCESS_KEY=dummysecretkey aws dynamo
 
 -   [AWS-CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) Installation
 -   [Docker Desktop](https://www.docker.com/products/docker-desktop/) Installation
+-   [Git](https://git-scm.com/downloads) Installation
