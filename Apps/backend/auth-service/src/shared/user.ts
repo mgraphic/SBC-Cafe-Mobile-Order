@@ -3,16 +3,19 @@ import { IUser } from './model';
 import { usersService } from './users.service';
 
 export class User {
-    private userName: string;
-    private user?: IUser;
+    private user: IUser | null;
     private authState: 'authenticated' | null = null;
     private cipherConfig = {
         tokenEncoding: 'hex',
     } as CipherTokenConfig;
 
-    constructor(userName: string) {
-        this.userName = userName.toLowerCase();
-        this.fetchUser();
+    private constructor(user: IUser | null) {
+        this.user = user;
+    }
+
+    public static async createInstance(email: string): Promise<User> {
+        const user = await usersService.getUser(email);
+        return new User(user || null);
     }
 
     public isUser(): boolean {
@@ -31,7 +34,7 @@ export class User {
             decipher.keyFromString(password);
             const result = decipher.untokenize(this.user.passwordHash);
 
-            if (`${this.userName}:${password}` === result) {
+            if (`${this.user.email}:${password}` === result) {
                 this.authState = 'authenticated';
             }
         }
@@ -48,14 +51,14 @@ export class User {
     }
 
     public getUserName(): string {
-        return this.userName;
+        return this.user?.email || '';
+    }
+
+    public getUserId(): string {
+        return this.user?.id || '';
     }
 
     public getRefreshTokens(): string[] {
         return this.user?.refreshTokens || [];
-    }
-
-    private fetchUser(): void {
-        this.user = usersService.getUser(this.userName);
     }
 }

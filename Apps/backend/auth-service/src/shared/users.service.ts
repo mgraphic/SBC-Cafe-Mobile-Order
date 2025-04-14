@@ -1,16 +1,8 @@
+import { dynamoDbService } from './dynamodb.service';
 import { IUser } from './model';
-// @ts-ignore
-import usersJson from './users.json' with { type: 'json' };
 
 class UsersService {
-    public readonly usersDb = new Map<string, IUser>();
-    private static instance: UsersService;
-
-    private constructor() {
-        usersJson.forEach((user: IUser): void => {
-            this.addUser(user);
-        });
-    }
+    private static instance?: UsersService;
 
     public static getInstance(): UsersService {
         if (!UsersService.instance) {
@@ -20,41 +12,52 @@ class UsersService {
         return UsersService.instance;
     }
 
-    public getUser(username: string): IUser | undefined {
-        return this.usersDb.get(username.toLowerCase());
+    public async getUser(email: string): Promise<IUser | undefined> {
+        return (
+            await dynamoDbService.getSecondaryIndexItem<IUser>(
+                'Users',
+                'EmailIndex',
+                {
+                    email: { operation: '=', value: email.toLowerCase() },
+                }
+            )
+        )[0];
     }
 
-    public userExists(username: string): boolean {
-        return this.usersDb.has(username.toLowerCase());
+    public async userExists(email: string): Promise<boolean> {
+        return !!(await this.getUser(email));
     }
 
-    public addUser(user: IUser): void {
-        if (!this.userExists(user.userName)) {
-            this.usersDb.set(user.userName.toLowerCase(), user);
+    public async addUser(user: IUser): Promise<void> {
+        if (!(await this.userExists(user.email))) {
+            await dynamoDbService.addItem('Users', user);
         }
     }
 
-    public updateUser(username: string, user: Partial<IUser>): void {
-        const existingUser = this.usersDb.get(username.toLowerCase());
+    public async updateUser(id: string, user: Partial<IUser>): Promise<void> {
+        const existingUser = await dynamoDbService.getItem<IUser>('Users', {
+            id: { operation: '=', value: id },
+        });
 
-        if (existingUser) {
-            this.usersDb.set(username.toLowerCase(), {
-                ...existingUser,
-                ...user,
-            });
+        if (existingUser?.length > 0) {
+            await dynamoDbService.updateItem('Users', { id }, user);
         }
     }
 
-    public deleteUser(username: string): void {
-        this.usersDb.delete(username.toLowerCase());
+    public async deleteUser(id: string): Promise<void> {
+        await dynamoDbService.deleteItem('Users', { id });
     }
 
-    public getAllUsers(): IUser[] {
-        return Array.from(this.usersDb.values());
+    public async getAllUsers(): Promise<IUser[]> {
+        return (await dynamoDbService.getAllItems<IUser>('Users')) as IUser[];
     }
 
-    public getUserByRefreshToken(token: string): IUser | undefined {
-        return this.getAllUsers().find((user: IUser): boolean =>
+    public async getUserByRefreshToken(
+        token: string
+    ): Promise<IUser | undefined> {
+        const users = await this.getAllUsers();
+
+        return users.find((user: IUser): boolean =>
             user.refreshTokens.some((rt: string): boolean => rt === token)
         );
     }
