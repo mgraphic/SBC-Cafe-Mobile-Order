@@ -5,8 +5,10 @@ services:
             context: ./Apps/frontend
             args:
                 APP_NAME: cafe-store
+
         image: cafe-store
         container_name: cafe-store
+
         ports:
             - 8080:80
 
@@ -15,8 +17,10 @@ services:
             context: ./Apps/frontend
             args:
                 APP_NAME: cafe-admin
+
         image: cafe-admin
         container_name: cafe-admin
+
         ports:
             - 8081:80
 
@@ -25,22 +29,47 @@ services:
         build:
             context: ./Apps/backend/cafe-service
             dockerfile: Dockerfile
+
         image: cafe-service
         container_name: cafe-service
         restart: on-failure
+
         ports:
             - '3000:3000'
+
         volumes:
             - .:/code
+
+        environment:
+            - APP_ENV
+            - PORT
+            - ACCESS_TOKEN
+            - AWS_ACCESS_KEY_ID
+            - AWS_SECRET_ACCESS_KEY
+            - AWS_DEFAULT_REGION
+            - AWS_ENDPOINT_URL
 
     auth-service:
         build:
             context: ./Apps/backend/auth-service
             dockerfile: Dockerfile
+
         image: auth-service
         container_name: auth-service
         restart: on-failure
+
         ports:
             - '3100:3100'
+
         volumes:
             - .:/code
+
+        environment:
+            - APP_ENV
+            - PORT
+            - ACCESS_TOKEN_SECRET
+            - REFRESH_TOKEN_SECRET
+            - AWS_ACCESS_KEY_ID
+            - AWS_SECRET_ACCESS_KEY
+            - AWS_DEFAULT_REGION
+            - AWS_ENDPOINT_URL

@@ -9,7 +9,7 @@ import {
 import { User } from '../shared/user';
 import { usersService } from '../shared/users.service';
 
-export function login(req: Request, res: Response): void {
+export async function login(req: Request, res: Response): Promise<void> {
     const { username, password } = req.body;
     const { cookies } = req;
 
@@ -20,7 +20,7 @@ export function login(req: Request, res: Response): void {
         return;
     }
 
-    const user = new User(username);
+    const user = await User.createInstance(username);
 
     if (!user.isUser()) {
         res.status(401).json({
@@ -41,17 +41,17 @@ export function login(req: Request, res: Response): void {
 
         if (cookies?.jwt) {
             const { jwt } = cookies;
-            const foundUser = usersService.getUserByRefreshToken(jwt);
+            const foundUser = await usersService.getUserByRefreshToken(jwt);
 
-            if (foundUser?.userName === user.getUserName()) {
+            if (foundUser?.email === user.getUserName()) {
                 // attempted token reuse
                 refreshTokens = [];
             }
 
-            if (foundUser && foundUser.userName !== user.getUserName()) {
+            if (foundUser && foundUser.email !== user.getUserName()) {
                 // attempted hijacked token
                 refreshTokens = [];
-                usersService.updateUser(foundUser.userName, {
+                await usersService.updateUser(foundUser.id, {
                     refreshTokens: [],
                 });
             }
@@ -59,7 +59,7 @@ export function login(req: Request, res: Response): void {
             res.clearCookie('jwt', JWT_CLEARCOOKIE_OPTIONS);
         }
 
-        usersService.updateUser(user.getUserName(), {
+        await usersService.updateUser(user.getUserId(), {
             refreshTokens: [...refreshTokens, refreshToken],
         });
 
@@ -71,7 +71,7 @@ export function login(req: Request, res: Response): void {
     res.sendStatus(401);
 }
 
-export function logout(req: Request, res: Response): void {
+export async function logout(req: Request, res: Response): Promise<void> {
     const { cookies } = req;
 
     if (!cookies?.jwt) {
@@ -80,7 +80,7 @@ export function logout(req: Request, res: Response): void {
     }
 
     const refreshToken = cookies.jwt;
-    const foundUser = usersService.getUserByRefreshToken(refreshToken);
+    const foundUser = await usersService.getUserByRefreshToken(refreshToken);
 
     if (!foundUser) {
         res.clearCookie('jwt', JWT_CLEARCOOKIE_OPTIONS);
@@ -88,7 +88,7 @@ export function logout(req: Request, res: Response): void {
         return;
     }
 
-    usersService.updateUser(foundUser.userName, {
+    await usersService.updateUser(foundUser.id, {
         refreshTokens: foundUser.refreshTokens.filter(
             (rt) => rt !== refreshToken
         ),
@@ -98,7 +98,7 @@ export function logout(req: Request, res: Response): void {
     res.sendStatus(204);
 }
 
-export function refresh(req: Request, res: Response): void {
+export async function refresh(req: Request, res: Response): Promise<void> {
     const { cookies } = req;
 
     if (!cookies?.jwt) {
@@ -110,7 +110,8 @@ export function refresh(req: Request, res: Response): void {
 
     res.clearCookie('jwt', JWT_CLEARCOOKIE_OPTIONS);
 
-    const foundUser = usersService.getUserByRefreshToken(refreshToken);
+    const foundUser = await usersService.getUserByRefreshToken(refreshToken);
+    console.log('foundUser', foundUser);
 
     if (!foundUser) {
         const verified = verifyRefreshToken(refreshToken);
@@ -120,7 +121,7 @@ export function refresh(req: Request, res: Response): void {
             return;
         }
 
-        usersService.updateUser(verified.userName, {
+        await usersService.updateUser(verified.id, {
             refreshTokens: [],
         });
 
@@ -134,21 +135,21 @@ export function refresh(req: Request, res: Response): void {
     const verified = verifyRefreshToken(refreshToken);
 
     if (verified === false) {
-        usersService.updateUser(foundUser.userName, {
+        await usersService.updateUser(foundUser.id, {
             refreshTokens: [...refreshTokens],
         });
     }
 
-    if (verified === false || verified.userName !== foundUser.userName) {
+    if (verified === false || verified.id !== foundUser.id) {
         res.sendStatus(403);
         return;
     }
 
-    const user = new User(verified.userName);
+    const user = await User.createInstance(foundUser.email);
     const accessToken = generateAccessToken(user);
     const newRefreshToken = generateRefreshToken(user);
 
-    usersService.updateUser(foundUser.userName, {
+    await usersService.updateUser(foundUser.id, {
         refreshTokens: [...refreshTokens, newRefreshToken],
     });
 
@@ -156,7 +157,7 @@ export function refresh(req: Request, res: Response): void {
     res.json({ accessToken });
 }
 
-export function register(req: Request, res: Response): void {
+export async function register(req: Request, res: Response): Promise<void> {
     res.status(200).json({
         message: 'Registration successful',
     });
