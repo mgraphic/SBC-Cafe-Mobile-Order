@@ -1,8 +1,8 @@
 import { CipherTokenConfig, getDecipherToken } from '@mgraphic/cipher-token';
-import { IUser } from './model';
-import { usersService } from './users.service';
+import { IUser } from './user.model';
+import { UsersService } from './users.service';
 
-export class User {
+export class AuthUser {
     private user: IUser | null;
     private authState: 'authenticated' | null = null;
     private cipherConfig = {
@@ -13,9 +13,10 @@ export class User {
         this.user = user;
     }
 
-    public static async createInstance(email: string): Promise<User> {
+    public static async createInstance(email: string): Promise<AuthUser> {
+        const usersService = new UsersService();
         const user = await usersService.getUser(email);
-        return new User(user || null);
+        return new AuthUser(user || null);
     }
 
     public isUser(): boolean {
@@ -40,10 +41,6 @@ export class User {
         }
 
         return this.isAuthenticated();
-    }
-
-    public logout(): void {
-        this.authState = null;
     }
 
     public getUserData(): IUser {

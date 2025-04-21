@@ -1,17 +1,7 @@
 import { dynamoDbService } from './dynamodb.service';
-import { IUser } from './model';
+import { IUser } from './user.model';
 
-class UsersService {
-    private static instance?: UsersService;
-
-    public static getInstance(): UsersService {
-        if (!UsersService.instance) {
-            UsersService.instance = new UsersService();
-        }
-
-        return UsersService.instance;
-    }
-
+export class UsersService {
     public async getUser(email: string): Promise<IUser | undefined> {
         return (
             await dynamoDbService.getSecondaryIndexItem<IUser>(
@@ -62,5 +52,3 @@ class UsersService {
         );
     }
 }
-
-export const usersService = UsersService.getInstance();

@@ -14,7 +14,7 @@ import {
     PutCommand,
     UpdateCommand,
 } from '@aws-sdk/lib-dynamodb';
-import { DynamoDbQueryItem } from './model';
+import { DynamoDbQueryItem } from './aws.model';
 
 /**
  * Query Operations for DynamoDB

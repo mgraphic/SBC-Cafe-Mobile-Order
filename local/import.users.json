@@ -14,6 +14,8 @@
                     },
                     "createdAt": { "S": "2025-03-04T05:13:11.406" },
                     "isActive": { "BOOL": true },
+                    "role": { "S": "OWNER" },
+                    "permissions": { "L": [] },
                     "refreshTokens": { "L": [] }
                 }
             }
