@@ -6,10 +6,11 @@ import {
     JWT_COOKIE_OPTIONS,
     verifyRefreshToken,
 } from '../shared/jwt-utils';
-import { User } from '../shared/user';
-import { usersService } from '../shared/users.service';
+import { AuthUser } from '../shared/auth-user';
+import { UsersService } from '../shared/users.service';
 
 export async function login(req: Request, res: Response): Promise<void> {
+    const usersService = new UsersService();
     const { username, password } = req.body;
     const { cookies } = req;
 
@@ -20,7 +21,7 @@ export async function login(req: Request, res: Response): Promise<void> {
         return;
     }
 
-    const user = await User.createInstance(username);
+    const user = await AuthUser.createInstance(username);
 
     if (!user.isUser()) {
         res.status(401).json({
@@ -72,6 +73,7 @@ export async function login(req: Request, res: Response): Promise<void> {
 }
 
 export async function logout(req: Request, res: Response): Promise<void> {
+    const usersService = new UsersService();
     const { cookies } = req;
 
     if (!cookies?.jwt) {
@@ -99,6 +101,7 @@ export async function logout(req: Request, res: Response): Promise<void> {
 }
 
 export async function refresh(req: Request, res: Response): Promise<void> {
+    const usersService = new UsersService();
     const { cookies } = req;
 
     if (!cookies?.jwt) {
@@ -111,7 +114,6 @@ export async function refresh(req: Request, res: Response): Promise<void> {
     res.clearCookie('jwt', JWT_CLEARCOOKIE_OPTIONS);
 
     const foundUser = await usersService.getUserByRefreshToken(refreshToken);
-    console.log('foundUser', foundUser);
 
     if (!foundUser) {
         const verified = verifyRefreshToken(refreshToken);
@@ -145,7 +147,7 @@ export async function refresh(req: Request, res: Response): Promise<void> {
         return;
     }
 
-    const user = await User.createInstance(foundUser.email);
+    const user = await AuthUser.createInstance(foundUser.email);
     const accessToken = generateAccessToken(user);
     const newRefreshToken = generateRefreshToken(user);
 
