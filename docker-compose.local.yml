@@ -46,8 +46,7 @@ services:
 
         entrypoint: /bin/sh -c
         command: >-
-            "aws dynamodb delete-table --table-name Users
-            && aws dynamodb create-table --cli-input-json file://upload/create.users.json
+            "aws dynamodb create-table --cli-input-json file://upload/create.users.json
             && aws dynamodb batch-write-item --request-items file://upload/import.users.json"
 
     # Demo Frontend
@@ -88,9 +87,6 @@ services:
         ports:
             - '3000:3000'
 
-        volumes:
-            - .:/code
-
         environment:
             AWS_ENDPOINT_URL: http://dynamodb-local:8000
 
@@ -105,9 +101,6 @@ services:
 
         ports:
             - '3100:3100'
-
-        volumes:
-            - .:/code
 
         environment:
             AWS_ENDPOINT_URL: http://dynamodb-local:8000

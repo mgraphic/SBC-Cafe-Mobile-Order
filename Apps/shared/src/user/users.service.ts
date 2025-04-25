@@ -1,4 +1,4 @@
-import { dynamoDbService } from './dynamodb.service';
+import { dynamoDbService } from '../aws/dynamodb.service';
 import { IUser } from './user.model';
 
 export class UsersService {

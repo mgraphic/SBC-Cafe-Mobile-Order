@@ -37,11 +37,10 @@
         "webpack-node-externals": "^3.0.0"
     },
     "dependencies": {
-        "@aws-sdk/client-dynamodb": "^3.788.0",
-        "@aws-sdk/lib-dynamodb": "^3.788.0",
         "@mgraphic/cipher-token": "^1.1.1",
         "dotenv": "^16.4.7",
         "express": "^4.21.2",
-        "helmet": "^8.1.0"
+        "helmet": "^8.1.0",
+        "sbc-cafe-shared-module": "file:custom_modules/sbc-cafe-shared-module-1.0.0.tgz"
     }
 }

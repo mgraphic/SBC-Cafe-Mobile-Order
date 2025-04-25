@@ -47,6 +47,30 @@ When you want to shut everything down, use the following command to stop and rem
 docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && docker rmi -f $(docker images -aq)
 ```
 
+## Dev
+
+To build and package the shared module:
+
+_./Apps/shared_
+
+```sh
+npm run build && npm run pack
+```
+
+Copy the artifact from the `output` dir to the `Apps/*-service/custom_modules/`
+
+Run this command to build and run the db:
+
+```sh
+docker compose -f docker-compose.dev.yml up --build -d
+```
+
+When you want to shut everything down, use the following command to stop and remove all the demo containers:
+
+```sh
+docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && docker rmi -f $(docker images -aq)
+```
+
 ## Docker
 
 To build and/or run a specific container, refer to the container service name...

@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
 import {
+    UsersService,
+    AuthUser,
     generateAccessToken,
     generateRefreshToken,
     JWT_CLEARCOOKIE_OPTIONS,
     JWT_COOKIE_OPTIONS,
     verifyRefreshToken,
-} from '../shared/jwt-utils';
-import { AuthUser } from '../shared/auth-user';
-import { UsersService } from '../shared/users.service';
+} from 'sbc-cafe-shared-module';
 
 export async function login(req: Request, res: Response): Promise<void> {
     const usersService = new UsersService();
