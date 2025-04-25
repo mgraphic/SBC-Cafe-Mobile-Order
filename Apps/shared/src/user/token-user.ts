@@ -4,7 +4,7 @@ import {
     isPermissionGroup,
     isRoleInPermissionGroup,
     roleCompare,
-} from './user-utils';
+} from './user.utils';
 import {
     JwtUserPayload,
     rbacRolePermissionGroupAllowances,

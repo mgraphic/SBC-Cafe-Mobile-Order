@@ -1,12 +1,8 @@
 import jwt from 'jsonwebtoken';
 import { environment } from '../environment';
 import { AuthUser } from './auth-user';
-import { CookieOptions } from 'express';
 import { jwtPayloadFields, JwtUserPayload } from './user.model';
-
-// Tokens
-export const ACCESS_TOKEN_EXPIRY = '15m';
-export const REFRESH_TOKEN_EXPIRY = '8d';
+import { ACCESS_TOKEN_EXPIRY, REFRESH_TOKEN_EXPIRY } from './jwt.config';
 
 export function generateAccessToken(user: AuthUser): string {
     const jwtPayload = extractJwtPayload(user);
@@ -59,15 +55,3 @@ function extractJwtPayload(user: AuthUser): JwtUserPayload {
 
     return jwtPayload;
 }
-
-// Cookies
-export const JWT_COOKIE_EXPIRY = 8 * 24 * 60 * 60 * 1000; // 8 days
-export const JWT_COOKIE_OPTIONS: CookieOptions = {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'none',
-    maxAge: JWT_COOKIE_EXPIRY,
-};
-export const JWT_CLEARCOOKIE_OPTIONS: CookieOptions = JSON.parse(
-    JSON.stringify({ ...JWT_COOKIE_OPTIONS, maxAge: undefined })
-);

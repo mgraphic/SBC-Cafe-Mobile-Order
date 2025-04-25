@@ -4,7 +4,7 @@ import {
     isPermissionGroup,
     isPermission,
     isRoleInPermissionGroup,
-} from './user-utils';
+} from './user.utils';
 
 describe('user-utils', () => {
     it('should compare roles correctly', () => {

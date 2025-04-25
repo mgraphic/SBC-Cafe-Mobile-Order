@@ -7,7 +7,7 @@ import {
     attributeMapToValues,
     dynamoDbClient,
     valueToAttributeValue,
-} from './aws-utils';
+} from './aws.utils';
 import {
     DeleteCommand,
     DynamoDBDocumentClient,
