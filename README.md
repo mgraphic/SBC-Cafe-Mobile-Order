@@ -54,7 +54,7 @@ To build and package the shared module:
 _./Apps/shared_
 
 ```sh
-npm run build && npm run pack
+npm run build
 ```
 
 Copy the artifact from the `output` dir to the `Apps/*-service/custom_modules/`

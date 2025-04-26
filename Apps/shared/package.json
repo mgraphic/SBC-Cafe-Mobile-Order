@@ -12,8 +12,9 @@
         "node": ">=20.17.0"
     },
     "scripts": {
-        "build": "tsup",
-        "pack": "mkdirp output && npm pack --pack-destination=output",
+        "build": "npm run build:package && npm run build:pack",
+        "build:package": "tsup",
+        "build:pack": "mkdirp output && npm pack --pack-destination=output",
         "test": "jest --coverage",
         "test:watch": "jest --watch"
     },

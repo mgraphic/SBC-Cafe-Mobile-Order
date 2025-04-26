@@ -19,7 +19,7 @@ services:
             - 8000
 
         volumes:
-            - './docker/dynamodb:/home/dynamodblocal/data'
+            - './Docker/dynamodb:/home/dynamodblocal/data'
 
         ports:
             - '8000:8000'
@@ -35,7 +35,7 @@ services:
 
         volumes:
             - type: bind
-              source: ./local
+              source: ./Local
               target: /upload
 
         environment:
