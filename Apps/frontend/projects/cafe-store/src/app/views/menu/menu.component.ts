@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { demoItems } from '../../shared/demo-items';
-import { ProductItem } from '../../shared/product.model';
-import { SharedModule } from '../../shared/shared.module';
 import { MenuTileComponent } from './menu-tile.component';
-import { ProductService } from '../../shared/product.service';
 import { take } from 'rxjs';
+import {
+  ProductItem,
+  ProductService,
+  SharedModule,
+} from '../../../../../shared-lib/src/public-api';
 
 @Component({
   selector: 'app-menu',

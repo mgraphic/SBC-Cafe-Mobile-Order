@@ -1,11 +1,12 @@
-import { JsonPipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { demoItems } from '../../shared/demo-items';
 import { NavigationService } from '../../shared/navigation.service';
-import { ProductItem } from '../../shared/product.model';
-import { SharedModule } from '../../shared/shared.module';
 import { CartService } from '../../shared/cart.service';
+import {
+  demoItems,
+  ProductItem,
+  SharedModule,
+} from '../../../../../shared-lib/src/public-api';
 
 @Component({
   selector: 'app-details',

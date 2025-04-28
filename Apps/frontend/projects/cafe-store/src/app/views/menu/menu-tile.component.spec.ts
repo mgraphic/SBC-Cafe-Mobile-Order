@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MenuTileComponent } from './menu-tile.component';
-import { ProductItem } from '../../shared/product.model';
+import { ProductItem } from '../../../../../shared-lib/src/public-api';
 
 describe('MenuTileComponent', () => {
   let component: MenuTileComponent;

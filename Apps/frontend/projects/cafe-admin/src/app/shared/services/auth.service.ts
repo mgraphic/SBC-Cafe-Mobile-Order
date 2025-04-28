@@ -11,9 +11,9 @@ import {
   take,
   tap,
 } from 'rxjs';
-import { environment } from '../../../environment';
+import { JwtUserPayload } from 'sbc-cafe-shared-module';
 import { IAuthResponse } from '../models/auth.model';
-import { IUser } from '../models/user.model';
+import { environment } from '../../../../../shared-lib/src/public-api';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +25,7 @@ export class AuthService {
   private readonly isLoggedInSubject = new BehaviorSubject<boolean>(
     this.hasToken()
   );
-  private user: IUser | null = null;
+  private user: JwtUserPayload | null = null;
 
   public readonly isLoggedIn$ = this.isLoggedInSubject
     .asObservable()
@@ -41,7 +41,9 @@ export class AuthService {
         tap({
           next: (response: IAuthResponse) => {
             this.storeToken(response.accessToken);
-            this.user = this.jwtHelper.decodeToken<IUser>(response.accessToken);
+            this.user = this.jwtHelper.decodeToken<JwtUserPayload>(
+              response.accessToken
+            );
             this.isLoggedInSubject.next(true);
           },
 
@@ -122,9 +124,11 @@ export class AuthService {
     });
   }
 
-  public getUser(): IUser | null {
+  public getUser(): JwtUserPayload | null {
     if (!this.user && this.hasToken()) {
-      this.user = this.jwtHelper.decodeToken<IUser>(this.getToken() as string);
+      this.user = this.jwtHelper.decodeToken<JwtUserPayload>(
+        this.getToken() as string
+      );
     }
 
     return this.user;
