@@ -1,0 +1,15 @@
+**/node_modules/
+**/custom_modules/
+**/.git/
+**/.gitgnore
+**/README.md
+**/.angular
+**/.vscode
+**/npm-debug.log
+**/coverage
+**/.env
+**/.editorconfig
+**/.aws
+**/dist
+**/output
+
