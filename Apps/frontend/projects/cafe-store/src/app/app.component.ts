@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
-import { SharedModule } from './shared/shared.module';
+import { SharedModule } from '../../../shared-lib/src/public-api';
 
 @Component({
   selector: 'app-root',

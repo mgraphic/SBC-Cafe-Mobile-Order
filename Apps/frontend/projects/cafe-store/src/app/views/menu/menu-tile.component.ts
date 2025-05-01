@@ -1,6 +1,8 @@
 import { Component, input, output } from '@angular/core';
-import { ProductItem } from '../../shared/product.model';
-import { SharedModule } from '../../shared/shared.module';
+import {
+  ProductItem,
+  SharedModule,
+} from '../../../../../shared-lib/src/public-api';
 
 @Component({
   selector: 'app-menu-tile',

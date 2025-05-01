@@ -2,7 +2,7 @@ import { Component, OnInit, inject, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CartItem } from '../../shared/cart.model';
 import { CartService } from '../../shared/cart.service';
-import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from '../../../../../shared-lib/src/public-api';
 
 @Component({
   selector: 'app-cart',

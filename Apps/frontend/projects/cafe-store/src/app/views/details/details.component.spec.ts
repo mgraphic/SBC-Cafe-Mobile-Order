@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DetailsComponent } from './details.component';
 import { ActivatedRoute } from '@angular/router';
-import { ProductItem } from '../../shared/product.model';
+import { ProductItem } from '../../../../../shared-lib/src/public-api';
 
 const mockActivatedRoute = {
   snapshot: {

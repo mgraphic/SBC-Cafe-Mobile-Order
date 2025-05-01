@@ -6,6 +6,7 @@ WORKDIR /app
 FROM base AS build
 ARG APP_NAME
 COPY package.json ./
+COPY custom_modules ./custom_modules
 RUN npm i
 COPY . .
 RUN npm run build ${APP_NAME}
