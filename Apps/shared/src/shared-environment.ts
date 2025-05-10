@@ -2,7 +2,7 @@ import 'dotenv/config';
 
 const env = getEnvironmentVariable('APP_ENV', 'local');
 
-export const environment: {
+export const sharedEnvironment: {
     accessTokenSecret: string;
     refreshTokenSecret: string;
     aws: {
