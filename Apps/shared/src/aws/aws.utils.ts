@@ -3,7 +3,7 @@ import {
     DynamoDBClient,
     DynamoDBClientConfig,
 } from '@aws-sdk/client-dynamodb';
-import { environment } from '../environment';
+import { sharedEnvironment } from '../shared-environment';
 
 export function valueToAttributeValue<T>(value: T): AttributeValue {
     switch (typeof value) {
@@ -70,22 +70,25 @@ export function attributeMapToValues<T>(
 
 function getDynamoDbConfig(): DynamoDBClientConfig {
     const config: DynamoDBClientConfig = {
-        region: environment.aws.region,
+        region: sharedEnvironment.aws.region,
     };
 
-    if (environment.aws.endpoint) {
-        config.endpoint = environment.aws.endpoint;
+    if (sharedEnvironment.aws.endpoint) {
+        config.endpoint = sharedEnvironment.aws.endpoint;
     }
 
-    if (environment.aws.accessKeyId || environment.aws.secretAccessKey) {
+    if (
+        sharedEnvironment.aws.accessKeyId ||
+        sharedEnvironment.aws.secretAccessKey
+    ) {
         const credentials: Record<string, string> = {};
 
-        if (environment.aws.accessKeyId) {
-            credentials.accessKeyId = environment.aws.accessKeyId;
+        if (sharedEnvironment.aws.accessKeyId) {
+            credentials.accessKeyId = sharedEnvironment.aws.accessKeyId;
         }
 
-        if (environment.aws.secretAccessKey) {
-            credentials.secretAccessKey = environment.aws.secretAccessKey;
+        if (sharedEnvironment.aws.secretAccessKey) {
+            credentials.secretAccessKey = sharedEnvironment.aws.secretAccessKey;
         }
 
         config.credentials = credentials as any;

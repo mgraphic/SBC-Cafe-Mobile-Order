@@ -1,6 +1,9 @@
 export * from './aws';
+export * from './logger';
 export * from './middleware';
 export * from './user';
+export * from './validator';
+export * from './shared-environment';
 
 import 'express';
 import { TokenUser } from './user';
