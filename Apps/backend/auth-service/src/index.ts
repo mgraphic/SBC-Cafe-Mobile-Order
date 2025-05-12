@@ -1,12 +1,14 @@
-import express, { NextFunction, Request, Response } from 'express';
+import { apiLogger } from 'sbc-cafe-shared-module';
+import express, { Response } from 'express';
 import helmet from 'helmet';
-import { environment } from './environment';
 import rateLimit from 'express-rate-limit';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import { environment } from './environment';
 import { authRouter } from './routers/auth.routes';
 // @ts-ignore
 import pkg from '../package.json' with { type: 'json' };
-import cors from 'cors';
-import cookieParser from 'cookie-parser';
+import { logger } from './shared/logger.utils';
 
 const app = express();
 
@@ -17,6 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 app.use(rateLimit({ windowMs: 3 * 60 * 1000, limit: 20 }));
 app.use(cookieParser());
+app.use(apiLogger(logger))
 
 // Version
 app.get('/', (_: unknown, res: Response) => {

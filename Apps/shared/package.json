@@ -1,6 +1,6 @@
 {
     "name": "sbc-cafe-shared-module",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "main": "./dist/index.cjs",
     "module": "./dist/index.js",
     "types": "./dist/index.d.ts",
@@ -43,6 +43,7 @@
         "@mgraphic/cipher-token": "^1.1.1",
         "dotenv": "^16.4.7",
         "express": "^4.21.2",
-        "jsonwebtoken": "^9.0.2"
+        "jsonwebtoken": "^9.0.2",
+        "winston": "^3.17.0"
     }
 }

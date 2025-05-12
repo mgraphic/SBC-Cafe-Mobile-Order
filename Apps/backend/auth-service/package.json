@@ -7,7 +7,7 @@
         "node": ">=20.17.0"
     },
     "scripts": {
-        "start": "nodemon -e ts -w ./src -x npm run watch:serve",
+        "start": "LEVEL=debug nodemon -e ts -w ./src -x npm run watch:serve",
         "prod": "node build/index.cjs",
         "build": "NODE_ENV=production webpack",
         "test": "jest --coverage",
@@ -46,6 +46,6 @@
         "express-rate-limit": "^7.5.0",
         "helmet": "^8.1.0",
         "jsonwebtoken": "^9.0.2",
-        "sbc-cafe-shared-module": "file:custom_modules/sbc-cafe-shared-module-1.0.0.tgz"
+        "sbc-cafe-shared-module": "file:custom_modules/sbc-cafe-shared-module-2.0.0.tgz"
     }
 }

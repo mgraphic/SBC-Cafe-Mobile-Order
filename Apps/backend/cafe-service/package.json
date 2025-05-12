@@ -7,7 +7,7 @@
         "node": ">=20.17.0"
     },
     "scripts": {
-        "start": "nodemon -e ts -w ./src -x npm run watch:serve",
+        "start": "LEVEL=debug nodemon -e ts -w ./src -x npm run watch:serve",
         "prod": "node build/index.cjs",
         "build": "NODE_ENV=production webpack",
         "test": "jest --coverage",
@@ -20,6 +20,7 @@
     "license": "ISC",
     "description": "",
     "devDependencies": {
+        "@types/cookie-parser": "^1.4.8",
         "@types/express": "^5.0.1",
         "@types/helmet": "^0.0.48",
         "@types/jest": "^29.5.14",
@@ -38,9 +39,10 @@
     },
     "dependencies": {
         "@mgraphic/cipher-token": "^1.1.1",
+        "cookie-parser": "^1.4.7",
         "dotenv": "^16.4.7",
         "express": "^4.21.2",
         "helmet": "^8.1.0",
-        "sbc-cafe-shared-module": "file:custom_modules/sbc-cafe-shared-module-1.0.0.tgz"
+        "sbc-cafe-shared-module": "file:custom_modules/sbc-cafe-shared-module-2.0.0.tgz"
     }
 }
