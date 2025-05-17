@@ -1,6 +1,7 @@
 export * from './aws';
 export * from './logger';
 export * from './middleware';
+export * from './tracker';
 export * from './user';
 export * from './validator';
 export * from './shared-environment';

@@ -1,15 +1,17 @@
-import { dynamoDbService } from '../aws/dynamodb.service';
+import { DynamoDbService } from '../aws/dynamodb.service';
 import { IUser } from './user.model';
 
 export class UsersService {
+    private readonly dynamoDbService = DynamoDbService.getInstance();
+
     public async getUser(email: string): Promise<IUser | undefined> {
         return (
-            await dynamoDbService.getSecondaryIndexItem<IUser>(
+            await this.dynamoDbService.getItem<IUser>(
                 'Users',
-                'EmailIndex',
                 {
                     email: { operation: '=', value: email.toLowerCase() },
-                }
+                },
+                'EmailIndex'
             )
         )[0];
     }
@@ -20,26 +22,31 @@ export class UsersService {
 
     public async addUser(user: IUser): Promise<void> {
         if (!(await this.userExists(user.email))) {
-            await dynamoDbService.addItem('Users', user);
+            await this.dynamoDbService.addItem('Users', user);
         }
     }
 
     public async updateUser(id: string, user: Partial<IUser>): Promise<void> {
-        const existingUser = await dynamoDbService.getItem<IUser>('Users', {
-            id: { operation: '=', value: id },
-        });
+        const existingUser = await this.dynamoDbService.getItem<IUser>(
+            'Users',
+            {
+                id: { operation: '=', value: id },
+            }
+        );
 
         if (existingUser?.length > 0) {
-            await dynamoDbService.updateItem('Users', { id }, user);
+            await this.dynamoDbService.updateItem('Users', { id }, user);
         }
     }
 
     public async deleteUser(id: string): Promise<void> {
-        await dynamoDbService.deleteItem('Users', { id });
+        await this.dynamoDbService.deleteItem('Users', { id });
     }
 
     public async getAllUsers(): Promise<IUser[]> {
-        return (await dynamoDbService.getAllItems<IUser>('Users')) as IUser[];
+        return (await this.dynamoDbService.getAllItems<IUser>(
+            'Users'
+        )) as IUser[];
     }
 
     public async getUserByRefreshToken(

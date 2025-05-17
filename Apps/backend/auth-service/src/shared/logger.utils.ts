@@ -1,4 +1,8 @@
-import { getLogger, stringToRegex } from 'sbc-cafe-shared-module';
+import {
+    DynamoDbService,
+    getLogger,
+    stringToRegex,
+} from 'sbc-cafe-shared-module';
 import { environment } from '../environment';
 
 export const logger = getLogger(
@@ -10,3 +14,5 @@ export const logger = getLogger(
         redactedKeys: environment.redactedKeys,
     }
 );
+
+DynamoDbService.setLogger(logger);
