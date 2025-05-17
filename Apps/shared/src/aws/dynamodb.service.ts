@@ -31,16 +31,16 @@ import {
 
 export class DynamoDbService {
     private static instance?: DynamoDbService;
+    private static logger?: winston.Logger;
     private readonly client: DynamoDBClient;
     private readonly docClient: DynamoDBDocumentClient;
-    private static logger?: winston.Logger;
 
     private constructor() {
         this.client = dynamoDbClient;
         this.docClient = DynamoDBDocumentClient.from(this.client);
     }
 
-    public static getInstance(logger?: any): DynamoDbService {
+    public static getInstance(): DynamoDbService {
         if (!DynamoDbService.instance) {
             DynamoDbService.instance = new DynamoDbService();
         }
