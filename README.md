@@ -41,7 +41,7 @@ Login as demo admin user:
 **Username/Email:** admin@local
 **User Password:** demo
 
-When you want to shut everything down, use the following command to stop and remove all the demo containers:
+When you want to shut everything down, use the following command to stop and remove all the demo containers and images:
 
 ```sh
 docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && docker rmi -f $(docker images -aq)
