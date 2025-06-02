@@ -2,6 +2,7 @@ import { apiLogger } from 'sbc-cafe-shared-module';
 import express, { Response } from 'express';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
+import { adminRouter } from './routes/admin.routes';
 import { environment } from './environment';
 import { storeRouter } from './routes/store.routes';
 // @ts-ignore
@@ -28,6 +29,7 @@ app.get('/', (_: unknown, res: Response) => {
 
 // Routes
 app.use('/api/v1/store', storeRouter);
+app.use('/api/v1/admin', adminRouter);
 
 // Serve
 app.listen(environment.port, () => {

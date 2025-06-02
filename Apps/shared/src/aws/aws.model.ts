@@ -20,3 +20,11 @@ export interface IPageableMetadata {
     pageSize: number;
     pageNumber: number;
 }
+
+export interface PaginatedPayload<T> {
+    data: T[];
+    metadata: IPageableMetadata;
+}
+
+export const PAGINATED_DEFAULT_PAGESIZE = 10 as const;
+export const PAGINATED_PAGESIZE_OPTIONS = [10, 25, 50, 100] as const;
