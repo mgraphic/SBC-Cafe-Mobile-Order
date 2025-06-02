@@ -47,4 +47,5 @@ services:
         entrypoint: /bin/sh -c
         command: >-
             "aws dynamodb create-table --cli-input-json file://upload/create.users.json
-            && aws dynamodb batch-write-item --request-items file://upload/import.users.json"
+            && aws dynamodb batch-write-item --request-items file://upload/import.users.json
+            && aws dynamodb create-table --cli-input-json file://upload/create.user-tracker-logs.json"

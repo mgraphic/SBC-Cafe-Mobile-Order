@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 app.use(rateLimit({ windowMs: 3 * 60 * 1000, limit: 20 }));
 app.use(cookieParser());
-app.use(apiLogger(logger))
+app.use(apiLogger(logger));
 
 // Version
 app.get('/', (_: unknown, res: Response) => {

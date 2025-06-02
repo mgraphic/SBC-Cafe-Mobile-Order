@@ -43,6 +43,6 @@
         "dotenv": "^16.4.7",
         "express": "^4.21.2",
         "helmet": "^8.1.0",
-        "sbc-cafe-shared-module": "file:custom_modules/sbc-cafe-shared-module-2.0.0.tgz"
+        "sbc-cafe-shared-module": "file:custom_modules/sbc-cafe-shared-module-3.0.0.tgz"
     }
 }
