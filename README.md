@@ -57,6 +57,12 @@ _./Apps/shared_
 npm run build
 ```
 
+To automatically distribute and install the build file to the apps run the following command:
+
+```sh
+node ./distribute.js
+```
+
 Copy the artifact from the `output` dir to the `Apps/*-service/custom_modules/`
 
 Run this command to build and run the db:
