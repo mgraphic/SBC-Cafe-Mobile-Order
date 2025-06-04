@@ -32,30 +32,39 @@ function getLatestFile(sourceDir) {
         })
         .filter(Boolean);
 
-    return fileVersions
-        .sort((a, b) => {
-            const aVersion = a.version.split('.').map(Number);
-            const bVersion = b.version.split('.').map(Number);
+    return (
+        fileVersions
+            .sort((a, b) => {
+                const aVersion = a.version.split('.').map(Number);
+                const bVersion = b.version.split('.').map(Number);
 
-            while (aVersion.length < bVersion.length) aVersion.push(0);
-            while (bVersion.length < aVersion.length) bVersion.push(0);
+                while (aVersion.length < bVersion.length) aVersion.push(0);
+                while (bVersion.length < aVersion.length) bVersion.push(0);
 
-            for (let i = 0; i < aVersion.length; i++) {
-                if (aVersion[i] < bVersion[i]) return -1;
-                if (aVersion[i] > bVersion[i]) return 1;
-            }
+                for (let i = 0; i < aVersion.length; i++) {
+                    if (aVersion[i] < bVersion[i]) return -1;
+                    if (aVersion[i] > bVersion[i]) return 1;
+                }
 
-            return 0;
-        })
-        .reverse()[0].file;
+                return 0;
+            })
+            .reverse()[0]?.file || null
+    );
 }
 
 function copyLatestFileToTargets(sourceDir, targetDirs) {
     const latestFile = getLatestFile(sourceDir);
+
+    if (!latestFile) {
+        console.error('No valid sbc-cafe-shared-module file found.');
+        return;
+    }
+
     const sourceFilePath = path.join(sourceDir, latestFile);
 
     targetDirs.forEach((targetDir) => {
         const customModulesDir = path.join(targetDir, 'custom_modules');
+        attempt(() => fs.mkdirSync(customModulesDir, { recursive: true }));
 
         // 1. Unlink the files in the targetDir/custom_modules
         const filesInCustomModulesDir = attempt(() =>
@@ -67,7 +76,9 @@ function copyLatestFileToTargets(sourceDir, targetDirs) {
 
         // 2. Remove the targetDir/node_modules dir
         const nodeModulesDir = path.join(targetDir, 'node_modules');
-        attempt(() => fs.rmdirSync(nodeModulesDir, { recursive: true }));
+        attempt(() =>
+            fs.rmSync(nodeModulesDir, { recursive: true, force: true })
+        );
 
         // 3. Unlink the targetDir/package-lock.json file
         const packageLockFilePath = path.join(targetDir, 'package-lock.json');
