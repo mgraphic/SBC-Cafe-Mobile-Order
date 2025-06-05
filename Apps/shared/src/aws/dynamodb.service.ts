@@ -17,7 +17,12 @@ import {
     DeleteCommand,
 } from '@aws-sdk/lib-dynamodb';
 import winston from 'winston';
-import { DynamoDbQueryItem, IPageable, IPageableMetadata } from './aws.model';
+import {
+    DynamoDbQueryItem,
+    IPageable,
+    IPageableMetadata,
+    PaginatedPayload,
+} from './aws.model';
 import {
     dynamoDbClient,
     attributeMapToValues,
@@ -164,10 +169,7 @@ export class DynamoDbService {
         params: DynamoDbQueryItem | null = null,
         indexName: string | null = null,
         consistentRead = false
-    ): Promise<{
-        data: T[];
-        metadata: IPageableMetadata;
-    }> {
+    ): Promise<PaginatedPayload<T>> {
         const { pageSize, pageNumber } = pageable;
         const query: QueryCommandInput = {
             TableName: table,

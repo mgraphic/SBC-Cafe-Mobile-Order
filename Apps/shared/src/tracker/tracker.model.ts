@@ -8,3 +8,12 @@ export interface ITracker {
 }
 
 export type TrackerLog = Omit<ITracker, 'id' | 'createdAt'>;
+
+export const userTrackerLogsLookups = [
+    'endpoint',
+    'id',
+    'ip',
+    'userId',
+] as const;
+
+export type UserTrackerLogsLookup = (typeof userTrackerLogsLookups)[number];

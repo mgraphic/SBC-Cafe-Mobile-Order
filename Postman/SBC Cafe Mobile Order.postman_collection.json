@@ -1,232 +1,235 @@
 {
-	"info": {
-		"_postman_id": "a0831ca9-9b26-4f3c-bab6-df4085720621",
-		"name": "SBC Cafe Mobile Order",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "10222916"
-	},
-	"item": [
-		{
-			"name": "Cafe Service | Version Copy",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{cafeServiceUrl}}/",
-					"host": [
-						"{{cafeServiceUrl}}"
-					],
-					"path": [
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Cafe Service | STORE/Menu",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{cafeServiceUrl}}/api/v1/store/menu",
-					"host": [
-						"{{cafeServiceUrl}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"store",
-						"menu"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Auth Service | Version",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{authServiceUrl}}/",
-					"host": [
-						"{{authServiceUrl}}"
-					],
-					"path": [
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Auth Service | Login",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"var responseData = pm.response.json();",
-							"pm.environment.set('accessToken', responseData.accessToken);",
-							"pm.environment.set('refreshToken', pm.cookies.get('jwt'));",
-							"",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"packages": {},
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"username\": \"admin@local\",\n    \"password\": \"demo\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{authServiceUrl}}/api/v1/login",
-					"host": [
-						"{{authServiceUrl}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Auth Service | Logout",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.environment.set('accessToken', null);",
-							"pm.environment.set('refreshToken', null);",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{authServiceUrl}}/api/v1/logout",
-					"host": [
-						"{{authServiceUrl}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"logout"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Auth Service | Refresh",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"var responseData = pm.response.json();",
-							"pm.environment.set('accessToken', responseData.accessToken);",
-							"pm.environment.set('refreshToken', pm.cookies.get('jwt'));",
-							"",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{authServiceUrl}}/api/v1/refresh",
-					"host": [
-						"{{authServiceUrl}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"refresh"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Auth Service | Register",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{accessToken}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "{{authServiceUrl}}/api/v1/register",
-					"host": [
-						"{{authServiceUrl}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"register"
-					]
-				}
-			},
-			"response": []
-		}
-	]
+    "info": {
+        "_postman_id": "a0831ca9-9b26-4f3c-bab6-df4085720621",
+        "name": "SBC Cafe Mobile Order",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_exporter_id": "10222916"
+    },
+    "item": [
+        {
+            "name": "Cafe Service | Version Copy",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{cafeServiceUrl}}/",
+                    "host": ["{{cafeServiceUrl}}"],
+                    "path": [""]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Cafe Service | STORE/Menu",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{cafeServiceUrl}}/api/v1/store/menu",
+                    "host": ["{{cafeServiceUrl}}"],
+                    "path": ["api", "v1", "store", "menu"]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Cafe Service | ADMIN/getUserLogs",
+            "request": {
+                "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                        {
+                            "key": "token",
+                            "value": "{{accessToken}}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "method": "POST",
+                "header": [],
+                "url": {
+                    "raw": "{{cafeServiceUrl}}/api/v1/admin/getUserLogs",
+                    "host": ["{{cafeServiceUrl}}"],
+                    "path": ["api", "v1", "admin", "getUserLogs"]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Cafe Service | ADMIN/getUsers",
+            "request": {
+                "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                        {
+                            "key": "token",
+                            "value": "{{accessToken}}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{cafeServiceUrl}}/api/v1/admin/getUsers",
+                    "host": ["{{cafeServiceUrl}}"],
+                    "path": ["api", "v1", "admin", "getUsers"]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Auth Service | Version",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{authServiceUrl}}/",
+                    "host": ["{{authServiceUrl}}"],
+                    "path": [""]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Auth Service | Login",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "var responseData = pm.response.json();",
+                            "pm.environment.set('accessToken', responseData.accessToken);",
+                            "pm.environment.set('refreshToken', pm.cookies.get('jwt'));",
+                            "",
+                            ""
+                        ],
+                        "type": "text/javascript",
+                        "packages": {}
+                    }
+                },
+                {
+                    "listen": "prerequest",
+                    "script": {
+                        "packages": {},
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"username\": \"admin@local\",\n    \"password\": \"demo\"\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "{{authServiceUrl}}/api/v1/login",
+                    "host": ["{{authServiceUrl}}"],
+                    "path": ["api", "v1", "login"]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Auth Service | Logout",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.environment.set('accessToken', null);",
+                            "pm.environment.set('refreshToken', null);",
+                            ""
+                        ],
+                        "type": "text/javascript",
+                        "packages": {}
+                    }
+                },
+                {
+                    "listen": "prerequest",
+                    "script": {
+                        "exec": [""],
+                        "type": "text/javascript",
+                        "packages": {}
+                    }
+                }
+            ],
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{authServiceUrl}}/api/v1/logout",
+                    "host": ["{{authServiceUrl}}"],
+                    "path": ["api", "v1", "logout"]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Auth Service | Refresh",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "var responseData = pm.response.json();",
+                            "pm.environment.set('accessToken', responseData.accessToken);",
+                            "pm.environment.set('refreshToken', pm.cookies.get('jwt'));",
+                            "",
+                            ""
+                        ],
+                        "type": "text/javascript",
+                        "packages": {}
+                    }
+                },
+                {
+                    "listen": "prerequest",
+                    "script": {
+                        "exec": [""],
+                        "type": "text/javascript",
+                        "packages": {}
+                    }
+                }
+            ],
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{authServiceUrl}}/api/v1/refresh",
+                    "host": ["{{authServiceUrl}}"],
+                    "path": ["api", "v1", "refresh"]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Auth Service | Register",
+            "request": {
+                "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                        {
+                            "key": "token",
+                            "value": "{{accessToken}}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "method": "POST",
+                "header": [],
+                "url": {
+                    "raw": "{{authServiceUrl}}/api/v1/register",
+                    "host": ["{{authServiceUrl}}"],
+                    "path": ["api", "v1", "register"]
+                }
+            },
+            "response": []
+        }
+    ]
 }

@@ -13,4 +13,11 @@ export const adminRoutes: Route[] = [
         (c) => c.DashboardComponent
       ),
   },
+  {
+    path: 'user-logs',
+    loadComponent: () =>
+      import('./views/user-service-logs/user-service-logs.component').then(
+        (c) => c.UserServiceLogsComponent
+      ),
+  },
 ];

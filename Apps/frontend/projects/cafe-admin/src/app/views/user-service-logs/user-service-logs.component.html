@@ -1,0 +1,53 @@
+<div class="container">
+  <div class="row mt-4">
+    <div class="col-md-6 col-sm-12">
+      <label>User Select:</label>
+      <lib-combobox
+        [(ngModel)]="userModel"
+        [options]="usersDropdownOptions"
+      ></lib-combobox>
+    </div>
+    <div class="col-2 pt-4">
+      <button class="btn btn-outline-primary" (click)="userFilter()">
+        Find
+      </button>
+    </div>
+  </div>
+
+  <div class="row mt-5">
+    <div class="col-12">
+      <lib-paginated
+        [totalItems]="pageable().totalItems || 0"
+        [pageSize]="pageable().pageSize"
+        [(page)]="currentPage"
+      ></lib-paginated>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Timestamp</th>
+            <th scope="col">Endpoint</th>
+            <th scope="col">IP</th>
+            <th scope="col">User</th>
+            <th scope="col">User Agent</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for(log of logs; track log.id){
+          <tr>
+            <td>{{ log.createdAt | date : "short" }}</td>
+            <td>{{ log.endpoint }}</td>
+            <td>{{ log.ip }}</td>
+            <td>{{ getUserName(log.userId) }}</td>
+            <td>{{ log.userAgent }}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

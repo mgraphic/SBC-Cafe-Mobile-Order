@@ -1,0 +1,14 @@
+<input
+  #input
+  #instance="ngbTypeahead"
+  [(ngModel)]="model"
+  [ngbTypeahead]="search"
+  [inputFormatter]="formatter"
+  [resultFormatter]="formatter"
+  (ngModelChange)="onModelChange($event)"
+  (focus)="focus$.next($any($event).target.value)"
+  (click)="click$.next($any($event).target.value)"
+  class="form-control"
+  type="text"
+  id="typeahead-focus"
+/>

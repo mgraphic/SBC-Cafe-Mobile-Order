@@ -41,7 +41,7 @@ function getEnvironmentVariable<T>(
     variable: string,
     defaultValue: T
 ): string | T {
-    const envValue = process.env[variable];
+    const envValue = process?.env[variable];
 
     if (envValue !== undefined && envValue !== null && envValue.trim() !== '') {
         return envValue;

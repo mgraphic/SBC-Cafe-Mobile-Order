@@ -1,4 +1,4 @@
-import { ProductItem } from './models/product.model';
+import { ProductItem } from './lib/models/product.model';
 
 export const demoItems: ProductItem[] = [
   {
