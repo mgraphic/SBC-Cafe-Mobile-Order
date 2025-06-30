@@ -6,9 +6,16 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { environment } from './environment';
 import { authRouter } from './routers/auth.routes';
-// @ts-ignore
-import pkg from '../package.json' with { type: 'json' };
+import { readFileSync } from 'fs';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 import { logger } from './shared/logger.utils';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const pkg = JSON.parse(
+    readFileSync(join(__dirname, '../package.json'), 'utf-8')
+);
 
 const app = express();
 

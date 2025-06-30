@@ -4,7 +4,7 @@ import { LoggerLevel } from 'sbc-cafe-shared-module';
 const env = getEnvironmentVariable('APP_ENV', 'local');
 const redactedRegex = getEnvironmentVariable(
     'REDACTED_REGEX',
-    '/jwt=[A-Za-z0-9.+=-]+/i'
+    '/jwt=[A-Za-z0-9.+=-]+/i,/Bearer [A-Za-z0-9.+=-]+/i'
 ).split(',');
 const redactedKeys = getEnvironmentVariable(
     'REDACTED_KEYS',
