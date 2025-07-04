@@ -12,7 +12,7 @@
     "build": "NODE_ENV=production webpack",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
-    "watch:serve": "node --loader ts-node/esm src/index.ts",
+    "watch:serve": "node --import tsx/esm src/index.ts",
     "docker:build": "docker build -t cafe-service ."
   },
   "keywords": [],
@@ -27,11 +27,13 @@
     "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.13.13",
+    "@types/serve-static": "^1.15.8",
     "jest": "^29.7.0",
     "nodemon": "^3.1.9",
     "ts-jest": "^29.3.2",
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
+    "tsx": "^4.20.3",
     "typescript": "^5.8.2",
     "webpack": "^5.98.0",
     "webpack-cli": "^6.0.1",
@@ -46,6 +48,6 @@
     "express-rate-limit": "^7.5.0",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
-    "sbc-cafe-shared-module": "file:custom_modules/sbc-cafe-shared-module-3.1.0.tgz"
+    "sbc-cafe-shared-module": "file:custom_modules/sbc-cafe-shared-module-3.1.1.tgz"
   }
 }
