@@ -14,6 +14,13 @@ export const adminRoutes: Route[] = [
       ),
   },
   {
+    path: 'user-management',
+    loadComponent: () =>
+      import('./views/user-management/user-management.component').then(
+        (c) => c.UserManagementComponent
+      ),
+  },
+  {
     path: 'user-logs',
     loadComponent: () =>
       import('./views/user-service-logs/user-service-logs.component').then(

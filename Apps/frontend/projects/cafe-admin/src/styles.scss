@@ -1,4 +1,74 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import "bootstrap-icons/font/bootstrap-icons.css";
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+
+/* Fonts */
+@font-face {
+  font-family: poppins-light;
+  src: url("/fonts/Poppins/Poppins-Light.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: poppins;
+  src: url("/fonts/Poppins/Poppins-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: poppins-medium;
+  src: url("/fonts/Poppins/Poppins-Medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: poppins-bold;
+  src: url("/fonts/Poppins/Poppins-Bold.ttf") format("truetype");
+}
+
+/* Colors: */
+$primary: #633ed1;
+$secondary: #b4a2e1;
+$green: #0c925c;
+$red: #c00000;
+
+$custome-colors: (
+  "primary": $primary,
+  "secondary": $secondary,
+  "green": $green,
+  "red": $red,
+);
+
+$theme-colors: map-merge($theme-colors, $custome-colors);
+
 /* Importing Bootstrap SCSS file. */
-@import 'bootstrap/scss/bootstrap';
+@import "bootstrap/scss/bootstrap";
+
+/* Global */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: poppins-light;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: $primary;
+  font-family: poppins-medium;
+  font-weight: 700;
+}
+
+select.form-control {
+  background-image: url("data:image/svg+xml;charset=UTF-8,<svg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M4 6L8 10L12 6' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1em;
+  padding-right: 2em;
+  appearance: none;
+}

@@ -24,5 +24,6 @@ export {
     UserPermission,
     UserPermissionGroup,
     UserRole,
+    userRoles,
 } from './user';
 export { Validator } from './validator';
