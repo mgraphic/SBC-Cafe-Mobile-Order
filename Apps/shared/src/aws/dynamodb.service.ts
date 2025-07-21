@@ -79,7 +79,10 @@ export class DynamoDbService {
             TableName: table,
             Key: key,
             UpdateExpression:
-                'SET ' + updateKeys.map((k) => `${k} = :${k}`).join(', '),
+                'SET ' + updateKeys.map((k) => `#${k} = :${k}`).join(', '),
+            ExpressionAttributeNames: Object.fromEntries(
+                updateKeys.map((k) => [`#${k}`, k])
+            ),
             ExpressionAttributeValues: Object.fromEntries(
                 updateKeys.map((k) => [`:${k}`, update[k]])
             ),

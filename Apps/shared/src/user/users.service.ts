@@ -16,14 +16,27 @@ export class UsersService {
         )[0];
     }
 
+    public async getUserById(id: string): Promise<IUser | undefined> {
+        return (
+            await this.dynamoDbService.getItem<IUser>('Users', {
+                id: { operation: '=', value: id },
+            })
+        )[0];
+    }
+
     public async userExists(email: string): Promise<boolean> {
         return !!(await this.getUser(email));
     }
 
-    public async addUser(user: IUser): Promise<void> {
+    public async addUser(
+        user: Omit<IUser, 'passwordHash' | 'refreshTokens'>
+    ): Promise<boolean> {
         if (!(await this.userExists(user.email))) {
             await this.dynamoDbService.addItem('Users', user);
+            return true;
         }
+
+        return false;
     }
 
     public async updateUser(id: string, user: Partial<IUser>): Promise<void> {
@@ -54,8 +67,11 @@ export class UsersService {
     ): Promise<IUser | undefined> {
         const users = await this.getAllUsers();
 
-        return users.find((user: IUser): boolean =>
-            user.refreshTokens.some((rt: string): boolean => rt === token)
+        return users.find(
+            (user: IUser): boolean =>
+                !!user.refreshTokens?.some(
+                    (rt: string): boolean => rt === token
+                )
         );
     }
 }

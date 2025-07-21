@@ -1,0 +1,31 @@
+<!-- Header -->
+<div class="modal-header">
+  @if(headerContent()) {
+  <ng-container *ngTemplateOutlet="headerContent() || null"></ng-container>
+  }@else { @if(modalTitle()) {
+  <h4 class="modal-title">{{ modalTitle() }}</h4>
+  }
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="modalRef().dismiss('Cross click')"
+  >
+    <span aria-hidden="true"><i class="bi bi-x-lg"></i></span>
+  </button>
+  }
+</div>
+
+<!-- Body -->
+@if(bodyContent()) {
+<div class="modal-body">
+  <ng-container *ngTemplateOutlet="bodyContent() || null"></ng-container>
+</div>
+}
+
+<!-- Footer -->
+@if(footerContent()) {
+<div class="modal-footer">
+  <ng-container *ngTemplateOutlet="footerContent() || null"></ng-container>
+</div>
+}

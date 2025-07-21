@@ -23,14 +23,16 @@ export const jwtPayloadFields = [
 
 export type JwtUserPayload = Pick<IUser, (typeof jwtPayloadFields)[number]>;
 
-export const rbacRoles = {
+export const userRoles = ['DEFAULT', 'STAFF', 'ADMIN', 'OWNER'] as const;
+
+export type UserRole = (typeof userRoles)[number];
+
+export const rbacRoles: Record<UserRole, string> = {
     DEFAULT: 'Default Access User',
     STAFF: 'Cafe Staff',
     ADMIN: 'Admin User',
     OWNER: 'Owner (superuser)',
 } as const;
-
-export type UserRole = keyof typeof rbacRoles;
 
 export const rbacRoleHiarchyMap: Record<UserRole, number> = {
     DEFAULT: 0,
@@ -54,6 +56,10 @@ export const rbacPermissions: Readonly<Record<UserPermission, string>> = {
     USER_EDIT: 'Edit a user',
     USER_DELETE: 'Delete a user',
 };
+
+export const rbacPermissionsList = Object.keys(
+    rbacPermissions
+) as UserPermission[];
 
 export const rbacRolePermissionGroupAllowances: Readonly<
     Record<UserRole, Array<UserPermissionGroup | UserPermission>>

@@ -15,7 +15,7 @@ import {
   ComboboxValueType,
   IdValuePair,
 } from '../../../../../shared-lib/src/public-api';
-import { UserService } from '../../shared/services/user.service';
+import { UsersService } from '../../shared/services/users.service';
 import { SharedModule } from '../../shared/shared.module';
 
 @Component({
@@ -26,7 +26,7 @@ import { SharedModule } from '../../shared/shared.module';
   styleUrl: './user-service-logs.component.scss',
 })
 export class UserServiceLogsComponent implements OnInit {
-  private readonly userService = inject(UserService);
+  private readonly usersService = inject(UsersService);
 
   protected readonly userModel = model<ComboboxValueType>();
   protected readonly filter = signal<{
@@ -45,7 +45,7 @@ export class UserServiceLogsComponent implements OnInit {
   protected usersDropdownOptions: { id: string; value: string }[] = [];
 
   ngOnInit(): void {
-    this.userService
+    this.usersService
       .getUsers()
       .pipe(
         take(1),
@@ -137,7 +137,7 @@ export class UserServiceLogsComponent implements OnInit {
     lookup?: UserTrackerLogsLookup,
     lookupValue?: string
   ): Observable<PaginatedPayload<ITracker>> {
-    return this.userService.getLogs(pageable, lookup, lookupValue);
+    return this.usersService.getLogs(pageable, lookup, lookupValue);
   }
 
   private processLogResults(response: PaginatedPayload<ITracker>): void {
