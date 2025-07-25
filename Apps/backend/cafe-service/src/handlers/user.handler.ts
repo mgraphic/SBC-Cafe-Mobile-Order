@@ -209,7 +209,8 @@ export async function updateUser(req: Request, res: Response): Promise<void> {
 export async function deleteUser(req: Request, res: Response): Promise<void> {
     if (
         !req.user?.hasPermission('USER') ||
-        !req.user?.hasPermission('USER_DELETE')
+        !req.user?.hasPermission('USER_DELETE') ||
+        req.user?.getUserId() === req.params.id
     ) {
         res.sendStatus(403);
         return;

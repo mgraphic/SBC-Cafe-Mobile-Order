@@ -38,7 +38,14 @@
                 >
                   Edit
                 </button>
-                <button class="btn btn-link" (click)="deleteUser(user)">
+                <button
+                  class="btn btn-link"
+                  (click)="deleteUser(user)"
+                  [disabled]="
+                    !userService.hasPermission('USER_EDIT') ||
+                    user.id === userService.getUserData().id
+                  "
+                >
                   Delete
                 </button>
               </td>
