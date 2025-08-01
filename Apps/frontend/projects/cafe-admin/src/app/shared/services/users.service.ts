@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { delay, Observable } from 'rxjs';
+import { delay, map, Observable } from 'rxjs';
 import {
   IUser,
   IPageable,
@@ -31,7 +31,7 @@ export class UsersService {
   }
 
   getUserById(id: string): Observable<IUser> {
-    return this.http.get<IUser>(`${this.baseUrl}/getUser/${id}`);
+    return this.http.get<IUser>(`${this.baseUrl}/getUserId/${id}`);
   }
 
   getLogs(
@@ -45,8 +45,11 @@ export class UsersService {
     );
   }
 
-  addUser(user: UserResponse): Observable<HttpResponse> {
-    return this.http.post<HttpResponse>(`${this.baseUrl}/addUser`, user);
+  addUser(user: UserResponse): Observable<HttpResponse<UserResponse>> {
+    return this.http.post<HttpResponse<UserResponse>>(
+      `${this.baseUrl}/addUser`,
+      user
+    );
   }
 
   updateUser(
@@ -65,5 +68,19 @@ export class UsersService {
     return this.http.delete<HttpResponse<UserResponse>>(
       `${this.baseUrl}/deleteUser/${id}`
     );
+  }
+
+  canActivateUser(id: string): Observable<boolean> {
+    return this.http
+      .get<HttpResponse<{ canActivate: boolean }>>(
+        `${this.baseUrl}/canActivateUser/${id}`
+      )
+      .pipe(map((response) => !!response.data?.canActivate));
+  }
+
+  activateUser(id: string, password: string): Observable<HttpResponse> {
+    return this.http.put<HttpResponse>(`${this.baseUrl}/activateUser/${id}`, {
+      password,
+    });
   }
 }

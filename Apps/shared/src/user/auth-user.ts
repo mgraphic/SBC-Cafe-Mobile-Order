@@ -1,13 +1,10 @@
-import { CipherTokenConfig, getDecipherToken } from '@mgraphic/cipher-token';
 import { IUser } from './user.model';
 import { UsersService } from './users.service';
+import { authenticateUser } from './user.utils';
 
 export class AuthUser {
     private user: IUser | null;
     private authState: 'authenticated' | null = null;
-    private cipherConfig = {
-        tokenEncoding: 'hex',
-    } as CipherTokenConfig;
 
     private constructor(user: IUser | null) {
         this.user = user;
@@ -30,14 +27,8 @@ export class AuthUser {
     public login(password: string): boolean {
         this.authState = null;
 
-        if (this.user?.passwordHash) {
-            const decipher = getDecipherToken(this.cipherConfig);
-            decipher.keyFromString(password);
-            const result = decipher.untokenize(this.user.passwordHash);
-
-            if (`${this.user.email}:${password}` === result) {
-                this.authState = 'authenticated';
-            }
+        if (this.user?.passwordHash && authenticateUser(this.user, password)) {
+            this.authState = 'authenticated';
         }
 
         return this.isAuthenticated();

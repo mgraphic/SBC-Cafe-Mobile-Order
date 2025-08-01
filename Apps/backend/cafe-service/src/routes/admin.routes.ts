@@ -1,7 +1,9 @@
 import { Router } from 'express';
 import { authVerify, userLogTracker } from 'sbc-cafe-shared-module';
 import {
+    activateUser,
     addUser,
+    canActivateUser,
     deleteUser,
     getUser,
     getUserById,
@@ -13,6 +15,8 @@ import {
 export const adminRouter: Router = Router();
 
 // Public API
+adminRouter.get('/canActivateUser/:id', canActivateUser);
+adminRouter.put('/activateUser/:id', activateUser);
 
 // Middleware
 adminRouter.use(authVerify());

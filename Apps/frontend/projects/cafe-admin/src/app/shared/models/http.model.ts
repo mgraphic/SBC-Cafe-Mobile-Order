@@ -7,4 +7,4 @@ export interface IHttpSuccess<T> {
   data?: T;
 }
 
-export type HttpResponse<T = never> = IHttpSuccess<T> | IHttpError;
+export type HttpResponse<T = never> = IHttpSuccess<T>;
