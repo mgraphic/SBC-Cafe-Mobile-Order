@@ -6,12 +6,14 @@ import {
     jwtPayloadFields,
     PAGINATED_DEFAULT_PAGESIZE,
     rbacPermissions,
+    tokenizePassword,
     userRoles,
     UsersService,
     UserTrackerLogService,
     UserTrackerLogsLookup,
     Validator,
 } from 'sbc-cafe-shared-module';
+import { logger } from '../shared/logger.utils';
 
 export async function getUsers(req: Request, res: Response): Promise<void> {
     if (!req.user?.hasPermission('USER')) {
@@ -263,3 +265,89 @@ export async function getUserLogs(req: Request, res: Response): Promise<void> {
 
     res.status(200).json(result);
 }
+
+export async function canActivateUser(
+    req: Request,
+    res: Response
+): Promise<void> {
+    const id: string = req.params.id as string;
+
+    if (!id) {
+        res.status(400).json({ error: 'ID is required' });
+        return;
+    }
+
+    const userService = new UsersService();
+    const user = await userService.getUserById(id);
+    const errorResponse = checkActivateUser(user);
+
+    if (errorResponse) {
+        res.status(errorResponse.code).json({ error: errorResponse.error });
+        return;
+    }
+
+    // If we reach this point, the user is authorized to activate the account
+    res.status(200).json({
+        message: 'User is authorized to activate account',
+        data: { canActivate: true },
+    });
+}
+
+export async function activateUser(req: Request, res: Response): Promise<void> {
+    const id: string = req.params.id as string;
+
+    if (!id) {
+        res.status(400).json({ error: 'ID is required' });
+        return;
+    }
+
+    const userService = new UsersService();
+    const user = await userService.getUserById(id);
+    const errorResponse = checkActivateUser(user);
+
+    if (errorResponse) {
+        res.status(errorResponse.code).json({ error: errorResponse.error });
+        return;
+    }
+
+    if (!req.body.password) {
+        res.status(400).json({
+            error: 'Password is required to activate account',
+        });
+        return;
+    }
+
+    // Activate the user account
+    try {
+        const passwordHash = tokenizePassword(user!, req.body.password);
+
+        await userService.updateUser(user!.id, {
+            passwordHash,
+            refreshTokens: [],
+        });
+        res.status(200).json({
+            message: 'User account activated successfully',
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to activate user account' });
+        logger.error(error);
+    }
+}
+
+const checkActivateUser = (
+    user: IUser | undefined
+): { error: string; code: number } | null => {
+    if (!user) {
+        return { code: 404, error: 'User not found' };
+    }
+
+    if (!user.isActive) {
+        return { code: 400, error: 'Unable to activate user account' };
+    }
+
+    if (user.passwordHash) {
+        return { code: 400, error: 'User account is already activated' };
+    }
+
+    return null;
+};

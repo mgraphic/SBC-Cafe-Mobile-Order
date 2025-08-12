@@ -56,99 +56,128 @@
       </div>
     </div>
   </div>
-
-  <ng-template #userModalTemplate let-modal>
-    <app-modal [modalRef]="modal" modalTitle="{{ modalMode | titlecase }} User">
-      <ng-template #bodyContent>
-        <form [formGroup]="userForm">
-          <div class="form-group">
-            <label for="firstName">First Name</label>
-            <input
-              type="text"
-              class="form-control"
-              id="firstName"
-              formControlName="firstName"
-              placeholder="Enter first name"
-            />
-          </div>
-          <div class="form-group">
-            <label for="lastName">Last Name</label>
-            <input
-              type="text"
-              class="form-control"
-              id="lastName"
-              formControlName="lastName"
-              placeholder="Enter last name"
-            />
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input
-              type="email"
-              class="form-control"
-              id="email"
-              formControlName="email"
-              placeholder="Enter email"
-            />
-          </div>
-          <div class="form-group">
-            <label for="role">Role</label>
-            <select class="form-control" id="role" formControlName="role">
-              <option value="" disabled>Select a role</option>
-              @for (item of userRoles; track $index) {
-              <option [value]="item.key">{{ item.value }}</option>
-              }
-            </select>
-          </div>
-          <hr />
-          <div class="form-check">
-            <input
-              type="checkbox"
-              id="isActive"
-              formControlName="isActive"
-              class="form-check-input"
-            />
-            <label class="form-check-label" for="isActive">
-              Active / Enabled
-            </label>
-          </div>
-          <hr />
-          <label for="permissions">Permissions</label>
-          @for (permission of userPermissions; track permission.key) {
-          <div class="form-check">
-            <input
-              type="checkbox"
-              id="{{ permission.key }}"
-              [checked]="isPermissionSelected(permission.key)"
-              [disabled]="isPermissionDisabled(permission.key)"
-              (change)="onPermissionChange(permission.key, $event)"
-              class="form-check-input"
-            />
-            <label class="form-check-label" for="{{ permission.key }}">
-              {{ permission.value }}
-            </label>
-          </div>
-          }
-        </form>
-      </ng-template>
-
-      <ng-template #footerContent>
-        <button
-          type="button"
-          class="btn btn-outline-secondary"
-          (click)="modal.dismiss('Cross click')"
-        >
-          Cancel
-        </button>
-        <button
-          type="button"
-          class="btn btn-primary"
-          (click)="saveUser(); modal.close('Save click')"
-          [disabled]="userForm.invalid || userForm.pristine"
-        >
-          Save
-        </button>
-      </ng-template>
-    </app-modal>
-  </ng-template>
 </div>
+
+<ng-template #userModalTemplate let-modal>
+  <app-modal [modalRef]="modal" modalTitle="{{ modalMode | titlecase }} User">
+    <ng-template #bodyContent>
+      <form [formGroup]="userForm">
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="firstName"
+            formControlName="firstName"
+            placeholder="Enter first name"
+          />
+        </div>
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="lastName"
+            formControlName="lastName"
+            placeholder="Enter last name"
+          />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            formControlName="email"
+            placeholder="Enter email"
+          />
+        </div>
+        <div class="form-group">
+          <label for="role">Role</label>
+          <select class="form-control" id="role" formControlName="role">
+            <option value="" disabled>Select a role</option>
+            @for (item of userRoles; track $index) {
+            <option [value]="item.key">{{ item.value }}</option>
+            }
+          </select>
+        </div>
+        <hr />
+        <div class="form-check">
+          <input
+            type="checkbox"
+            id="isActive"
+            formControlName="isActive"
+            class="form-check-input"
+          />
+          <label class="form-check-label" for="isActive">
+            Active / Enabled
+          </label>
+        </div>
+        <hr />
+        <label for="permissions">Permissions</label>
+        @for (permission of userPermissions; track permission.key) {
+        <div class="form-check">
+          <input
+            type="checkbox"
+            id="{{ permission.key }}"
+            [checked]="isPermissionSelected(permission.key)"
+            [disabled]="isPermissionDisabled(permission.key)"
+            (change)="onPermissionChange(permission.key, $event)"
+            class="form-check-input"
+          />
+          <label class="form-check-label" for="{{ permission.key }}">
+            {{ permission.value }}
+          </label>
+        </div>
+        }
+      </form>
+    </ng-template>
+
+    <ng-template #footerContent>
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        (click)="modal.dismiss('Cross click')"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="saveUser(); modal.close('Save click')"
+        [disabled]="userForm.invalid || userForm.pristine"
+      >
+        Save
+      </button>
+    </ng-template>
+  </app-modal>
+</ng-template>
+
+<ng-template #newUserSucessModalTemplate let-modal>
+  <app-modal [modalRef]="modal" modalTitle="New User Has Been Created">
+    <ng-template #bodyContent>
+      <div class="form-group">
+        <label for="firstName">Activation Link</label>
+        <input
+          type="text"
+          id="firstName"
+          class="form-control mb-3"
+          placeholder="Enter first name"
+          [value]="activationUrl"
+          readonly
+        />
+      </div>
+      <div class="d-grid gap-2 col-6 mx-auto">
+        <button
+          #copyButton
+          class="btn btn-primary"
+          type="button"
+          [cdkCopyToClipboard]="activationUrl || ''"
+          (click)="onCopy(copyButton)"
+        >
+          Copy Link
+        </button>
+      </div>
+    </ng-template>
+  </app-modal>
+</ng-template>

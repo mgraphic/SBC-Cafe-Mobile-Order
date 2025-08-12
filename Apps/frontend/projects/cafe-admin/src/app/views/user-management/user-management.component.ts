@@ -5,9 +5,11 @@ import {
   TemplateRef,
   viewChild,
 } from '@angular/core';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { NgbDropdownModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { KeyValue, TitleCasePipe } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, UrlTree } from '@angular/router';
 import { map, take } from 'rxjs';
 import {
   getUserPermissionGroupFromPermission,
@@ -35,6 +37,7 @@ import { UserResponse } from '../../shared/models/user.model';
     TitleCasePipe,
     ReactiveFormsModule,
     NgbDropdownModule,
+    ClipboardModule,
   ],
   templateUrl: './user-management.component.html',
   styleUrl: './user-management.component.scss',
@@ -42,12 +45,17 @@ import { UserResponse } from '../../shared/models/user.model';
 export class UserManagementComponent implements OnInit {
   private readonly userModalTemplate =
     viewChild<TemplateRef<HTMLElement>>('userModalTemplate');
+  private readonly newUserSucessModalTemplate = viewChild<
+    TemplateRef<HTMLElement>
+  >('newUserSucessModalTemplate');
   private readonly usersService = inject(UsersService);
   private readonly modalService = inject(NgbModal);
   private readonly fb = inject(FormBuilder);
+  private readonly router = inject(Router);
   protected readonly userService = inject(UserService);
 
   protected modalMode?: 'add' | 'edit';
+  protected activationUrl?: string;
   protected users: IUser[] = [];
   protected userForm = this.fb.group({
     id: [''],
@@ -123,7 +131,7 @@ export class UserManagementComponent implements OnInit {
     });
 
     this.modalMode = 'edit';
-    const modalRef = this.modalService.open(this.userModalTemplate(), {
+    this.modalService.open(this.userModalTemplate(), {
       size: 'md',
     });
   }
@@ -142,7 +150,7 @@ export class UserManagementComponent implements OnInit {
       permissions: [],
     });
     this.modalMode = 'add';
-    const modalRef = this.modalService.open(this.userModalTemplate(), {
+    this.modalService.open(this.userModalTemplate(), {
       size: 'md',
     });
   }
@@ -171,8 +179,17 @@ export class UserManagementComponent implements OnInit {
         // Create new user
         console.log('Create user:', userData);
         this.usersService.addUser(userData as UserResponse).subscribe({
-          next: () => {
+          next: (res): void => {
             console.log('User created successfully');
+            const urlTree: UrlTree = this.router.createUrlTree([
+              '/activate-account',
+              res.data?.id,
+            ]);
+            const relativeUrl = this.router.serializeUrl(urlTree);
+            this.activationUrl = `${window.location.origin}${relativeUrl}`;
+
+            this.modalService.open(this.newUserSucessModalTemplate(), {});
+
             this.fetchUsers();
           },
           error: (error) => {
@@ -229,6 +246,16 @@ export class UserManagementComponent implements OnInit {
     this.userForm.patchValue({
       permissions: this.currentUserPermissions as any,
     });
+  }
+
+  protected onCopy(button: HTMLButtonElement): void {
+    const textContent = button.textContent;
+    button.disabled = true;
+    button.textContent = 'Copied!';
+    setTimeout(() => {
+      button.disabled = false;
+      button.textContent = textContent;
+    }, 2000);
   }
 
   private hasPermission(

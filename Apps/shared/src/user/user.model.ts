@@ -69,3 +69,5 @@ export const rbacRolePermissionGroupAllowances: Readonly<
     ADMIN: ['ORDER', 'USER_VIEW', 'USER_ADD', 'USER_EDIT'],
     OWNER: ['ORDER', 'USER'],
 };
+
+export type UserPasswordToken = `${string}:${string}`;

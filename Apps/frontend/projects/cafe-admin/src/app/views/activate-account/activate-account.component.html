@@ -1,0 +1,82 @@
+<div class="container">
+  @if (!canActivate()) {
+  <div class="row">
+    <div class="col-12">
+      <h1>Account Activation Not Allowed</h1>
+      <p>Your account cannot be activated at this time.</p>
+    </div>
+  </div>
+  } @else if (completed()) {
+  <div class="row">
+    <div class="col-12">
+      <h1>Account Activated</h1>
+      <p>Your account has been successfully activated.</p>
+      <p>You can now log in with your new password.</p>
+      <a routerLink="/login" class="btn btn-primary">Go to Login</a>
+    </div>
+  </div>
+  } @else {
+  <div class="row">
+    <div class="col-12">
+      <h1>Activate Account</h1>
+      <p>Please set your password to activate your account.</p>
+    </div>
+  </div>
+
+  <form [formGroup]="activateForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-12"><label for="password">Password:</label></div>
+      <div class="col-12">
+        <input id="password" formControlName="password" type="password" />
+      </div>
+      @if (activateForm.get('password')?.invalid &&
+      (activateForm.get('password')?.dirty ||
+      activateForm.get('password')?.touched)) {
+      <div class="col-12">
+        @if (activateForm.get('password')?.errors?.['required']) {
+        <small>Password is required.</small>
+        } @if (activateForm.get('password')?.errors?.['minlength']) {
+        <small>Password must be at least 6 characters long.</small>
+        }
+      </div>
+      }
+    </div>
+
+    <div class="row mt-2">
+      <div class="col-12">
+        <label for="confirmPassword">Confirm Password:</label>
+      </div>
+      <div class="col-12">
+        <input
+          id="confirmPassword"
+          formControlName="confirmPassword"
+          type="password"
+        />
+        @if (activateForm.get('confirmPassword')?.invalid &&
+        (activateForm.get('confirmPassword')?.dirty ||
+        activateForm.get('confirmPassword')?.touched)) {
+        <div class="col-12">
+          @if (activateForm.get('confirmPassword')?.errors?.['required']) {
+          <small>Confirm Password is required.</small>
+          } @if
+          (activateForm.get('confirmPassword')?.errors?.['passwordMismatch']) {
+          <small>Passwords do not match.</small>
+          }
+        </div>
+        }
+      </div>
+      <div class="row mt-4">
+        <div class="col-12">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="activateForm.invalid"
+          >
+            Activate Account
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+  }
+</div>

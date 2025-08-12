@@ -22,4 +22,11 @@ export const routes: Routes = [
         (c) => c.LogoutComponent
       ),
   },
+  {
+    path: 'activate-account/:id',
+    loadComponent: () =>
+      import('./views/activate-account/activate-account.component').then(
+        (c) => c.ActivateAccountComponent
+      ),
+  },
 ];
