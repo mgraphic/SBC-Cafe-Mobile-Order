@@ -18,9 +18,7 @@
     "experimentalDecorators": true,
     "moduleResolution": "bundler",
     "paths": {
-      "shared-lib": [
-        "./dist/shared-lib"
-      ]
+      "shared-lib": ["./dist/shared-lib"]
     },
     "importHelpers": true,
     "target": "ES2022",
