@@ -12,21 +12,28 @@ export const routes: Routes = [
     path: 'login',
     loadComponent: () =>
       import('./shared/components/login/login.component').then(
-        (c) => c.LoginComponent
+        (c) => c.LoginComponent,
       ),
   },
   {
     path: 'logout',
     loadComponent: () =>
       import('./shared/components/logout/logout.component').then(
-        (c) => c.LogoutComponent
+        (c) => c.LogoutComponent,
       ),
   },
   {
     path: 'activate-account/:id',
     loadComponent: () =>
       import('./views/activate-account/activate-account.component').then(
-        (c) => c.ActivateAccountComponent
+        (c) => c.ActivateAccountComponent,
+      ),
+  },
+  {
+    path: 'toast-test',
+    loadComponent: () =>
+      import('./views/toast-test/toast-test.component').then(
+        (c) => c.ToastTestComponent,
       ),
   },
 ];
