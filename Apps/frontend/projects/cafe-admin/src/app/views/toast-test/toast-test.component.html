@@ -1,0 +1,118 @@
+<div class="container">
+  <div class="row mt-5">
+    <h1>Toast Test</h1>
+    <div class="col-12">
+      <h2>Show Default Toasts</h2>
+    </div>
+    <button
+      class="btn btn-primary col-3"
+      (click)="toastService.show('This is a default toast!')"
+    >
+      Show Default Toast
+    </button>
+
+    <button
+      class="btn btn-success col-3 offset-1"
+      (click)="toastService.showSuccess('This is a success toast!')"
+    >
+      Show Success Toast
+    </button>
+    <button
+      class="btn btn-info col-3 offset-1"
+      (click)="toastService.showInfo('This is an info toast!')"
+    >
+      Show Info Toast
+    </button>
+    <button
+      class="btn btn-warning col-3 mt-3"
+      (click)="toastService.showWarning('This is a warning toast!')"
+    >
+      Show Warning Toast
+    </button>
+    <button
+      class="btn btn-danger col-3 offset-1 mt-3"
+      (click)="toastService.showError('This is an error toast!')"
+    >
+      Show Error Toast
+    </button>
+  </div>
+
+  <div class="row mt-5">
+    <h2>Custom Delay Toasts</h2>
+  </div>
+  <div class="row">
+    <button
+      class="btn btn-primary col-3"
+      (click)="
+        toastService.show({
+          content: 'This toast has a custom delay of 60 seconds!',
+          delay: 60000,
+        })
+      "
+    >
+      Show Default Toast with 60s Delay
+    </button>
+    <button
+      class="btn btn-success col-3 offset-1"
+      (click)="
+        toastService.show({
+          content: 'This toast has a custom delay of 1 second!',
+          delay: 1000,
+          type: 'success',
+        })
+      "
+    >
+      Show Success Toast with 1s Delay
+    </button>
+  </div>
+
+  <div class="row mt-5">
+    <div class="col-12">
+      <h2>Toggle Inverted Toasts</h2>
+    </div>
+    <div class="col-12">
+      <button
+        class="btn btn-primary"
+        (click)="toastConfigService.toggleInverted()"
+      >
+        Toggle Inverted Toasts (Currently:
+        {{ toastConfigService.inverted() ? "Inverted" : "Normal" }})
+      </button>
+    </div>
+  </div>
+
+  <div class="row mt-5">
+    <div class="col-12">
+      <h2>Manually Closing Toasts</h2>
+    </div>
+    <button class="btn btn-primary col-3" (click)="openNonAutohideToast()">
+      Show Non-Autohide Toast
+    </button>
+    <button class="btn btn-secondary col-3 offset-1" (click)="closeRef.next()">
+      Close Manually
+    </button>
+  </div>
+
+  <div class="row mt-5">
+    <h2>Toast With Template Content</h2>
+  </div>
+  <div class="row">
+    <button
+      class="btn btn-primary col-3"
+      (click)="
+        toastService.show({
+          content: template,
+          delay: 10000,
+        })
+      "
+    >
+      Show Toast with Template Content
+    </button>
+    <ng-template #template>
+      <div>
+        <h5>Template Title</h5>
+        <p>This is some custom content inside the toast!</p>
+      </div>
+    </ng-template>
+  </div>
+</div>

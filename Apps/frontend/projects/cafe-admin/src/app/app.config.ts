@@ -1,19 +1,20 @@
 import {
-  ApplicationConfig,
-  Provider,
-  provideZoneChangeDetection,
-} from '@angular/core';
-import {
   HTTP_INTERCEPTORS,
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
+import {
+  Provider,
+  ApplicationConfig,
+  importProvidersFrom,
+  provideZoneChangeDetection,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
-
+import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { routes } from './app.routes';
 import { AuthInterceptorService } from './shared/interceptors/auth-interceptor.service';
 import { LoginInterceptorService } from './shared/interceptors/login-interceptor.service';
-import { routes } from './app.routes';
+import { SharedModule } from '../../../shared-lib/src/public-api';
 
 const interceptorProviders: Provider[] = [
   {
@@ -41,6 +42,7 @@ const jwtHelperProviders: Provider[] = [
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    importProvidersFrom(SharedModule.forRoot()),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(withInterceptorsFromDi()),

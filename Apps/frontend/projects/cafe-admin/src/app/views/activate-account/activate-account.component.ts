@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { UsersService } from '../../shared/services/users.service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ToastService } from '../../../../../shared-lib/src/public-api';
 
 @Component({
   selector: 'app-activate-account',
@@ -14,6 +15,7 @@ export class ActivateAccountComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly usersService = inject(UsersService);
   private readonly fb = inject(FormBuilder);
+  private readonly toastService = inject(ToastService);
   protected readonly userId = this.route.snapshot.params['id'];
   protected readonly canActivate = signal(false);
   protected readonly completed = signal(false);
@@ -44,7 +46,7 @@ export class ActivateAccountComponent {
   }
 
   private passwordMatchValidator(
-    control: any
+    control: any,
   ): { [key: string]: boolean } | null {
     if (
       this.activateForm &&
@@ -62,10 +64,14 @@ export class ActivateAccountComponent {
         next: () => {
           console.log('User activated successfully');
           this.completed.set(true);
+          this.toastService.showSuccess('Account activated successfully!');
           // Handle successful activation (e.g., navigate to a different page)
         },
         error: (err) => {
           console.error('Error activating user:', err);
+          this.toastService.showError(
+            'Error activating account. Please try again.',
+          );
           // Handle activation error
         },
       });

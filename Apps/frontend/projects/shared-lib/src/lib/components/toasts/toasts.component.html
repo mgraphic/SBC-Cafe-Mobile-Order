@@ -1,0 +1,30 @@
+@for (toast of toastControllerService.toasts(); track toast) {
+  <ngb-toast
+    class="toast toast-{{ toast.type }}"
+    [class.inverted]="toastConfigService.inverted()"
+    [autohide]="toast.autohide"
+    [ariaLive]="toast.ariaLive"
+    [animation]="toastConfigService.getConfig().animation"
+    [ngStyle]="toast.style"
+    [delay]="toast.delay ?? toastConfigService.getConfig().delay[toast.type]"
+    [attr.data-toastId]="toast.id"
+    (hidden)="toastControllerService.remove(toast)"
+  >
+    @if (toast.header) {
+      @if (isTemplateRef(toast.header)) {
+        <ng-template
+          [ngTemplateOutlet]="toast.header"
+          ngbToastHeader
+        ></ng-template>
+      } @else {
+        <ng-template ngbToastHeader>{{ toast.header }}</ng-template>
+      }
+    }
+
+    @if (isTemplateRef(toast.content)) {
+      <ng-template [ngTemplateOutlet]="toast.content"></ng-template>
+    } @else {
+      {{ toast.content }}
+    }
+  </ngb-toast>
+}
