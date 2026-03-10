@@ -101,7 +101,7 @@
             "outputPath": "dist/cafe-admin",
             "index": "projects/cafe-admin/src/index.html",
             "browser": "projects/cafe-admin/src/main.ts",
-            "polyfills": ["zone.js", "@angular/localize/init"],
+            "polyfills": ["projects/cafe-admin/src/polyfills.ts"],
             "tsConfig": "projects/cafe-admin/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -190,10 +190,7 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "tsConfig": "projects/shared-lib/tsconfig.spec.json",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ]
+            "polyfills": ["zone.js", "zone.js/testing"]
           }
         }
       }
