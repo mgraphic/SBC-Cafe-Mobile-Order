@@ -7,7 +7,7 @@ export const demoItems: ProductItem[] = [
     slug: 'black-coffee',
     price: 0,
     image:
-      'https://dynaimage.cdn.cnn.com/cnn/c_fill,g_auto,w_1200,h_675,ar_16:9/https%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F150929101049-black-coffee-stock.jpg',
+      'https://www.adamgault.co.uk/wp-content/uploads/2015/11/FoodDrink058.jpg',
   },
   {
     id: 2,
@@ -38,7 +38,7 @@ export const demoItems: ProductItem[] = [
     slug: 'cappuccino',
     price: 3.5,
     image:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Cappuccino_at_Sightglass_Coffee.jpg/640px-Cappuccino_at_Sightglass_Coffee.jpg',
+      'https://www.ellianos.com/wp-content/uploads/2024/01/Cup-of-cappuccino-coffee-with-micro-foam-on-wooden-table.jpg',
   },
   {
     id: 6,
