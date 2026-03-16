@@ -4,11 +4,11 @@ import { LoggerLevel } from 'sbc-cafe-shared-module';
 const env = getEnvironmentVariable('APP_ENV', 'local');
 const redactedRegex = getEnvironmentVariable(
     'REDACTED_REGEX',
-    '/jwt=[A-Za-z0-9.+=-]+/i,/Bearer [A-Za-z0-9.+=-]+/i'
+    '/jwt=[A-Za-z0-9.+=-]+/i,/Bearer [A-Za-z0-9.+=-]+/i',
 ).split(',');
 const redactedKeys = getEnvironmentVariable(
     'REDACTED_KEYS',
-    'password,username,accessTokenSecret,refreshTokenSecret,jwt'
+    'password,username,accessTokenSecret,refreshTokenSecret,jwt',
 ).split(',');
 
 export const environment: {
@@ -19,6 +19,10 @@ export const environment: {
     accessToken: string | null;
     redactedRegex: string[];
     redactedKeys: string[];
+    stripeApi: {
+        secretKey: string | null;
+        baseUrl: string;
+    };
 } = {
     service: 'cafe-service',
     level: getEnvironmentVariable('LEVEL', 'info') as LoggerLevel,
@@ -27,11 +31,18 @@ export const environment: {
     accessToken: getEnvironmentVariable('ACCESS_TOKEN', null),
     redactedRegex,
     redactedKeys,
+    stripeApi: {
+        secretKey: getEnvironmentVariable('STRIPE_SECRET_KEY', null),
+        baseUrl: getEnvironmentVariable(
+            'STRIPE_BASE_URL',
+            'https://api.stripe.com',
+        ),
+    },
 };
 
 function getEnvironmentVariable<T>(
     variable: string,
-    defaultValue: T
+    defaultValue: T,
 ): string | T {
     const envValue = process.env[variable];
 
