@@ -1,5 +1,8 @@
-import 'dotenv/config';
+import { config } from 'dotenv';
+import { resolve } from 'path';
 import { LoggerLevel } from 'sbc-cafe-shared-module';
+
+config({ path: resolve(process.cwd(), '../../../.env') });
 
 const env = getEnvironmentVariable('APP_ENV', 'local');
 const redactedRegex = getEnvironmentVariable(
