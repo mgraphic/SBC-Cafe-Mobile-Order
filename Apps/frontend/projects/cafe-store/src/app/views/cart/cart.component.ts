@@ -5,11 +5,10 @@ import { CartService } from '../../shared/cart.service';
 import { SharedModule } from '../../../../../shared-lib/src/public-api';
 
 @Component({
-  selector: 'app-cart',
-  standalone: true,
-  imports: [SharedModule],
-  templateUrl: './cart.component.html',
-  styleUrl: './cart.component.scss',
+    selector: 'app-cart',
+    imports: [SharedModule],
+    templateUrl: './cart.component.html',
+    styleUrl: './cart.component.scss'
 })
 export class CartComponent implements OnInit {
   protected cartItems: CartItem[] = [];

@@ -30,17 +30,16 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
 import { UserResponse } from '../../shared/models/user.model';
 
 @Component({
-  selector: 'app-user-management',
-  standalone: true,
-  imports: [
-    ModalComponent,
-    TitleCasePipe,
-    ReactiveFormsModule,
-    NgbDropdownModule,
-    ClipboardModule,
-  ],
-  templateUrl: './user-management.component.html',
-  styleUrl: './user-management.component.scss',
+    selector: 'app-user-management',
+    imports: [
+        ModalComponent,
+        TitleCasePipe,
+        ReactiveFormsModule,
+        NgbDropdownModule,
+        ClipboardModule,
+    ],
+    templateUrl: './user-management.component.html',
+    styleUrl: './user-management.component.scss'
 })
 export class UserManagementComponent implements OnInit {
   private readonly userModalTemplate =

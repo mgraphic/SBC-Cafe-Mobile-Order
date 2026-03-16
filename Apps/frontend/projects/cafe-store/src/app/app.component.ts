@@ -6,11 +6,10 @@ import { FooterComponent } from './shared/components/footer/footer.component';
 import { SharedModule } from '../../../shared-lib/src/public-api';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet, HeaderComponent, FooterComponent, SharedModule],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+    selector: 'app-root',
+    imports: [RouterOutlet, HeaderComponent, FooterComponent, SharedModule],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
   protected showHeader = true;

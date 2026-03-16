@@ -4,10 +4,9 @@ import { ToastsComponent } from '../../../shared-lib/src/public-api';
 // import { ToastsComponent } from '../../../shared-lib/src/lib/components/toasts/toasts.component';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet, RouterModule, ToastsComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+    selector: 'app-root',
+    imports: [RouterOutlet, RouterModule, ToastsComponent],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss'
 })
 export class AppComponent {}

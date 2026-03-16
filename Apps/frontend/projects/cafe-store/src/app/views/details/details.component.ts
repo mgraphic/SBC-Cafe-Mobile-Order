@@ -9,11 +9,10 @@ import {
 } from '../../../../../shared-lib/src/public-api';
 
 @Component({
-  selector: 'app-details',
-  standalone: true,
-  imports: [SharedModule],
-  templateUrl: './details.component.html',
-  styleUrl: './details.component.scss',
+    selector: 'app-details',
+    imports: [SharedModule],
+    templateUrl: './details.component.html',
+    styleUrl: './details.component.scss'
 })
 export class DetailsComponent implements OnInit {
   item?: ProductItem;

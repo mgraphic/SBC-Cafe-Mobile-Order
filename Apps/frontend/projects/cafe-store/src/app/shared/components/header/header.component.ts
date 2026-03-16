@@ -4,11 +4,10 @@ import { CartService } from '../../cart.service';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
-  selector: 'app-header',
-  standalone: true,
-  imports: [RouterModule],
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.scss',
+    selector: 'app-header',
+    imports: [RouterModule],
+    templateUrl: './header.component.html',
+    styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
   private readonly cartService = inject(CartService);

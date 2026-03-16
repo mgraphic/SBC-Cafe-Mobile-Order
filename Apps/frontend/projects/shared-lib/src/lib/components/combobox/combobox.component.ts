@@ -26,18 +26,17 @@ import { ComboboxValueType } from '../../models/shared.model';
 import { comboboxValueFormatter } from '../../utilities/combobox.utils';
 
 @Component({
-  selector: 'lib-combobox',
-  standalone: true,
-  imports: [FormsModule, NgbTypeahead],
-  templateUrl: './combobox.component.html',
-  styleUrl: './combobox.component.css',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => ComboboxComponent),
-      multi: true,
-    },
-  ],
+    selector: 'lib-combobox',
+    imports: [FormsModule, NgbTypeahead],
+    templateUrl: './combobox.component.html',
+    styleUrl: './combobox.component.css',
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => ComboboxComponent),
+            multi: true,
+        },
+    ]
 })
 export class ComboboxComponent implements ControlValueAccessor {
   @ViewChild('instance', { static: true })

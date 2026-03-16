@@ -3,11 +3,10 @@ import { Component, input, TemplateRef, contentChild } from '@angular/core';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-modal',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './modal.component.html',
-  styleUrl: './modal.component.scss',
+    selector: 'app-modal',
+    imports: [CommonModule],
+    templateUrl: './modal.component.html',
+    styleUrl: './modal.component.scss'
 })
 export class ModalComponent {
   public readonly modalRef = input.required<NgbModalRef>();

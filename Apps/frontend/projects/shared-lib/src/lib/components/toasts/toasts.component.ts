@@ -18,12 +18,11 @@ import { ToastConfigService } from '../../services/toast-config.service';
 import { ToastControllerService } from '../../services/toast-controller.service';
 
 @Component({
-  selector: 'lib-toasts',
-  standalone: true,
-  imports: [NgbToastModule, SharedModule],
-  templateUrl: './toasts.component.html',
-  styleUrls: ['./toasts.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+    selector: 'lib-toasts',
+    imports: [NgbToastModule, SharedModule],
+    templateUrl: './toasts.component.html',
+    styleUrls: ['./toasts.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class ToastsComponent implements AfterViewChecked {
   protected toastControllerService = inject(ToastControllerService);

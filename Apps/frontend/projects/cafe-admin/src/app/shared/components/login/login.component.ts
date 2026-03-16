@@ -5,11 +5,10 @@ import { AuthService } from '../../services/auth.service';
 import { SharedModule } from '../../shared.module';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [SharedModule],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+    selector: 'app-login',
+    imports: [SharedModule],
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.scss'
 })
 export class LoginComponent {
   protected readonly email = signal('');

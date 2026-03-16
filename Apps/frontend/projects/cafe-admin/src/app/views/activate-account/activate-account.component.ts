@@ -5,11 +5,10 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ToastService } from '../../../../../shared-lib/src/public-api';
 
 @Component({
-  selector: 'app-activate-account',
-  standalone: true,
-  imports: [ReactiveFormsModule, RouterLink],
-  templateUrl: './activate-account.component.html',
-  styleUrl: './activate-account.component.scss',
+    selector: 'app-activate-account',
+    imports: [ReactiveFormsModule, RouterLink],
+    templateUrl: './activate-account.component.html',
+    styleUrl: './activate-account.component.scss'
 })
 export class ActivateAccountComponent {
   private readonly route = inject(ActivatedRoute);

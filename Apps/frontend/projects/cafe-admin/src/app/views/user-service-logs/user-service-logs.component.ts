@@ -19,11 +19,10 @@ import { UsersService } from '../../shared/services/users.service';
 import { SharedModule } from '../../shared/shared.module';
 
 @Component({
-  selector: 'app-user-service-logs',
-  standalone: true,
-  imports: [SharedModule, PaginatedComponent, ComboboxComponent],
-  templateUrl: './user-service-logs.component.html',
-  styleUrl: './user-service-logs.component.scss',
+    selector: 'app-user-service-logs',
+    imports: [SharedModule, PaginatedComponent, ComboboxComponent],
+    templateUrl: './user-service-logs.component.html',
+    styleUrl: './user-service-logs.component.scss'
 })
 export class UserServiceLogsComponent implements OnInit {
   private readonly usersService = inject(UsersService);

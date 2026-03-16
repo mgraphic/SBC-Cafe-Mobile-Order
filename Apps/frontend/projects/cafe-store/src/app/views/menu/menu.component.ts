@@ -9,11 +9,10 @@ import {
 } from '../../../../../shared-lib/src/public-api';
 
 @Component({
-  selector: 'app-menu',
-  standalone: true,
-  imports: [SharedModule, MenuTileComponent],
-  templateUrl: './menu.component.html',
-  styleUrl: './menu.component.scss',
+    selector: 'app-menu',
+    imports: [SharedModule, MenuTileComponent],
+    templateUrl: './menu.component.html',
+    styleUrl: './menu.component.scss'
 })
 export class MenuComponent implements OnInit {
   items: ProductItem[] = [];
