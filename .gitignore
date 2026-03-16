@@ -1,6 +1,51 @@
+# Project specific
 notes.txt
+.env
+
+# Dependencies
 node_modules/
-coverage/
+
+# Build output
+build/
 dist/
+Apps/shared/output/
+
+# Compiled output
+Apps/frontend/tmp/
+Apps/frontend/out-tsc/
+Apps/frontend/bazel-out/
+
+# Coverage
+coverage/
+
+# Logs
 *.log
+
+# Angular
+Apps/frontend/.angular/cache
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Miscellaneous
+.sass-cache/
+Apps/frontend/connect.lock
+Apps/frontend/typings
+
+# System files
 .DS_Store
+Thumbs.db
