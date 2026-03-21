@@ -3,7 +3,7 @@ const fs = require('fs');
 const { exec } = require('child_process');
 
 const SPINNER_FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
-const GREEN_CHECK = '\u001b[32m✔\u001b[0m';
+const GREEN_CHECK = '\u001b[1m\u001b[32m✔\u001b[0m';
 
 /* ####################################################################### */
 
@@ -42,7 +42,7 @@ function startSpinner(text) {
 function stopSpinner(interval, text) {
     clearInterval(interval);
     const textColor = '\u001b[1m\u001b[33m'; // bold yellow
-    process.stdout.write(`\r${textColor}${text}\u001b[0m ${GREEN_CHECK}\n`);
+    process.stdout.write(`\r${GREEN_CHECK} ${textColor}${text}\u001b[0m\n`);
 }
 
 // Processing distribution helpers
@@ -97,15 +97,17 @@ async function copyLatestFileToTargets(sourceDir, targetDirs) {
 
     for (const targetDir of targetDirs) {
         const targetName = path.basename(targetDir);
-        console.log(`\nProcessing target: ${targetName}`);
+        console.log(
+            `\n\u001b[1m\u001b[34mProcessing target: ${targetName}\u001b[0m`,
+        );
 
         const customModulesDir = path.join(targetDir, 'custom_modules');
         let spinner;
+        let step;
 
         // 1. Unlink the files in the targetDir/custom_modules
-        spinner = startSpinner(
-            `Delete the files in custom_modules: ${targetName}`,
-        );
+        step = `Delete the files in custom_modules: ${targetName}`;
+        spinner = startSpinner(step);
         const filesInCustomModulesDir = await attempt(() =>
             fs.promises.readdir(customModulesDir),
         );
@@ -114,52 +116,38 @@ async function copyLatestFileToTargets(sourceDir, targetDirs) {
                 fs.promises.unlink(path.join(customModulesDir, file)),
             );
         }
-        stopSpinner(
-            spinner,
-            `Delete the files in custom_modules: ${targetName}`,
-        );
+        stopSpinner(spinner, step);
 
         // 2. Remove the targetDir/node_modules dir
-        spinner = startSpinner(
-            `Remove the node_modules directory: ${targetName}`,
-        );
+        step = `Remove the node_modules directory: ${targetName}`;
+        spinner = startSpinner(step);
         const nodeModulesDir = path.join(targetDir, 'node_modules');
         await attempt(() =>
             fs.promises.rm(nodeModulesDir, { recursive: true, force: true }),
         );
-        stopSpinner(
-            spinner,
-            `Remove the node_modules directory: ${targetName}`,
-        );
+        stopSpinner(spinner, step);
 
         // 3. Unlink the targetDir/package-lock.json file
-        spinner = startSpinner(
-            `Delete the package-lock.json file: ${targetName}`,
-        );
+        step = `Delete the package-lock.json file: ${targetName}`;
+        spinner = startSpinner(step);
         const packageLockFilePath = path.join(targetDir, 'package-lock.json');
         await attempt(
             async () => await fs.promises.unlink(packageLockFilePath),
         );
-        stopSpinner(
-            spinner,
-            `Delete the package-lock.json file: ${targetName}`,
-        );
+        stopSpinner(spinner, step);
 
         // 4. Copy the latestFile into the targetDir/custom_modules dir
-        spinner = startSpinner(
-            `Copy the latest file into custom_modules: ${targetName}`,
-        );
+        step = `Copy the latest file into custom_modules: ${targetName}`;
+        spinner = startSpinner(step);
         const targetFilePath = path.join(customModulesDir, latestFile);
         await attempt(() =>
             fs.promises.copyFile(sourceFilePath, targetFilePath),
         );
-        stopSpinner(
-            spinner,
-            `Copy the latest file into custom_modules: ${targetName}`,
-        );
+        stopSpinner(spinner, step);
 
         // 5. Update the package.json file
-        spinner = startSpinner(`Update the package.json file: ${targetName}`);
+        step = `Update the package.json file: ${targetName}`;
+        spinner = startSpinner(step);
         const packageJsonFilePath = path.join(targetDir, 'package.json');
         const packageJson = JSON.parse(
             await fs.promises.readFile(packageJsonFilePath, 'utf-8'),
@@ -172,28 +160,32 @@ async function copyLatestFileToTargets(sourceDir, targetDirs) {
                 JSON.stringify(packageJson, null, 2),
             ),
         );
-        stopSpinner(spinner, `Update the package.json file: ${targetName}`);
+        stopSpinner(spinner, step);
 
         // 6. Run the npm install command
-        spinner = startSpinner(`Run the npm install command: ${targetName}`);
+        step = `Run the npm install command: ${targetName}`;
+        spinner = startSpinner(step);
         const npmInstallCmd = `cd ${targetDir} && npm install`;
         await new Promise((resolve, reject) => {
             exec(npmInstallCmd, (error, stdout, stderr) => {
-                stopSpinner(
-                    spinner,
-                    `Run the npm install command: ${targetName}`,
-                );
+                stopSpinner(spinner, step);
                 if (error) {
-                    console.error(`exec error: ${error}`);
+                    process.stderr.write(`exec error: ${error}\n`);
                     reject(error);
                     return;
                 }
-                console.log(`stdout: ${stdout}`);
-                if (stderr) console.error(`stderr: ${stderr}`);
+                // Muted grey for stdout, muted red for stderr
+                const grey = '\u001b[90m'; // Bright black (muted grey)
+                const red = '\u001b[91m'; // Bright red (muted red)
+                const reset = '\u001b[0m';
+                if (stdout) process.stdout.write(`${grey}${stdout}${reset}`);
+                if (stderr) process.stderr.write(`${red}${stderr}${reset}`);
                 resolve();
             });
         });
     }
 
-    console.log('\nDistribution process completed.');
+    console.log(
+        '\n\u001b[1m\u001b[34mDistribution process completed.\u001b[0m',
+    );
 }
