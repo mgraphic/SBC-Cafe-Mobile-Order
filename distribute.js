@@ -154,7 +154,7 @@ async function copyLatestFileToTargets(sourceDir, targetDirs) {
         stopSpinner(spinner3, step3);
 
         // 4. Copy the latestFile into the targetDir/custom_modules dir
-        const step4 = `Copy the latest file into custom_modules: ${targetName}`;
+        const step4 = `Copy the latest file (${latestFile}) into custom_modules: ${targetName}`;
         const spinner4 = startSpinner(step4);
         const targetFilePath = path.join(customModulesDir, latestFile);
         await attempt(() =>
