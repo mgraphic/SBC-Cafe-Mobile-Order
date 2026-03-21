@@ -29,7 +29,10 @@ const targetPath = [
 
 console.log({ sourcePath });
 console.log({ targetPath });
-console.log(`File to Distribute: ${getLatestFile(sourcePath)}`);
+
+console.log(
+    `\r\n${ANSI_COLORS.bold}${ANSI_COLORS.blue}File to Distribute: ${getLatestFile(sourcePath)}${ANSI_COLORS.reset}`,
+);
 
 // Start the distribution process
 copyLatestFileToTargets(sourcePath, targetPath);
@@ -38,20 +41,23 @@ copyLatestFileToTargets(sourcePath, targetPath);
 
 // Spinner and checkmark helpers
 function startSpinner(text) {
-    let i = 0;
     process.stdout.write(
-        `${ANSI_COLORS.green}${SPINNER_FRAMES[0]}${ANSI_COLORS.reset} ${ANSI_COLORS.bold}${ANSI_COLORS.white}${text}${ANSI_COLORS.reset}`,
+        `\r${ANSI_COLORS.green}${SPINNER_FRAMES[0]}${ANSI_COLORS.reset} ${ANSI_COLORS.bold}${ANSI_COLORS.white}${text}${ANSI_COLORS.reset}`,
     );
+
+    let i = 0;
     const interval = setInterval(() => {
         process.stdout.write(
             `\r${ANSI_COLORS.green}${SPINNER_FRAMES[(i = ++i % SPINNER_FRAMES.length)]}${ANSI_COLORS.reset} ${ANSI_COLORS.bold}${ANSI_COLORS.white}${text}${ANSI_COLORS.reset}`,
         );
     }, 80);
+
     return interval;
 }
 
 function stopSpinner(interval, text) {
     clearInterval(interval);
+
     process.stdout.write(
         `\r${ANSI_COLORS.bold}${ANSI_COLORS.green}✔${ANSI_COLORS.reset} ${ANSI_COLORS.bold}${ANSI_COLORS.yellow}${text}${ANSI_COLORS.reset}\n`,
     );
@@ -115,11 +121,10 @@ async function copyLatestFileToTargets(sourceDir, targetDirs) {
         );
 
         const customModulesDir = path.join(targetDir, 'custom_modules');
-        let spinner;
 
         // 1. Unlink the files in the targetDir/custom_modules
         const step1 = `Delete the files in custom_modules: ${targetName}`;
-        spinner = startSpinner(step1);
+        const spinner1 = startSpinner(step1);
         const filesInCustomModulesDir = await attempt(() =>
             fs.promises.readdir(customModulesDir),
         );
@@ -128,38 +133,38 @@ async function copyLatestFileToTargets(sourceDir, targetDirs) {
                 fs.promises.unlink(path.join(customModulesDir, file)),
             );
         }
-        stopSpinner(spinner, step1);
+        stopSpinner(spinner1, step1);
 
         // 2. Remove the targetDir/node_modules dir
         const step2 = `Remove the node_modules directory: ${targetName}`;
-        spinner = startSpinner(step2);
+        const spinner2 = startSpinner(step2);
         const nodeModulesDir = path.join(targetDir, 'node_modules');
         await attempt(() =>
             fs.promises.rm(nodeModulesDir, { recursive: true, force: true }),
         );
-        stopSpinner(spinner, step2);
+        stopSpinner(spinner2, step2);
 
         // 3. Unlink the targetDir/package-lock.json file
         const step3 = `Delete the package-lock.json file: ${targetName}`;
-        spinner = startSpinner(step3);
+        const spinner3 = startSpinner(step3);
         const packageLockFilePath = path.join(targetDir, 'package-lock.json');
         await attempt(
             async () => await fs.promises.unlink(packageLockFilePath),
         );
-        stopSpinner(spinner, step3);
+        stopSpinner(spinner3, step3);
 
         // 4. Copy the latestFile into the targetDir/custom_modules dir
         const step4 = `Copy the latest file into custom_modules: ${targetName}`;
-        spinner = startSpinner(step4);
+        const spinner4 = startSpinner(step4);
         const targetFilePath = path.join(customModulesDir, latestFile);
         await attempt(() =>
             fs.promises.copyFile(sourceFilePath, targetFilePath),
         );
-        stopSpinner(spinner, step4);
+        stopSpinner(spinner4, step4);
 
         // 5. Update the package.json file
         const step5 = `Update the package.json file: ${targetName}`;
-        spinner = startSpinner(step5);
+        const spinner5 = startSpinner(step5);
         const packageJsonFilePath = path.join(targetDir, 'package.json');
         const packageJson = JSON.parse(
             await fs.promises.readFile(packageJsonFilePath, 'utf-8'),
@@ -172,15 +177,15 @@ async function copyLatestFileToTargets(sourceDir, targetDirs) {
                 JSON.stringify(packageJson, null, 2),
             ),
         );
-        stopSpinner(spinner, step5);
+        stopSpinner(spinner5, step5);
 
         // 6. Run the npm install command
         const step6 = `Run the npm install command: ${targetName}`;
-        spinner = startSpinner(step6);
+        const spinner6 = startSpinner(step6);
         const npmInstallCmd = `cd ${targetDir} && npm install`;
         await new Promise((resolve, reject) => {
             exec(npmInstallCmd, (error, stdout, stderr) => {
-                stopSpinner(spinner, step6);
+                stopSpinner(spinner6, step6);
 
                 if (error) {
                     process.stderr.write(`exec error: ${error}\n`);
