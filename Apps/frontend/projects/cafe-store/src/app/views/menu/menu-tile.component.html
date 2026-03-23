@@ -1,12 +1,14 @@
 <div class="item">
-  <img [src]="item().image" alt="coffee" (click)="onSelect.emit(item())" />
+  <img [src]="item().images[0]" alt="coffee" (click)="onSelect.emit(item())" />
   <h4>{{ item().name }}</h4>
 
   <div class="info">
-    @if(item().price > 0){
-    <span class="price pricing">{{ item().price | currency }}</span>
+    @if (item().default_price.unit_amount! > 0) {
+      <span class="price pricing">{{
+        item().default_price.unit_amount_decimal! | convertUnitPrice | currency
+      }}</span>
     } @else {
-    <span class="free pricing">Free</span>
+      <span class="free pricing">Free</span>
     }
 
     <button

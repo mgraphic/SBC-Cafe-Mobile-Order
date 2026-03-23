@@ -23,7 +23,7 @@ export const environment: {
     redactedRegex: string[];
     redactedKeys: string[];
     stripeApi: {
-        secretKey: string | null;
+        secretKey: string;
         baseUrl: string;
     };
 } = {
@@ -35,7 +35,7 @@ export const environment: {
     redactedRegex,
     redactedKeys,
     stripeApi: {
-        secretKey: getEnvironmentVariable('STRIPE_SECRET_KEY', null),
+        secretKey: getEnvironmentVariable('STRIPE_SECRET_KEY', ''),
         baseUrl: getEnvironmentVariable(
             'STRIPE_BASE_URL',
             'https://api.stripe.com',

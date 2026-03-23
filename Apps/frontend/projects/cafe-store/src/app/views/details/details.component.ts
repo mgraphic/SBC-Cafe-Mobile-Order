@@ -3,36 +3,41 @@ import { ActivatedRoute } from '@angular/router';
 import { NavigationService } from '../../shared/navigation.service';
 import { CartService } from '../../shared/cart.service';
 import {
-  demoItems,
-  ProductItem,
+  ProductService,
   SharedModule,
 } from '../../../../../shared-lib/src/public-api';
+import { StripeProductPrice } from 'sbc-cafe-shared-module';
+import { take } from 'rxjs';
 
 @Component({
-    selector: 'app-details',
-    imports: [SharedModule],
-    templateUrl: './details.component.html',
-    styleUrl: './details.component.scss'
+  selector: 'app-details',
+  imports: [SharedModule],
+  templateUrl: './details.component.html',
+  styleUrl: './details.component.scss',
 })
 export class DetailsComponent implements OnInit {
-  item?: ProductItem;
+  item?: StripeProductPrice;
 
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly navigationService = inject(NavigationService);
   private readonly cartService = inject(CartService);
+  private readonly productService = inject(ProductService);
 
   ngOnInit(): void {
-    this.item = demoItems.find(
-      (item: ProductItem): boolean =>
-        item.slug === this.activatedRoute.snapshot.params['slug']
-    );
+    const { slug, productId } = this.activatedRoute.snapshot.params;
+    this.productService
+      .getItemBy(slug || productId)
+      .pipe(take(1))
+      .subscribe((item) => {
+        this.item = item;
+      });
   }
 
   goBack() {
     this.navigationService.goBack('/menu');
   }
 
-  addToCart(item: ProductItem): void {
+  addToCart(item: StripeProductPrice): void {
     this.cartService.addToCart({ ...item, quantity: 1 });
   }
 }
