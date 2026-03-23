@@ -1,5 +1,5 @@
-import { ProductItem } from '../../../../shared-lib/src/public-api';
+import { StripeProductPrice } from 'sbc-cafe-shared-module';
 
-export type CartItem = ProductItem & {
+export type CartItem = StripeProductPrice & {
   quantity: number;
 };

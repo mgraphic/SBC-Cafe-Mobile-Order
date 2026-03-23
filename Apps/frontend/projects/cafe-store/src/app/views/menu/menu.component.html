@@ -1,9 +1,19 @@
 <div class="container">
   <div class="row">
-    @for(item of items; track item) {
-    <div class="col-sm-12 col-md-6 col-lg-4">
-      <app-menu-tile [item]="item" (onSelect)="onSelect($event)" />
-    </div>
+    @for (item of items; track item) {
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <app-menu-tile [item]="item" (onSelect)="onSelect($event)" />
+      </div>
     }
   </div>
+  @if (isLoading) {
+    <div class="row justify-content-center py-3">
+      <div class="col-auto">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </div>
+  }
+  <div #scrollSentinel></div>
 </div>

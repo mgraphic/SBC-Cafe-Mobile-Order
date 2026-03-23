@@ -32,6 +32,7 @@ Apps/frontend/.angular/cache
 *.launch
 .settings/
 *.sublime-workspace
+.vscode/
 
 # Visual Studio Code
 .vscode/*

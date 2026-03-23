@@ -1,6 +1,6 @@
 {
     "name": "sbc-cafe-shared-module",
-    "version": "3.1.5",
+    "version": "3.2.0",
     "type": "module",
     "exports": {
         ".": {
@@ -84,6 +84,7 @@
         "dotenv": "^16.4.7",
         "express": "^4.21.2",
         "jsonwebtoken": "^9.0.2",
+        "stripe": "^20.4.1",
         "winston": "^3.17.0"
     }
 }
