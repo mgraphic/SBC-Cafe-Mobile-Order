@@ -77,6 +77,34 @@ When you want to shut everything down, use the following command to stop and rem
 docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && docker rmi -f $(docker images -aq)
 ```
 
+## Stripe Sandbox
+
+To work with payments, you will need to create a free sandbox account with [Stripe](https://dashboard.stripe.com/register).
+
+Once you have created an account and logged in, you will be in **Test mode**.
+
+You will need to add products to your Stripe account. For each product, you must add a `slug` in the metadata.
+
+1.  From the Stripe dashboard, go to the "Products" page.
+2.  Click "Add product".
+3.  Fill out the product details (Name, Description, Image, Price).
+4.  In the "Metadata" section, add a key called `slug` and give it a value. The slug should be a URL-friendly version of the product name (e.g., `iced-coffee`).
+5.  Click "Save product".
+
+Repeat for all the products you want to have in the cafe store.
+
+You will also need to add your Stripe API keys to the project.
+
+1.  From the Stripe dashboard, go to the "Developers" page and then the "API keys" page.
+2.  You will find your **Publishable key** and **Secret key**.
+3.  Create a new file named `.env` in the root project directory.
+4.  Add the following lines to the `.env` file, replacing the placeholder values with your actual keys:
+
+```
+STRIPE_PUBLISH_KEY=pk_test_...
+STRIPE_SECRET_KEY=sk_test_...
+```
+
 ## Docker
 
 To build and/or run a specific container, refer to the container service name...
@@ -139,6 +167,6 @@ AWS_ACCESS_KEY_ID=dummyaccesskey AWS_SECRET_ACCESS_KEY=dummysecretkey aws dynamo
 
 ## References
 
--   [AWS-CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) Installation
--   [Docker Desktop](https://www.docker.com/products/docker-desktop/) Installation
--   [Git](https://git-scm.com/downloads) Installation
+- [AWS-CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) Installation
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) Installation
+- [Git](https://git-scm.com/downloads) Installation

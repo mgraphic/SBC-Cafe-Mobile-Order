@@ -10,7 +10,9 @@ import {
 import { environment } from '../environment';
 import { logger } from '../shared/logger.utils';
 
-const stripe = new StripeApi(environment.stripeApi.secretKey);
+const stripe = new StripeApi(environment.stripeApi.secretKey, {
+    ...environment.stripeApi.url,
+});
 
 export async function getAllItems(
     req: Request,

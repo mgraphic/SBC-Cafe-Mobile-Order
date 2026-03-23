@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
 import { resolve } from 'path';
-import { LoggerLevel } from 'sbc-cafe-shared-module';
+import { LoggerLevel, Stripe } from 'sbc-cafe-shared-module';
 
 config({ path: resolve(process.cwd(), '../../../.env') });
 
@@ -14,6 +14,18 @@ const redactedKeys = getEnvironmentVariable(
     'password,username,accessTokenSecret,refreshTokenSecret,jwt',
 ).split(',');
 
+const stripeApiUrl = getEnvironmentVariable('STRIPE_API_URL', undefined);
+const {
+    protocol: rawProtocol,
+    host,
+    port,
+} = stripeApiUrl
+    ? new URL(stripeApiUrl)
+    : { protocol: undefined, host: undefined, port: undefined };
+const protocol = rawProtocol
+    ? (rawProtocol.replace(':', '') as Stripe.HttpProtocol)
+    : undefined;
+
 export const environment: {
     service: string;
     level: LoggerLevel;
@@ -23,6 +35,11 @@ export const environment: {
     redactedRegex: string[];
     redactedKeys: string[];
     stripeApi: {
+        url: {
+            protocol: Stripe.HttpProtocol | undefined;
+            host: string | undefined;
+            port: string | undefined;
+        };
         secretKey: string;
         baseUrl: string;
     };
@@ -35,6 +52,11 @@ export const environment: {
     redactedRegex,
     redactedKeys,
     stripeApi: {
+        url: {
+            protocol,
+            host,
+            port,
+        },
         secretKey: getEnvironmentVariable('STRIPE_SECRET_KEY', ''),
         baseUrl: getEnvironmentVariable(
             'STRIPE_BASE_URL',
