@@ -14,14 +14,14 @@ const redactedKeys = getEnvironmentVariable(
     'password,username,accessTokenSecret,refreshTokenSecret,jwt',
 ).split(',');
 
-const stripeApiUrl = getEnvironmentVariable('STRIPE_API_URL', undefined);
+const stripeApiUrl = getEnvironmentVariable('STRIPE_BASE_URL', undefined);
 const {
     protocol: rawProtocol,
-    host,
+    hostname: host,
     port,
 } = stripeApiUrl
     ? new URL(stripeApiUrl)
-    : { protocol: undefined, host: undefined, port: undefined };
+    : { protocol: undefined, hostname: undefined, port: undefined };
 const protocol = rawProtocol
     ? (rawProtocol.replace(':', '') as Stripe.HttpProtocol)
     : undefined;
@@ -41,7 +41,6 @@ export const environment: {
             port: string | undefined;
         };
         secretKey: string;
-        baseUrl: string;
     };
 } = {
     service: 'cafe-service',
@@ -58,10 +57,6 @@ export const environment: {
             port,
         },
         secretKey: getEnvironmentVariable('STRIPE_SECRET_KEY', ''),
-        baseUrl: getEnvironmentVariable(
-            'STRIPE_BASE_URL',
-            'https://api.stripe.com',
-        ),
     },
 };
 
