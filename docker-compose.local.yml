@@ -90,6 +90,8 @@ services:
 
         environment:
             AWS_ENDPOINT_URL: http://dynamodb-local:8000
+            STRIPE_BASE_URL: http://stripe-mock-api:4242
+            STRIPE_SECRET_KEY: sk_test_mock
 
     auth-service:
         build:
@@ -136,3 +138,13 @@ services:
             - db-init
             - cafe-service
             - auth-service
+
+    # Stripe Mock API
+    stripe-mock-api:
+        image: marshallgraphics/sbc-cmo-stripe-mock-api:latest
+
+        ports:
+            - '4242:4242'
+
+        volumes:
+            - './Local/stripe-mock-api-data:/app/data'

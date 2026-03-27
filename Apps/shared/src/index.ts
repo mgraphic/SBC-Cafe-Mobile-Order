@@ -6,3 +6,4 @@ export * from './tracker';
 export * from './user';
 export * from './validator';
 export * from './shared-environment';
+export * from './global.d';
