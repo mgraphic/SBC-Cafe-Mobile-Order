@@ -1,6 +1,11 @@
 import { NextFunction, Request, Response, Router } from 'express';
+import { isProductId } from 'sbc-cafe-shared-module';
 import { environment } from '../environment';
-import { getMenu } from '../handlers/product.handler';
+import {
+    getAllItems,
+    getItemById,
+    getItemBySlug,
+} from '../handlers/product.handler';
 
 export const storeRouter: Router = Router();
 
@@ -19,4 +24,15 @@ storeRouter.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // Private API
-storeRouter.get('/menu', getMenu);
+storeRouter.get('/items', getAllItems);
+storeRouter.get('/item/:identifier', (req: Request, res: Response) => {
+    const identifier = req.params.identifier as string;
+
+    if (isProductId(identifier)) {
+        req.params.id = identifier;
+        getItemById(req, res);
+    } else {
+        req.params.slug = identifier;
+        getItemBySlug(req, res);
+    }
+});

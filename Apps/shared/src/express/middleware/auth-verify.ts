@@ -1,6 +1,6 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { verifyAccessToken } from '../user/jwt.utils';
-import { TokenUser } from '../user/token-user';
+import { verifyAccessToken } from '../../user/jwt.utils';
+import { TokenUser } from '../../user/token-user';
 
 export function authVerify(): RequestHandler {
     return (req: Request, res: Response, next: NextFunction): void => {

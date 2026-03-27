@@ -1,6 +1,6 @@
 import { RequestHandler, NextFunction, Request } from 'express';
-import { TrackerLog } from '../tracker/tracker.model';
-import { UserTrackerLogService } from '../tracker/user-tracker-log.service';
+import { TrackerLog } from '../../tracker/tracker.model';
+import { UserTrackerLogService } from '../../tracker/user-tracker-log.service';
 
 export function userLogTracker(): RequestHandler {
     return (req: Request, _: unknown, next: NextFunction): void => {

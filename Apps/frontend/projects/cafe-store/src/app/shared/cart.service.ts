@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { CartItem } from './cart.model';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CartService {
-  private readonly cartItems = new Map<number, CartItem>();
+  private readonly cartItems = new Map<string, CartItem>();
 
   cartUpdated$: Subject<void> = new Subject();
 
@@ -54,7 +54,10 @@ export class CartService {
 
   getTotalPrice(): number {
     return this.getItems().reduce((acc: number, item: CartItem) => {
-      return acc + item.quantity * item.price;
+      return (
+        acc +
+        item.quantity * Number(item.default_price.unit_amount_decimal || 0)
+      );
     }, 0);
   }
 }

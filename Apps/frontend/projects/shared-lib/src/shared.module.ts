@@ -9,11 +9,12 @@ import {
 } from './lib/models/toast.model';
 import { ToastControllerService } from './lib/services/toast-controller.service';
 import { ToastConfigService } from './lib/services/toast-config.service';
+import { ConvertUnitPricePipe } from './lib/pipes/convert-unit-price.pipe';
 
 @NgModule({
   declarations: [],
-  imports: [CommonModule, CurrencyPipe],
-  exports: [CommonModule, CurrencyPipe],
+  imports: [CommonModule, CurrencyPipe, ConvertUnitPricePipe],
+  exports: [CommonModule, CurrencyPipe, ConvertUnitPricePipe],
   providers: [{ provide: ENVIROMENT_INJECTION_TOKEN, useValue: environment }],
 })
 export class SharedModule {
