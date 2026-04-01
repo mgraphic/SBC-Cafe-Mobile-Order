@@ -74,7 +74,7 @@ docker compose -f docker-compose.dev.yml up --build -d
 Run this command in order to run the Stripe Mock API:
 
 ```sh
-docker compose up -f docker-compose.local.yml --build stripe-mock-api -d
+docker compose -f docker-compose.local.yml up --build stripe-mock-api -d
 ```
 
 Run this command to build and run the db and Stripe Mock API:
