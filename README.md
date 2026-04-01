@@ -71,6 +71,19 @@ Run this command to build and run the db:
 docker compose -f docker-compose.dev.yml up --build -d
 ```
 
+Run this command in order to run the Stripe Mock API:
+
+```sh
+docker compose up -f docker-compose.local.yml --build stripe-mock-api -d
+```
+
+Run this command to build and run the db and Stripe Mock API:
+
+```sh
+docker compose -f docker-compose.dev.yml up --build -d
+docker compose -f docker-compose.local.yml up --build stripe-mock-api -d
+```
+
 When you want to shut everything down, use the following command to stop and remove all the demo containers:
 
 ```sh
@@ -103,6 +116,12 @@ You will also need to add your Stripe API keys to the project.
 ```
 STRIPE_PUBLISH_KEY=pk_test_...
 STRIPE_SECRET_KEY=sk_test_...
+```
+
+Run this command in order to run the Stripe Mock API:
+
+```sh
+docker compose -f docker-compose.local.yml up --build stripe-mock-api -d
 ```
 
 ## Docker
