@@ -11,7 +11,8 @@ COPY package.json package-lock.json .npmrc ./
 COPY custom_modules ./custom_modules
 RUN npm ci
 COPY . .
-RUN npm run build ${APP_NAME}
+RUN npm run build -- --project shared-lib
+RUN npm run build -- --project ${APP_NAME}
 
 # Web Container:
 FROM nginx:stable

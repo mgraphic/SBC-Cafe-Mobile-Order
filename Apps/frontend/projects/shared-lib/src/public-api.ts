@@ -16,11 +16,17 @@ export * from './lib/models/toast.model';
 export * from './shared.module';
 export * from './lib/modules/toast/toast.module';
 
+// Pipes
+export * from './lib/pipes/convert-unit-price.pipe';
+
 // Services
 export * from './lib/services/product.service';
 export * from './lib/services/toast-config.service';
 export * from './lib/services/toast-controller.service';
 export * from './lib/services/toast.service';
+export * from './lib/services/realtime.service';
+export * from './lib/services/realtime-event-listner';
+export * from './lib/services/session.service';
 
 // Utilities
 export * from './lib/utilities/combobox.utils';

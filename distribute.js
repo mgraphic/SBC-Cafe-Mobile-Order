@@ -24,6 +24,7 @@ const sourcePath = path.resolve('Apps/shared/output');
 const targetPath = [
     path.resolve('Apps/backend/auth-service'),
     path.resolve('Apps/backend/cafe-service'),
+    path.resolve('Apps/backend/realtime-gateway'),
     path.resolve('Apps/frontend'),
 ];
 
@@ -48,7 +49,7 @@ function startSpinner(text) {
     let i = 0;
     const interval = setInterval(() => {
         process.stdout.write(
-            `\r${ANSI_COLORS.green}${SPINNER_FRAMES[(i = ++i % SPINNER_FRAMES.length)]}${ANSI_COLORS.reset} ${ANSI_COLORS.bold}${ANSI_COLORS.white}${text}${ANSI_COLORS.reset}`,
+            `\r${ANSI_COLORS.green}${SPINNER_FRAMES[++i % SPINNER_FRAMES.length]}${ANSI_COLORS.reset} ${ANSI_COLORS.bold}${ANSI_COLORS.white}${text}${ANSI_COLORS.reset}`,
         );
     }, 80);
 

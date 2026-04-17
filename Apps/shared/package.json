@@ -1,6 +1,6 @@
 {
     "name": "sbc-cafe-shared-module",
-    "version": "3.2.1",
+    "version": "3.3.0",
     "type": "module",
     "exports": {
         ".": {
@@ -80,11 +80,13 @@
     "dependencies": {
         "@aws-sdk/client-dynamodb": "^3.788.0",
         "@aws-sdk/lib-dynamodb": "^3.788.0",
-        "@mgraphic/cipher-token": "^1.1.1",
+        "@mgraphic/cipher-token": "^1.1.2",
         "dotenv": "^16.4.7",
         "express": "^4.21.2",
         "jsonwebtoken": "^9.0.2",
+        "socket.io-client": "^4.8.3",
         "stripe": "^20.4.1",
-        "winston": "^3.17.0"
+        "winston": "^3.17.0",
+        "zod": "^4.3.6"
     }
 }
