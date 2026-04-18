@@ -3,6 +3,41 @@ const fs = require('fs');
 const { exec } = require('child_process');
 
 /* ####################################################################### */
+/*                            ASCII ART LOGO                               */
+/* ####################################################################### */
+
+console.log(`
+╔═══════════════════════════════════════════════════════════════════════╗
+║                                                                       ║
+║     ████████╗██╗  ██╗███████╗    ███████╗██████╗  ██████╗             ║
+║     ╚══██╔══╝██║  ██║██╔════╝    ██╔════╝██╔══██╗██╔════╝             ║
+║        ██║   ███████║█████╗      ███████╗██████╔╝██║                  ║
+║        ██║   ██╔══██║██╔══╝      ╚════██║██╔══██╗██║                  ║
+║        ██║   ██║  ██║███████╗    ███████║██████╔╝╚██████╗             ║
+║        ╚═╝   ╚═╝  ╚═╝╚══════╝    ╚══════╝╚═════╝  ╚═════╝             ║
+║                                                                       ║
+║        ██████╗ █████╗ ███████╗███████╗                                ║
+║       ██╔════╝██╔══██╗██╔════╝██╔════╝                                ║
+║       ██║     ███████║█████╗  █████╗                                  ║
+║       ██║     ██╔══██║██╔══╝  ██╔══╝                                  ║
+║       ╚██████╗██║  ██║██║     ███████╗                                ║
+║        ╚═════╝╚═╝  ╚═╝╚═╝     ╚══════╝                                ║
+║                                                                       ║
+║        ██████╗ ██████╗  ██████╗      ██╗███████╗ ██████╗████████╗     ║
+║        ██╔══██╗██╔══██╗██╔═══██╗     ██║██╔════╝██╔════╝╚══██╔══╝     ║
+║        ██████╔╝██████╔╝██║   ██║     ██║█████╗  ██║        ██║        ║
+║        ██╔═══╝ ██╔══██╗██║   ██║██   ██║██╔══╝  ██║        ██║        ║
+║        ██║     ██║  ██║╚██████╔╝╚█████╔╝███████╗╚██████╗   ██║        ║
+║        ╚═╝     ╚═╝  ╚═╝ ╚═════╝  ╚════╝ ╚══════╝ ╚═════╝   ╚═╝        ║
+║                                                                       ║
+║                    🔷 MOBILE ORDERING SYSTEM 🔷                       ║
+║                                                                       ║
+║                   📦 Shared Module Distributor 📦                     ║
+║                                                                       ║
+╚═══════════════════════════════════════════════════════════════════════╝
+`);
+
+/* ####################################################################### */
 
 // Spinner frames and ANSI color codes for styling console output
 const SPINNER_FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
@@ -28,15 +63,19 @@ const targetPath = [
     path.resolve('Apps/frontend'),
 ];
 
-console.log({ sourcePath });
-console.log({ targetPath });
+(async () => {
+    await sleep(2000); // Simulate some startup time
 
-console.log(
-    `\r\n${ANSI_COLORS.bold}${ANSI_COLORS.blue}File to Distribute: ${getLatestFile(sourcePath)}${ANSI_COLORS.reset}`,
-);
+    console.log({ sourcePath });
+    console.log({ targetPath });
 
-// Start the distribution process
-copyLatestFileToTargets(sourcePath, targetPath);
+    console.log(
+        `\r\n${ANSI_COLORS.bold}${ANSI_COLORS.blue}File to Distribute: ${getLatestFile(sourcePath)}${ANSI_COLORS.reset}`,
+    );
+
+    // Start the distribution process
+    await copyLatestFileToTargets(sourcePath, targetPath);
+})();
 
 /* ####################################################################### */
 
@@ -62,6 +101,10 @@ function stopSpinner(interval, text) {
     process.stdout.write(
         `\r${ANSI_COLORS.bold}${ANSI_COLORS.green}✔${ANSI_COLORS.reset} ${ANSI_COLORS.bold}${ANSI_COLORS.yellow}${text}${ANSI_COLORS.reset}\n`,
     );
+}
+
+async function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 // Processing distribution helpers
@@ -137,7 +180,7 @@ async function copyLatestFileToTargets(sourceDir, targetDirs) {
         stopSpinner(spinner1, step1);
 
         // 2. Remove the targetDir/node_modules dir
-        const step2 = `Remove the node_modules directory: ${targetName}`;
+        const step2 = `Delete the node_modules directory: ${targetName}`;
         const spinner2 = startSpinner(step2);
         const nodeModulesDir = path.join(targetDir, 'node_modules');
         await attempt(() =>
