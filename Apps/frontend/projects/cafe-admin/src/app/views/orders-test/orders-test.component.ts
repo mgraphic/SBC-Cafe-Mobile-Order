@@ -7,9 +7,10 @@ import {
   RealtimeEvent,
 } from 'sbc-cafe-shared-module';
 import { ToastService } from '../../../../../shared-lib/src/public-api';
+import { DatePipe } from '@angular/common';
 
 @Component({
-  imports: [],
+  imports: [DatePipe],
   templateUrl: './orders-test.component.html',
   styleUrl: './orders-test.component.scss',
 })

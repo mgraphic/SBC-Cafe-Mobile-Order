@@ -27,6 +27,6 @@ export class SessionService {
     window.crypto.getRandomValues(array);
     const prepend = Array.from(array, (dec) => dec.toString(16)).join('');
 
-    return `${prepend}:${navigator.userAgent}:${crypto.randomUUID()}`;
+    return `${prepend}:${crypto.randomUUID()}`;
   }
 }
