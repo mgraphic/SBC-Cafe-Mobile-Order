@@ -1,6 +1,7 @@
 export * from './aws';
 export * from './logger';
 export * from './express';
+export * from './realtime';
 export * from './stripe';
 export * from './tracker';
 export * from './user';

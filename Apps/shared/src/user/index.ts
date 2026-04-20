@@ -5,3 +5,4 @@ export * from './token-user';
 export * from './user.model';
 export * from './user.utils';
 export * from './users.service';
+export * from './session.model';

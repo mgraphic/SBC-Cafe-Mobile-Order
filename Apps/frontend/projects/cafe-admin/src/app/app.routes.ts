@@ -36,4 +36,11 @@ export const routes: Routes = [
         (c) => c.ToastTestComponent,
       ),
   },
+  {
+    path: 'orders-test',
+    loadComponent: () =>
+      import('./views/orders-test/orders-test.component').then(
+        (c) => c.OrdersTestComponent,
+      ),
+  },
 ];

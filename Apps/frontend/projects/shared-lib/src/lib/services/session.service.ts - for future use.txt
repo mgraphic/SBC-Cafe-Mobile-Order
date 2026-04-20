@@ -1,0 +1,70 @@
+import { effect, Injectable, signal } from '@angular/core';
+import { SessionData } from '../models/session.model';
+
+@Injectable(/* {
+  providedIn: 'root',
+} */)
+export class SessionService {
+  private readonly sessionId: string = this.getSessionId();
+  private readonly sessionData = signal<SessionData | null>(null);
+
+  public constructor() {
+    sessionStorage.setItem('sessionId', this.sessionId);
+
+    effect(() => {
+      const data = this.sessionData();
+      sessionStorage.setItem('sessionData', JSON.stringify(data));
+    });
+  }
+
+  public getSessionId(): string {
+    if (this.sessionId) {
+      return this.sessionId;
+    }
+
+    const storedSessionId = sessionStorage.getItem('sessionId');
+
+    if (storedSessionId && storedSessionId.trim().length > 0) {
+      return storedSessionId.trim();
+    }
+
+    return this.generateSessionId();
+  }
+
+  public getSessionData(): SessionData | null {
+    if (this.sessionData()) {
+      return this.sessionData()!;
+    }
+
+    const storedData = sessionStorage.getItem('sessionData');
+
+    if (storedData) {
+      try {
+        return JSON.parse(storedData);
+      } catch (e) {
+        console.error('Error parsing session data from storage', e);
+        return null;
+      }
+    }
+
+    return null;
+  }
+
+  public setSessionData(data: SessionData): void {
+    this.sessionData.set(data);
+  }
+
+  public updateSessionData(partialData: Partial<SessionData>): void {
+    const currentData: SessionData = this.sessionData() || {};
+    const updatedData = { ...currentData, ...partialData };
+    this.setSessionData(updatedData);
+  }
+
+  private generateSessionId(): string {
+    const array = new Uint32Array(4);
+    window.crypto.getRandomValues(array);
+    const prepend = Array.from(array, (dec) => dec.toString(16)).join('');
+
+    return `${prepend}:${navigator.userAgent}:${crypto.randomUUID()}`;
+  }
+}

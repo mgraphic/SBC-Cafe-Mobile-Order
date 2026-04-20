@@ -40,7 +40,7 @@
     "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
-    "@mgraphic/cipher-token": "^1.1.1",
+    "@mgraphic/cipher-token": "^1.1.2",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
@@ -48,6 +48,6 @@
     "express-rate-limit": "^7.5.0",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
-    "sbc-cafe-shared-module": "file:custom_modules/sbc-cafe-shared-module-3.2.1.tgz"
+    "sbc-cafe-shared-module": "file:custom_modules/sbc-cafe-shared-module-3.3.0.tgz"
   }
 }

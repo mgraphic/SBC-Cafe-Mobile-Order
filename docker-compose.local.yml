@@ -28,6 +28,22 @@ services:
             - 8081:80
 
     # Demo Backend
+    rt-gateway:
+        build:
+            context: ./Apps/backend/realtime-gateway
+            dockerfile: Dockerfile
+
+        image: rt-gateway
+        container_name: rt-gateway
+        restart: on-failure
+
+        ports:
+            - '3200:3200'
+
+        environment:
+            - CORS_ORIGINS=http://localhost,http://localhost:80,http://localhost:81
+            - REALTIME_GATEWAY_ENDPOINT_URL=http://rt-gateway:3200
+
     cafe-service:
         build:
             context: ./Apps/backend/cafe-service
@@ -44,6 +60,7 @@ services:
             AWS_ENDPOINT_URL: http://dynamodb-local:8000
             STRIPE_BASE_URL: http://stripe-mock-api:4242
             STRIPE_SECRET_KEY: sk_test_mock
+            REALTIME_GATEWAY_ENDPOINT_URL: http://rt-gateway:3200
 
     auth-service:
         build:
@@ -74,6 +91,8 @@ services:
             - cafe-store
             - db-init
             - cafe-service
+            - rt-gateway
+            - stripe-mock-api
 
     admin:
         image: nginx:latest
@@ -90,6 +109,8 @@ services:
             - db-init
             - cafe-service
             - auth-service
+            - rt-gateway
+            - stripe-mock-api
 
     # Stripe Mock API
     stripe-mock-api:

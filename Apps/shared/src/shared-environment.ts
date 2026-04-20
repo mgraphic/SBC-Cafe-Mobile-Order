@@ -14,6 +14,10 @@ export const sharedEnvironment: {
         region: string;
         endpoint?: string;
     };
+    realtime: {
+        endpoint: string;
+        path: string;
+    };
 } = {
     accessTokenSecret: getEnvironmentVariable(
         'ACCESS_TOKEN_SECRET',
@@ -37,6 +41,13 @@ export const sharedEnvironment: {
             'AWS_ENDPOINT_URL',
             env === 'local' ? 'http://localhost:8000' : undefined,
         ),
+    },
+    realtime: {
+        endpoint: getEnvironmentVariable(
+            'REALTIME_GATEWAY_ENDPOINT_URL',
+            'http://localhost:3200',
+        ),
+        path: getEnvironmentVariable('REALTIME_GATEWAY_PATH', '/socket.io'),
     },
 };
 

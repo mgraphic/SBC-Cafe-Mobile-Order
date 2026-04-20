@@ -21,6 +21,7 @@ export {
     type UserRole,
     userRoles,
 } from './user/user.model';
+export { type SessionData } from './user/session.model';
 export {
     getUserPermissionGroupFromPermission,
     isPermission,
@@ -40,3 +41,4 @@ export {
     type StripeProductPriceList,
 } from './stripe';
 export { type ApiError } from './express';
+export * from './realtime';

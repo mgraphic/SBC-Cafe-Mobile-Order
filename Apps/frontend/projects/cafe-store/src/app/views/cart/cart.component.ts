@@ -5,15 +5,15 @@ import { CartService } from '../../shared/cart.service';
 import { SharedModule } from '../../../../../shared-lib/src/public-api';
 
 @Component({
-    selector: 'app-cart',
-    imports: [SharedModule],
-    templateUrl: './cart.component.html',
-    styleUrl: './cart.component.scss'
+  selector: 'app-cart',
+  imports: [SharedModule],
+  templateUrl: './cart.component.html',
+  styleUrl: './cart.component.scss',
 })
 export class CartComponent implements OnInit {
   protected cartItems: CartItem[] = [];
   protected readonly cartService = inject(CartService);
-  private destroyRef = inject(DestroyRef);
+  private readonly destroyRef = inject(DestroyRef);
 
   ngOnInit(): void {
     this.cartItems = this.cartService.getItems();
@@ -27,5 +27,10 @@ export class CartComponent implements OnInit {
 
   removeFromCart(item: CartItem): void {
     this.cartService.removeFromCart(item);
+  }
+
+  onCheckout(): void {
+    const orderId = Math.random().toString(36).substring(2, 15); // Replace with actual order ID
+    this.cartService.submitOrder(orderId);
   }
 }
