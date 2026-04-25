@@ -1,4 +1,10 @@
-export type { IPageable, IPageableMetadata, PaginatedPayload } from './aws';
+export {
+    type IPageable,
+    type IPageableMetadata,
+    type PaginatedPayload,
+    PAGINATED_DEFAULT_PAGESIZE,
+    PAGINATED_PAGESIZE_OPTIONS,
+} from './aws/aws.model';
 export type { ITracker, UserTrackerLogsLookup } from './tracker';
 export {
     ACCESS_TOKEN_EXPIRY,

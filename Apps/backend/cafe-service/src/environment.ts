@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
 import { resolve } from 'path';
-import { LoggerLevel, Stripe } from 'sbc-cafe-shared-module';
+import { LoggerLevel, sharedEnvironment, Stripe } from 'sbc-cafe-shared-module';
 
 config({ path: resolve(process.cwd(), '../../../.env') });
 
@@ -26,12 +26,11 @@ const protocol = rawProtocol
     ? (rawProtocol.replace(':', '') as Stripe.HttpProtocol)
     : undefined;
 
-export const environment: {
+export const environment: typeof sharedEnvironment & {
     service: string;
     level: LoggerLevel;
     env: string;
     port: number;
-    accessToken: string | null;
     redactedRegex: string[];
     redactedKeys: string[];
     stripeApi: {
@@ -43,11 +42,11 @@ export const environment: {
         secretKey: string;
     };
 } = {
+    ...sharedEnvironment,
     service: 'cafe-service',
     level: getEnvironmentVariable('LEVEL', 'info') as LoggerLevel,
     env,
     port: parseInt(getEnvironmentVariable('PORT', '3000'), 10),
-    accessToken: getEnvironmentVariable('ACCESS_TOKEN', null),
     redactedRegex,
     redactedKeys,
     stripeApi: {

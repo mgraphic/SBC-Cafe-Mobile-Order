@@ -23,6 +23,7 @@ export async function submitOrder(
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-Internal-Api-Key': sharedEnvironment.privateSharedApiKey,
             },
             body: JSON.stringify(event),
         });

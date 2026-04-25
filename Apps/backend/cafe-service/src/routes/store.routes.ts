@@ -14,8 +14,11 @@ export const storeRouter: Router = Router();
 
 // Middleware to check for access token
 storeRouter.use((req: Request, res: Response, next: NextFunction) => {
-    if (environment.accessToken) {
-        if (req.headers['x-access-token'] !== environment.accessToken) {
+    if (environment.publishedSharedApiKey) {
+        if (
+            req.headers['x-public-api-key'] !==
+            environment.publishedSharedApiKey
+        ) {
             res.status(403).send('Access denied. Invalid token');
             return;
         }
