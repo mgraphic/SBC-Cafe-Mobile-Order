@@ -11,7 +11,7 @@ const redactedRegex = getEnvironmentVariable(
 ).split(',');
 const redactedKeys = getEnvironmentVariable(
     'REDACTED_KEYS',
-    'password,username,accessTokenSecret,refreshTokenSecret,jwt',
+    'password,username,accessTokenSecret,refreshTokenSecret,jwt,x-internal-api-key',
 ).split(',');
 
 export const environment: typeof sharedEnvironment & {

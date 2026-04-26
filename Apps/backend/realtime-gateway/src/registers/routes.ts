@@ -19,6 +19,11 @@ function requireInternalApiKey(
     next: NextFunction,
 ): void {
     const apiKey = req.header('x-internal-api-key');
+
+    if ('x-internal-api-key' in req.headers) {
+        req.headers['x-internal-api-key'] = '[REDACTED]';
+    }
+
     if (!apiKey || apiKey !== environment.privateSharedApiKey) {
         res.status(401).json({ error: 'Unauthorized' });
         return;

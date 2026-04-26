@@ -12,13 +12,16 @@ export const storeRouter: Router = Router();
 
 // Public API
 
-// Middleware to check for access token
+// Middleware to check for the published shared API key via x-public-api-key
 storeRouter.use((req: Request, res: Response, next: NextFunction) => {
+    const apiKey = req.headers['x-public-api-key'];
+
+    if ('x-public-api-key' in req.headers) {
+        req.headers['x-public-api-key'] = '[REDACTED]';
+    }
+
     if (environment.publishedSharedApiKey) {
-        if (
-            req.headers['x-public-api-key'] !==
-            environment.publishedSharedApiKey
-        ) {
+        if (apiKey !== environment.publishedSharedApiKey) {
             res.status(403).send('Access denied. Invalid token');
             return;
         }

@@ -6,8 +6,14 @@ config({ path: resolve(process.cwd(), '../../../.env') });
 const env = getEnvironmentVariable('APP_ENV', 'local');
 const privateSharedApiKey = getEnvironmentVariable(
     'PRIVATE_SHARED_API_KEY',
-    'private-shared-api-key',
+    env === 'local' ? 'private-shared-api-key' : undefined,
 );
+
+if (!privateSharedApiKey) {
+    throw new Error(
+        'PRIVATE_SHARED_API_KEY environment variable is required in non-local environments',
+    );
+}
 const publishedSharedApiKey = getEnvironmentVariable(
     'PUBLISHED_SHARED_API_KEY',
     null,
