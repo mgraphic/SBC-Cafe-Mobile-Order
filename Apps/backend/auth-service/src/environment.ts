@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
 import { resolve } from 'path';
-import { LoggerLevel } from 'sbc-cafe-shared-module';
+import { LoggerLevel, sharedEnvironment } from 'sbc-cafe-shared-module';
 
 config({ path: resolve(process.cwd(), '../../../.env') });
 
@@ -14,7 +14,7 @@ const redactedKeys = getEnvironmentVariable(
     'password,username,accessTokenSecret,refreshTokenSecret,jwt',
 ).split(',');
 
-export const environment: {
+export const environment: typeof sharedEnvironment & {
     service: string;
     level: LoggerLevel;
     env: string;
@@ -22,6 +22,7 @@ export const environment: {
     redactedRegex: string[];
     redactedKeys: string[];
 } = {
+    ...sharedEnvironment,
     service: 'auth-service',
     level: getEnvironmentVariable('LEVEL', 'info') as LoggerLevel,
     env,

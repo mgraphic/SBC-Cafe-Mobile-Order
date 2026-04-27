@@ -17,9 +17,14 @@ function requireInternalApiKey(
     req: Request,
     res: Response,
     next: NextFunction,
-) {
+): void {
     const apiKey = req.header('x-internal-api-key');
-    if (!apiKey || apiKey !== environment.accessToken) {
+
+    if ('x-internal-api-key' in req.headers) {
+        req.headers['x-internal-api-key'] = '[REDACTED]';
+    }
+
+    if (!apiKey || apiKey !== environment.privateSharedApiKey) {
         res.status(401).json({ error: 'Unauthorized' });
         return;
     }
@@ -27,25 +32,21 @@ function requireInternalApiKey(
 }
 
 export function registerInternalRoutes(app: Express, io: Server): void {
-    app.post(
-        '/publish',
-        // requireInternalApiKey,
-        (req, res) => {
-            const event = toRealtimeEvent(req.body);
+    app.post('/publish', requireInternalApiKey, (req, res) => {
+        const event = toRealtimeEvent(req.body);
 
-            if (!('type' in event && 'payload' in event)) {
-                res.status(400).json({
-                    error: 'Invalid event',
-                    details: 'Missing type or payload',
-                });
-                return;
-            }
+        if (!('type' in event && 'payload' in event)) {
+            res.status(400).json({
+                error: 'Invalid event',
+                details: 'Missing type or payload',
+            });
+            return;
+        }
 
-            publishEvent(io, event);
+        publishEvent(io, event);
 
-            res.status(202).json({ ok: true });
-        },
-    );
+        res.status(202).json({ ok: true });
+    });
 }
 
 function publishEvent(io: Server, event: RealtimeEvent): void {

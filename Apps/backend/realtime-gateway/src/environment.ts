@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
 import { resolve } from 'path';
-import { LoggerLevel } from 'sbc-cafe-shared-module';
+import { LoggerLevel, sharedEnvironment } from 'sbc-cafe-shared-module';
 
 config({ path: resolve(process.cwd(), '../../../.env') });
 
@@ -11,25 +11,24 @@ const redactedRegex = getEnvironmentVariable(
 ).split(',');
 const redactedKeys = getEnvironmentVariable(
     'REDACTED_KEYS',
-    'password,username,accessTokenSecret,refreshTokenSecret,jwt',
+    'password,username,accessTokenSecret,refreshTokenSecret,jwt,x-internal-api-key',
 ).split(',');
 
-export const environment: {
+export const environment: typeof sharedEnvironment & {
     service: string;
     level: LoggerLevel;
     env: string;
     port: number;
-    accessToken: string | null;
     redactedRegex: string[];
     redactedKeys: string[];
     corsOrigins: string[];
     socketPath: string;
 } = {
+    ...sharedEnvironment,
     service: 'realtime-gateway',
     level: getEnvironmentVariable('LEVEL', 'info') as LoggerLevel,
     env,
     port: parseInt(getEnvironmentVariable('PORT', '3200'), 10),
-    accessToken: getEnvironmentVariable('ACCESS_TOKEN', null),
     redactedRegex,
     redactedKeys,
     corsOrigins: getEnvironmentVariable('CORS_ORIGINS', 'http://localhost:4200')

@@ -4,10 +4,26 @@ import { resolve } from 'path';
 config({ path: resolve(process.cwd(), '../../../.env') });
 
 const env = getEnvironmentVariable('APP_ENV', 'local');
+const privateSharedApiKey = getEnvironmentVariable(
+    'PRIVATE_SHARED_API_KEY',
+    env === 'local' ? 'private-shared-api-key' : undefined,
+);
+const publishedSharedApiKey = getEnvironmentVariable(
+    'PUBLISHED_SHARED_API_KEY',
+    null,
+);
+
+if (!privateSharedApiKey) {
+    throw new Error(
+        'PRIVATE_SHARED_API_KEY environment variable is required in non-local environments',
+    );
+}
 
 export const sharedEnvironment: {
     accessTokenSecret: string;
     refreshTokenSecret: string;
+    privateSharedApiKey: string;
+    publishedSharedApiKey: string | null;
     aws: {
         accessKeyId?: string;
         secretAccessKey?: string;
@@ -27,6 +43,8 @@ export const sharedEnvironment: {
         'REFRESH_TOKEN_SECRET',
         'refresh-token-secret',
     ),
+    privateSharedApiKey,
+    publishedSharedApiKey,
     aws: {
         accessKeyId: getEnvironmentVariable(
             'AWS_ACCESS_KEY_ID',
