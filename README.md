@@ -37,8 +37,10 @@ open http://localhost:80
 open http://localhost:81
 ```
 
-Login as demo admin user:
+### Login as demo admin user:
+
 **Username/Email:** admin@local
+
 **User Password:** demo
 
 When you want to shut everything down, use the following command to stop and remove all the demo containers and images:
