@@ -56,7 +56,7 @@ import { registerInternalRoutes } from './registers/routes';
         logger.info(`Realtime Gateway started PORT=${environment.port}`, {
             port: environment.port,
             env: environment.env,
-            socketPath: environment.socketPath,
+            socketPath: environment.realtime.path,
         });
     });
 
