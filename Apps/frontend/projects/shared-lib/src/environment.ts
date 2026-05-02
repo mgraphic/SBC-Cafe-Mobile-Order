@@ -9,7 +9,7 @@ export const environment: Readonly<{
   paginatedDefaultPagesize: number;
   publishedSharedApiKey?: string | null;
 }> = {
-  realtimeGatewayServiceUrl: 'http://localhost:3200',
+  realtimeGatewayServiceUrl: 'http://localhost:3200', // This will be injected at runtime
   cafeStoreServiceUrl: 'cafe-service/api/v1/store',
   cafeAdminServiceUrl: 'cafe-service/api/v1/admin',
   authServiceUrl: 'auth-service/api/v1',

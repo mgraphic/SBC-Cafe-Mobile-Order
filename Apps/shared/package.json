@@ -1,6 +1,6 @@
 {
     "name": "sbc-cafe-shared-module",
-    "version": "3.4.0",
+    "version": "4.0.0",
     "type": "module",
     "exports": {
         ".": {
