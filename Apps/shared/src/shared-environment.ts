@@ -1,9 +1,5 @@
-import { config } from 'dotenv';
-import { resolve } from 'path';
 import Stripe from 'stripe';
 import { LoggerLevel } from './logger';
-
-config({ path: resolve(process.cwd(), '../../../.env') });
 
 const env = getEnvironmentVariable('APP_ENV', 'local');
 
