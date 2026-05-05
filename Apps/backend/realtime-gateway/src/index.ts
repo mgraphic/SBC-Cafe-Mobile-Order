@@ -1,10 +1,10 @@
 import http from 'node:http';
-import express, { Request, Response, NextFunction } from 'express';
+import express, { Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import { Server } from 'socket.io';
 import { environment } from './environment';
-// // @ts-ignore
+// @ts-ignore
 import pkg from '../package.json' with { type: 'json' };
 import { apiLogger } from 'sbc-cafe-shared-module';
 import { logger } from './shared/logger.utils';
@@ -42,7 +42,7 @@ import { registerInternalRoutes } from './registers/routes';
     const server = http.createServer(app);
 
     const io = new Server(server, {
-        path: environment.socketPath,
+        path: environment.realtime.path,
         cors: {
             origin: environment.corsOrigins,
             credentials: true,
@@ -56,7 +56,7 @@ import { registerInternalRoutes } from './registers/routes';
         logger.info(`Realtime Gateway started PORT=${environment.port}`, {
             port: environment.port,
             env: environment.env,
-            socketPath: environment.socketPath,
+            socketPath: environment.realtime.path,
         });
     });
 

@@ -2,6 +2,9 @@
 notes.txt
 .env
 
+# Generated environment files
+Apps/frontend/projects/shared-lib/src/runtime-environment.generated.ts
+
 # Dependencies
 node_modules/
 
