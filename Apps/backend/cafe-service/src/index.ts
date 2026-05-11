@@ -16,8 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 app.use(cookieParser());
-app.use(apiLogger(logger))
-
+app.use(apiLogger(logger));
 
 // Version
 app.get('/', (_: unknown, res: Response) => {
