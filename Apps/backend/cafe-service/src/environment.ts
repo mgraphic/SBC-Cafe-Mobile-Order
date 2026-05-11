@@ -7,11 +7,11 @@ import {
 
 config({ path: resolve(process.cwd(), '../../../.env') });
 
-export const environment: typeof sharedEnvironment & {
+export const environment: ReturnType<typeof sharedEnvironment> & {
     service: string;
     port: number;
 } = {
-    ...sharedEnvironment,
+    ...sharedEnvironment(),
     service: 'cafe-service',
     port: parseInt(getEnvironmentVariable('PORT', '3000'), 10),
 };
