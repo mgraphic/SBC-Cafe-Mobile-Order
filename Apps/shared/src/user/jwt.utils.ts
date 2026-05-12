@@ -1,13 +1,12 @@
 import jwt from 'jsonwebtoken';
-import { sharedEnvironment } from '../shared-environment';
+import { getSharedEnvironment } from '../environment-provider';
 import { AuthUser } from './auth-user';
 import { jwtPayloadFields, JwtUserPayload } from './user.model';
 import { ACCESS_TOKEN_EXPIRY, REFRESH_TOKEN_EXPIRY } from './jwt.config';
 
-const sharedEnv = sharedEnvironment();
-
 export function generateAccessToken(user: AuthUser): string {
     const jwtPayload = extractJwtPayload(user);
+    const sharedEnv = getSharedEnvironment();
     const accessToken = jwt.sign(jwtPayload, sharedEnv.accessTokenSecret, {
         expiresIn: ACCESS_TOKEN_EXPIRY,
     });
@@ -17,6 +16,7 @@ export function generateAccessToken(user: AuthUser): string {
 
 export function verifyAccessToken(token: string): JwtUserPayload | false {
     let verified: JwtUserPayload | false = false;
+    const sharedEnv = getSharedEnvironment();
 
     jwt.verify(token, sharedEnv.accessTokenSecret, (err, user) => {
         if (!err) {
@@ -29,6 +29,7 @@ export function verifyAccessToken(token: string): JwtUserPayload | false {
 
 export function generateRefreshToken(user: AuthUser): string {
     const jwtPayload = extractJwtPayload(user);
+    const sharedEnv = getSharedEnvironment();
     const accessToken = jwt.sign(jwtPayload, sharedEnv.refreshTokenSecret, {
         expiresIn: REFRESH_TOKEN_EXPIRY,
     });
@@ -38,6 +39,7 @@ export function generateRefreshToken(user: AuthUser): string {
 
 export function verifyRefreshToken(token: string): JwtUserPayload | false {
     let verified: JwtUserPayload | false = false;
+    const sharedEnv = getSharedEnvironment();
 
     jwt.verify(token, sharedEnv.refreshTokenSecret, (err, user) => {
         if (!err) {

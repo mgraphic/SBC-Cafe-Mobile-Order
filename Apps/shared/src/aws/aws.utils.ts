@@ -3,9 +3,7 @@ import {
     DynamoDBClient,
     DynamoDBClientConfig,
 } from '@aws-sdk/client-dynamodb';
-import { sharedEnvironment } from '../shared-environment';
-
-const sharedEnv = sharedEnvironment();
+import { getSharedEnvironment } from '../environment-provider';
 
 export function valueToAttributeValue<T>(value: T): AttributeValue {
     switch (typeof value) {
@@ -71,6 +69,7 @@ export function attributeMapToValues<T>(
 }
 
 function getDynamoDbConfig(): DynamoDBClientConfig {
+    const sharedEnv = getSharedEnvironment();
     const config: DynamoDBClientConfig = {
         region: sharedEnv.aws.region,
     };
@@ -96,4 +95,25 @@ function getDynamoDbConfig(): DynamoDBClientConfig {
     return config;
 }
 
-export const dynamoDbClient = new DynamoDBClient(getDynamoDbConfig());
+let _dynamoDbClient: DynamoDBClient | null = null;
+
+/**
+ * Get the DynamoDB client instance.
+ * Lazily initializes the client on first access using the current environment configuration.
+ */
+export function getDynamoDbClient(): DynamoDBClient {
+    if (!_dynamoDbClient) {
+        _dynamoDbClient = new DynamoDBClient(getDynamoDbConfig());
+    }
+    return _dynamoDbClient;
+}
+
+/**
+ * @deprecated Use getDynamoDbClient() instead for proper lazy initialization
+ */
+export const dynamoDbClient = new Proxy({} as DynamoDBClient, {
+    get: (target, prop) => {
+        const client = getDynamoDbClient();
+        return (client as any)[prop];
+    },
+});
