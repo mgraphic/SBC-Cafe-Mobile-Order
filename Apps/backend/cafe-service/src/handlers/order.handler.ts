@@ -3,8 +3,8 @@ import {
     ApiError,
     RealtimePartialEvent,
     NewOrderAlertEventPayload,
-    sharedEnvironment,
 } from 'sbc-cafe-shared-module';
+import { environment } from '../environment';
 
 export async function submitOrder(
     req: Request,
@@ -19,11 +19,11 @@ export async function submitOrder(
             },
         };
 
-        fetch(`${sharedEnvironment.realtime.endpoint}/publish`, {
+        fetch(`${environment.realtime.endpoint}/publish`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-Internal-Api-Key': sharedEnvironment.privateSharedApiKey,
+                'X-Internal-Api-Key': environment.privateSharedApiKey,
             },
             body: JSON.stringify(event),
         });

@@ -3,7 +3,7 @@ import {
     DynamoDBClient,
     DynamoDBClientConfig,
 } from '@aws-sdk/client-dynamodb';
-import { sharedEnvironment } from '../shared-environment';
+import { getSharedEnvironment } from '../environment-provider';
 
 export function valueToAttributeValue<T>(value: T): AttributeValue {
     switch (typeof value) {
@@ -23,7 +23,7 @@ export function valueToAttributeValue<T>(value: T): AttributeValue {
                         ...acc,
                         [key]: valueToAttributeValue(item),
                     }),
-                    {}
+                    {},
                 ),
             };
         default:
@@ -41,7 +41,7 @@ export function attributeValueToValue<T>(value: AttributeValue): T {
             return value.BOOL as T;
         case !!value.L:
             return value.L?.map((item) =>
-                attributeValueToValue(item)
+                attributeValueToValue(item),
             ) as unknown as T;
         case !!value.M:
             return Object.entries(value.M || []).reduce(
@@ -49,7 +49,7 @@ export function attributeValueToValue<T>(value: AttributeValue): T {
                     ...acc,
                     [key]: attributeValueToValue(item),
                 }),
-                {}
+                {},
             ) as unknown as T;
         default:
             throw new Error(`Unknown type ${JSON.stringify(value)}`);
@@ -57,38 +57,36 @@ export function attributeValueToValue<T>(value: AttributeValue): T {
 }
 
 export function attributeMapToValues<T>(
-    items: Record<string, AttributeValue>
+    items: Record<string, AttributeValue>,
 ): T {
     return Object.keys(items).reduce(
         (acc, key) => ({
             ...acc,
             [key]: attributeValueToValue(items[key]),
         }),
-        []
+        [],
     ) as T;
 }
 
 function getDynamoDbConfig(): DynamoDBClientConfig {
+    const sharedEnv = getSharedEnvironment();
     const config: DynamoDBClientConfig = {
-        region: sharedEnvironment.aws.region,
+        region: sharedEnv.aws.region,
     };
 
-    if (sharedEnvironment.aws.endpoint) {
-        config.endpoint = sharedEnvironment.aws.endpoint;
+    if (sharedEnv.aws.endpoint) {
+        config.endpoint = sharedEnv.aws.endpoint;
     }
 
-    if (
-        sharedEnvironment.aws.accessKeyId ||
-        sharedEnvironment.aws.secretAccessKey
-    ) {
+    if (sharedEnv.aws.accessKeyId || sharedEnv.aws.secretAccessKey) {
         const credentials: Record<string, string> = {};
 
-        if (sharedEnvironment.aws.accessKeyId) {
-            credentials.accessKeyId = sharedEnvironment.aws.accessKeyId;
+        if (sharedEnv.aws.accessKeyId) {
+            credentials.accessKeyId = sharedEnv.aws.accessKeyId;
         }
 
-        if (sharedEnvironment.aws.secretAccessKey) {
-            credentials.secretAccessKey = sharedEnvironment.aws.secretAccessKey;
+        if (sharedEnv.aws.secretAccessKey) {
+            credentials.secretAccessKey = sharedEnv.aws.secretAccessKey;
         }
 
         config.credentials = credentials as any;
@@ -97,4 +95,25 @@ function getDynamoDbConfig(): DynamoDBClientConfig {
     return config;
 }
 
-export const dynamoDbClient = new DynamoDBClient(getDynamoDbConfig());
+let _dynamoDbClient: DynamoDBClient | null = null;
+
+/**
+ * Get the DynamoDB client instance.
+ * Lazily initializes the client on first access using the current environment configuration.
+ */
+export function getDynamoDbClient(): DynamoDBClient {
+    if (!_dynamoDbClient) {
+        _dynamoDbClient = new DynamoDBClient(getDynamoDbConfig());
+    }
+    return _dynamoDbClient;
+}
+
+/**
+ * @deprecated Use getDynamoDbClient() instead for proper lazy initialization
+ */
+export const dynamoDbClient = new Proxy({} as DynamoDBClient, {
+    get: (target, prop) => {
+        const client = getDynamoDbClient();
+        return (client as any)[prop];
+    },
+});

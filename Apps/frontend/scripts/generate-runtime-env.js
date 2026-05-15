@@ -16,15 +16,16 @@ console.log("🔧 Generating runtime environment configuration...");
 
 // Import sharedEnvironment from the installed module
 const { sharedEnvironment } = require("sbc-cafe-shared-module");
+const sharedEnvValues = sharedEnvironment();
 
 console.log(
   "📦 Loaded shared environment from sbc-cafe-shared-module:",
-  sharedEnvironment,
+  sharedEnvValues,
 );
 
 // Extract the values we need from sharedEnvironment
-const realtimeEndpoint = sharedEnvironment.realtime.endpoint;
-const publishedSharedApiKey = sharedEnvironment.publishedSharedApiKey;
+const realtimeEndpoint = sharedEnvValues.realtime.endpoint;
+const publishedSharedApiKey = sharedEnvValues.publishedSharedApiKey;
 
 // Generate TypeScript content
 const tsContent = `/**
