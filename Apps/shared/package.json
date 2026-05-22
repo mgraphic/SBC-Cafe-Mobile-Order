@@ -1,6 +1,6 @@
 {
     "name": "sbc-cafe-shared-module",
-    "version": "5.0.0",
+    "version": "5.1.0",
     "type": "module",
     "exports": {
         ".": {
@@ -53,6 +53,7 @@
         "@types/ms": "^2.1.0",
         "@types/mute-stream": "^0.0.4",
         "@types/node": "^22.19.1",
+        "@types/nodemailer": "^8.0.0",
         "@types/qs": "^6.14.0",
         "@types/range-parser": "^1.2.7",
         "@types/send": "^1.2.1",
@@ -83,7 +84,9 @@
         "@mgraphic/cipher-token": "^1.1.2",
         "dotenv": "^16.4.7",
         "express": "^4.21.2",
+        "handlebars": "^4.7.9",
         "jsonwebtoken": "^9.0.2",
+        "nodemailer": "^8.0.7",
         "socket.io-client": "^4.8.3",
         "stripe": "^20.4.1",
         "winston": "^3.17.0",

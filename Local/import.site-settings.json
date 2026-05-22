@@ -1,0 +1,76 @@
+{
+    "SiteSettings": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "key": {
+                        "S": "organizationName"
+                    },
+                    "value": {
+                        "S": "SBC-Test"
+                    },
+                    "type": {
+                        "S": "string"
+                    },
+                    "group": {
+                        "S": "general"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "key": {
+                        "S": "organizationAddress"
+                    },
+                    "value": {
+                        "S": "123 Main St, Anytown, USA 12345"
+                    },
+                    "type": {
+                        "S": "string"
+                    },
+                    "group": {
+                        "S": "general"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "key": {
+                        "S": "cafeName"
+                    },
+                    "value": {
+                        "S": "Cafe"
+                    },
+                    "type": {
+                        "S": "string"
+                    },
+                    "group": {
+                        "S": "general"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "key": {
+                        "S": "cafeEmail"
+                    },
+                    "value": {
+                        "S": "cafe@example.com"
+                    },
+                    "type": {
+                        "S": "string"
+                    },
+                    "group": {
+                        "S": "general"
+                    }
+                }
+            }
+        }
+    ]
+}

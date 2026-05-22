@@ -1,0 +1,41 @@
+{
+    "TableName": "SiteSettings",
+    "AttributeDefinitions": [
+        {
+            "AttributeName": "key",
+            "AttributeType": "S"
+        },
+        {
+            "AttributeName": "group",
+            "AttributeType": "S"
+        }
+    ],
+    "KeySchema": [
+        {
+            "AttributeName": "key",
+            "KeyType": "HASH"
+        }
+    ],
+    "ProvisionedThroughput": {
+        "ReadCapacityUnits": 5,
+        "WriteCapacityUnits": 5
+    },
+    "GlobalSecondaryIndexes": [
+        {
+            "IndexName": "GroupIndex",
+            "KeySchema": [
+                {
+                    "AttributeName": "group",
+                    "KeyType": "HASH"
+                }
+            ],
+            "Projection": {
+                "ProjectionType": "ALL"
+            },
+            "ProvisionedThroughput": {
+                "ReadCapacityUnits": 5,
+                "WriteCapacityUnits": 5
+            }
+        }
+    ]
+}

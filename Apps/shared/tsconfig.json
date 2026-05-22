@@ -10,9 +10,10 @@
         "skipLibCheck": true,
         "moduleResolution": "node",
         "sourceMap": true,
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "types": ["node"]
     },
-    "include": ["src"],
+    "include": ["src", "*.ts"],
     "exclude": ["node_modules", "dist", "coverage"],
     "ts-node": {
         "experimentalSpecifierResolution": "node"
