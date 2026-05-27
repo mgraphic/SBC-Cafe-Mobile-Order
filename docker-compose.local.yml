@@ -81,7 +81,7 @@ services:
             BREVO_BASE_URL: http://localhost:9000
 
     store:
-        image: nginx:latest
+        image: nginx:stable-alpine
         container_name: store-proxy
 
         ports:
@@ -98,7 +98,7 @@ services:
             - stripe-mock-api
 
     admin:
-        image: nginx:latest
+        image: nginx:stable-alpine
         container_name: admin-proxy
 
         ports:

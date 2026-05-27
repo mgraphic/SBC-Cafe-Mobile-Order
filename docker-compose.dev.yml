@@ -54,7 +54,7 @@ services:
 
     # Mock Server
     wiremock:
-        image: wiremock/wiremock:latest
+        image: wiremock/wiremock:latest-alpine
         container_name: wiremock
         restart: always
         ports:
