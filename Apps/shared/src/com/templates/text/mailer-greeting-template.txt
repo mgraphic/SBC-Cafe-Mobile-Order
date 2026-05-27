@@ -1,0 +1,9 @@
+Hi {{name}},
+
+{{message}}
+
+Best regards,
+{{senderName}}
+
+{{organizationName}}
+{{organizationAddress}}

@@ -1,4 +1,5 @@
 import { defineConfig } from 'tsup';
+import { cpSync, existsSync } from 'fs';
 
 export default defineConfig([
     // Node/Server build
@@ -10,6 +11,15 @@ export default defineConfig([
         skipNodeModulesBundle: true,
         sourcemap: true,
         clean: true,
+        onSuccess: async () => {
+            // Copy templates directory to dist
+            const templatesSource = './src/com/templates';
+            const templatesDest = './dist/templates';
+
+            if (existsSync(templatesSource)) {
+                cpSync(templatesSource, templatesDest, { recursive: true });
+            }
+        },
     },
     // Browser build - including JS implementation
     {

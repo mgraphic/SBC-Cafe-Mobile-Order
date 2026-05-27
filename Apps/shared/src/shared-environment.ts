@@ -28,6 +28,14 @@ export const sharedEnvironment = (): {
         endpoint: string;
         path: string;
     };
+    smtpConfig: string;
+    brevo: {
+        baseUrl: string;
+        apiKey: string;
+        paths: {
+            transactionalSMS: string;
+        };
+    };
 } => {
     const env = getEnvironmentVariable('APP_ENV', 'local');
 
@@ -114,6 +122,27 @@ export const sharedEnvironment = (): {
                 'http://localhost:3200',
             ),
             path: getEnvironmentVariable('REALTIME_GATEWAY_PATH', '/socket.io'),
+        },
+        smtpConfig: getEnvironmentVariable(
+            'SMTP_CONFIG',
+            JSON.stringify({
+                host: 'localhost',
+                port: 1025,
+                secure: false,
+            }),
+        ),
+        brevo: {
+            baseUrl: getEnvironmentVariable(
+                'BREVO_BASE_URL',
+                'https://api.brevo.com',
+            ),
+            apiKey: getEnvironmentVariable('BREVO_API_KEY', ''),
+            paths: {
+                transactionalSMS: getEnvironmentVariable(
+                    'BREVO_TRANSACTIONAL_SMS_PATH',
+                    '/v3/transactionalSMS/send',
+                ),
+            },
         },
     };
 };

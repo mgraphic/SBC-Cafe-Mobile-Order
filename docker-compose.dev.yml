@@ -48,4 +48,37 @@ services:
         command: >-
             "aws dynamodb create-table --cli-input-json file://upload/create.users.json
             && aws dynamodb batch-write-item --request-items file://upload/import.users.json
-            && aws dynamodb create-table --cli-input-json file://upload/create.user-tracker-logs.json"
+            && aws dynamodb create-table --cli-input-json file://upload/create.user-tracker-logs.json
+            && aws dynamodb create-table --cli-input-json file://upload/create.site-settings.json
+            && aws dynamodb batch-write-item --request-items file://upload/import.site-settings.json"
+
+    # Mock Server
+    wiremock:
+        image: wiremock/wiremock:latest
+        container_name: wiremock
+        restart: always
+        ports:
+            - '8080:8080'
+        volumes:
+            - ./Local/wiremock/__files:/home/wiremock/__files
+            - ./Local/wiremock/mappings:/home/wiremock/mappings
+        entrypoint:
+            [
+                '/docker-entrypoint.sh',
+                '--global-response-templating',
+                '--disable-gzip',
+                '--verbose',
+            ]
+
+    # Email Testing
+    mailpit:
+        image: axllent/mailpit:latest
+        container_name: mailpit
+        restart: always
+        ports:
+            - '1025:1025' # SMTP server
+            - '8025:8025' # Web UI
+        environment:
+            MP_MAX_MESSAGES: 5000
+            MP_SMTP_AUTH_ACCEPT_ANY: 1
+            MP_SMTP_AUTH_ALLOW_INSECURE: 1

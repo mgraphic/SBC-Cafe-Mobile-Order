@@ -35,6 +35,7 @@ Open the browser to view both the [store](http://localhost:80) and [admin](http:
 ```sh
 open http://localhost:80
 open http://localhost:81
+open http://localhost:8025
 ```
 
 ### Login as demo admin user:

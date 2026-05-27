@@ -1,0 +1,13 @@
+{
+    "request": {
+        "method": "POST",
+        "url": "/v3/transactionalSMS/send"
+    },
+    "response": {
+        "status": 200,
+        "bodyFileName": "transactionalSMS.json",
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    }
+}

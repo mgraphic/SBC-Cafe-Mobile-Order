@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="x-apple-disable-message-reformatting" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>{{subject}}</title>
+        <style type="text/css">
+            body {
+                margin: 0;
+                padding: 0;
+                -webkit-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+            }
+            table {
+                border-collapse: collapse;
+                mso-table-lspace: 0pt;
+                mso-table-rspace: 0pt;
+            }
+            img {
+                border: 0;
+                height: auto;
+                line-height: 100%;
+                outline: none;
+                text-decoration: none;
+                -ms-interpolation-mode: bicubic;
+            }
+            @media only screen and (max-width: 600px) {
+                .container {
+                    width: 100% !important;
+                }
+                .content {
+                    padding: 10px !important;
+                }
+            }
+        </style>
+    </head>
+    <body
+        style="
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
+        "
+    >
+        <!-- Wrapper Table -->
+        <table
+            role="presentation"
+            width="100%"
+            cellpadding="0"
+            cellspacing="0"
+            border="0"
+            style="background-color: #f4f4f4"
+        >
+            <tr>
+                <td align="center" style="padding: 20px 0">
+                    <!-- Main Container -->
+                    <table
+                        role="presentation"
+                        class="container"
+                        width="600"
+                        cellpadding="0"
+                        cellspacing="0"
+                        border="0"
+                        style="
+                            background-color: #ffffff;
+                            border-radius: 8px;
+                            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                        "
+                    >
+                        <!-- Header -->
+                        <tr>
+                            <td
+                                align="center"
+                                style="
+                                    padding: 40px 30px 30px 30px;
+                                    background-color: #4caf50;
+                                    border-radius: 8px 8px 0 0;
+                                "
+                            >
+                                <h1
+                                    style="
+                                        margin: 0;
+                                        color: #ffffff;
+                                        font-size: 28px;
+                                        font-weight: bold;
+                                    "
+                                >
+                                    {{header}}
+                                </h1>
+                            </td>
+                        </tr>
+
+                        <!-- Content -->
+                        <tr>
+                            <td class="content" style="padding: 40px 30px">
+                                <p
+                                    style="
+                                        margin: 0 0 20px 0;
+                                        color: #333333;
+                                        font-size: 16px;
+                                        line-height: 1.6;
+                                    "
+                                >
+                                    Hi {{name}},
+                                </p>
+
+                                <p
+                                    style="
+                                        margin: 0 0 20px 0;
+                                        color: #333333;
+                                        font-size: 16px;
+                                        line-height: 1.6;
+                                    "
+                                >
+                                    {{message}}
+                                </p>
+
+                                <!-- Call to Action Button (Optional) -->
+                                {{#if showButton}}
+                                <table
+                                    role="presentation"
+                                    cellpadding="0"
+                                    cellspacing="0"
+                                    border="0"
+                                    style="margin: 30px 0"
+                                >
+                                    <tr>
+                                        <td
+                                            align="center"
+                                            style="
+                                                border-radius: 4px;
+                                                background-color: #4caf50;
+                                            "
+                                        >
+                                            <a
+                                                href="{{buttonUrl}}"
+                                                target="_blank"
+                                                style="
+                                                    display: inline-block;
+                                                    padding: 14px 30px;
+                                                    color: #ffffff;
+                                                    text-decoration: none;
+                                                    font-size: 16px;
+                                                    font-weight: bold;
+                                                    border-radius: 4px;
+                                                "
+                                            >
+                                                {{buttonText}}
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </table>
+                                {{/if}}
+
+                                <p
+                                    style="
+                                        margin: 20px 0 0 0;
+                                        color: #333333;
+                                        font-size: 16px;
+                                        line-height: 1.6;
+                                    "
+                                >
+                                    Best regards,<br />
+                                    <strong>{{senderName}}</strong>
+                                </p>
+                            </td>
+                        </tr>
+
+                        <!-- Footer -->
+                        <tr>
+                            <td
+                                align="center"
+                                style="
+                                    padding: 30px;
+                                    background-color: #f9f9f9;
+                                    border-radius: 0 0 8px 8px;
+                                    border-top: 1px solid #eeeeee;
+                                "
+                            >
+                                <p
+                                    style="
+                                        margin: 0 0 10px 0;
+                                        color: #666666;
+                                        font-size: 14px;
+                                        line-height: 1.5;
+                                    "
+                                >
+                                    {{organizationName}}
+                                </p>
+                                <p
+                                    style="
+                                        margin: 0 0 10px 0;
+                                        color: #999999;
+                                        font-size: 12px;
+                                        line-height: 1.5;
+                                    "
+                                >
+                                    {{organizationAddress}}
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                    <!-- End Main Container -->
+                </td>
+            </tr>
+        </table>
+        <!-- End Wrapper Table -->
+    </body>
+</html>
