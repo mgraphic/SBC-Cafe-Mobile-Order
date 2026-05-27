@@ -43,6 +43,7 @@ services:
         environment:
             - CORS_ORIGINS=http://localhost,http://localhost:80,http://localhost:81
             - REALTIME_GATEWAY_ENDPOINT_URL=http://rt-gateway:3200
+            - BREVO_BASE_URL=http://localhost:9000
 
     cafe-service:
         build:
@@ -61,6 +62,7 @@ services:
             STRIPE_BASE_URL: http://stripe-mock-api:4242
             STRIPE_SECRET_KEY: sk_test_mock
             REALTIME_GATEWAY_ENDPOINT_URL: http://rt-gateway:3200
+            BREVO_BASE_URL: http://localhost:9000
 
     auth-service:
         build:
@@ -76,6 +78,7 @@ services:
 
         environment:
             AWS_ENDPOINT_URL: http://dynamodb-local:8000
+            BREVO_BASE_URL: http://localhost:9000
 
     store:
         image: nginx:latest

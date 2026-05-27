@@ -58,7 +58,7 @@ services:
         container_name: wiremock
         restart: always
         ports:
-            - '8080:8080'
+            - '9000:8080'
         volumes:
             - ./Local/wiremock/__files:/home/wiremock/__files
             - ./Local/wiremock/mappings:/home/wiremock/mappings
