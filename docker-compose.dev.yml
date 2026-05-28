@@ -60,8 +60,11 @@ services:
         ports:
             - '9000:8080'
         volumes:
-            - ./Local/wiremock/__files:/home/wiremock/__files
-            - ./Local/wiremock/mappings:/home/wiremock/mappings
+            - ./Local/wiremock:/home/wiremock
+        command:
+            - '--extensions'
+            - 'org.wiremock.webhooks.Webhooks'
+            - '--global-response-templating'
         entrypoint:
             [
                 '/docker-entrypoint.sh',
@@ -69,6 +72,20 @@ services:
                 '--disable-gzip',
                 '--verbose',
             ]
+
+    # Mailer Webhook for Wiremock
+    mailer:
+        depends_on:
+            - mailpit
+            - wiremock
+        image: marshallgraphics/sbc-cmo-wiremock-mailer-webhook:latest
+        container_name: mailer-webhook
+        restart: always
+        ports:
+            - '4000:4000'
+        environment:
+            SMTP_HOST: mailpit
+            SMTP_PORT: 1025
 
     # Email Testing
     mailpit:
@@ -82,3 +99,13 @@ services:
             MP_MAX_MESSAGES: 5000
             MP_SMTP_AUTH_ACCEPT_ANY: 1
             MP_SMTP_AUTH_ALLOW_INSECURE: 1
+
+    # Stripe Mock API
+    stripe-mock-api:
+        image: marshallgraphics/sbc-cmo-stripe-mock-api:latest
+
+        ports:
+            - '4242:4242'
+
+        volumes:
+            - './Local/stripe-mock-api-data:/app/data'

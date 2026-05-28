@@ -9,5 +9,15 @@
         "headers": {
             "Content-Type": "application/json"
         }
+    },
+    "postServeActions": {
+        "webhook": {
+            "method": "POST",
+            "url": "http://mailer:4000/send-email",
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "body": "{ \"subject\": \"WireMock hit\", \"body\": \"Request received: {{request.body}}\" }"
+        }
     }
 }
