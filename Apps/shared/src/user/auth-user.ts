@@ -1,6 +1,6 @@
 import { IUser } from './user.model';
 import { UsersService } from './users.service';
-import { authenticateUser } from './user.utils';
+import { authenticateUser } from './user.server-utils';
 
 export class AuthUser {
     private user: IUser | null;

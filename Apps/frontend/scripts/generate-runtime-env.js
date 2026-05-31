@@ -12,23 +12,24 @@ const path = require("path");
 
 config({ path: path.resolve(process.cwd(), "../../.env") });
 
-console.log("🔧 Generating runtime environment configuration...");
+(async () => {
+  console.log("🔧 Generating runtime environment configuration...");
 
-// Import sharedEnvironment from the installed module
-const { sharedEnvironment } = require("sbc-cafe-shared-module");
-const sharedEnvValues = sharedEnvironment();
+  // The shared module's exports map always routes to its CJS build, which internally
+  // requires an ESM-only dependency. Bypass the exports map and load the ESM build directly.
+  const cjsResolved = require.resolve("sbc-cafe-shared-module");
+  const esmPath = "file://" + path.join(path.dirname(cjsResolved), "index.js");
+  const { sharedEnvironment } = await import(esmPath);
+  const sharedEnvValues = sharedEnvironment();
 
-console.log(
-  "📦 Loaded shared environment from sbc-cafe-shared-module:",
-  sharedEnvValues,
-);
+  console.log("📦 Loaded shared environment from sbc-cafe-shared-module");
 
-// Extract the values we need from sharedEnvironment
-const realtimeEndpoint = sharedEnvValues.realtime.endpoint;
-const publishedSharedApiKey = sharedEnvValues.publishedSharedApiKey;
+  // Extract the values we need from sharedEnvironment
+  const realtimeEndpoint = sharedEnvValues.realtime.endpoint;
+  const publishedSharedApiKey = sharedEnvValues.publishedSharedApiKey;
 
-// Generate TypeScript content
-const tsContent = `/**
+  // Generate TypeScript content
+  const tsContent = `/**
  * Auto-generated runtime environment configuration
  * Generated at: ${new Date().toISOString()}
  * 
@@ -42,21 +43,22 @@ export const runtimeEnvironment = {
 } as const;
 `;
 
-// Write to the output location
-const outputPath = path.resolve(
-  __dirname,
-  "../projects/shared-lib/src/runtime-environment.generated.ts",
-);
-
-try {
-  fs.writeFileSync(outputPath, tsContent, "utf8");
-  console.log(`✅ Runtime environment generated successfully at:`);
-  console.log(`   ${outputPath}`);
-  console.log(`   - realtimeGatewayServiceUrl: ${realtimeEndpoint}`);
-  console.log(
-    `   - publishedSharedApiKey: ${publishedSharedApiKey !== null ? "[SET]" : "null"}`,
+  // Write to the output location
+  const outputPath = path.resolve(
+    __dirname,
+    "../projects/shared-lib/src/runtime-environment.generated.ts",
   );
-} catch (error) {
-  console.error("❌ Failed to generate runtime environment:", error);
-  process.exit(1);
-}
+
+  try {
+    fs.writeFileSync(outputPath, tsContent, "utf8");
+    console.log(`✅ Runtime environment generated successfully at:`);
+    console.log(`   ${outputPath}`);
+    console.log(`   - realtimeGatewayServiceUrl: ${realtimeEndpoint}`);
+    console.log(
+      `   - publishedSharedApiKey: ${publishedSharedApiKey !== null ? "[SET]" : "null"}`,
+    );
+  } catch (error) {
+    console.error("❌ Failed to generate runtime environment:", error);
+    process.exit(1);
+  }
+})();

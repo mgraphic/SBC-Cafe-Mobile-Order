@@ -99,7 +99,7 @@ export async function addUser(req: Request, res: Response): Promise<void> {
         return;
     }
 
-    const { email, firstName, lastName, isActive, role, permissions } =
+    const { email, firstName, lastName, mobile, isActive, role, permissions } =
         req.body as IUser;
 
     if (!email || !firstName || !lastName || !role || !permissions) {
@@ -111,7 +111,7 @@ export async function addUser(req: Request, res: Response): Promise<void> {
         !Array.isArray(permissions) ||
         (permissions.length > 0 &&
             permissions.every(
-                (p) => Object.keys(rbacPermissions).includes(p) === false
+                (p) => Object.keys(rbacPermissions).includes(p) === false,
             ))
     ) {
         res.status(400).json({ error: 'Permissions is invalid' });
@@ -152,6 +152,7 @@ export async function addUser(req: Request, res: Response): Promise<void> {
         firstName,
         lastName,
         email,
+        mobile: mobile ?? '',
         permissions,
         role,
     };
@@ -196,11 +197,11 @@ export async function updateUser(req: Request, res: Response): Promise<void> {
     const updateData = ([...jwtPayloadFields, 'isActive'] as (keyof IUser)[])
         .filter(
             (field): boolean =>
-                field in req.body && user[field] !== req.body[field]
+                field in req.body && user[field] !== req.body[field],
         )
         .reduce(
             (obj, field) => ((obj[field] = req.body[field]), obj),
-            {} as Partial<IUser>
+            {} as Partial<IUser>,
         );
 
     userService.updateUser(user.id, updateData);
@@ -260,7 +261,7 @@ export async function getUserLogs(req: Request, res: Response): Promise<void> {
     const result = await userLogService.getPaginatedLogs(
         pagable,
         lookup,
-        lookupValue
+        lookupValue,
     );
 
     res.status(200).json(result);
@@ -268,7 +269,7 @@ export async function getUserLogs(req: Request, res: Response): Promise<void> {
 
 export async function canActivateUser(
     req: Request,
-    res: Response
+    res: Response,
 ): Promise<void> {
     const id: string = req.params.id as string;
 
@@ -335,7 +336,7 @@ export async function activateUser(req: Request, res: Response): Promise<void> {
 }
 
 const checkActivateUser = (
-    user: IUser | undefined
+    user: IUser | undefined,
 ): { error: string; code: number } | null => {
     if (!user) {
         return { code: 404, error: 'User not found' };

@@ -4,5 +4,6 @@ export * from './jwt.utils';
 export * from './token-user';
 export * from './user.model';
 export * from './user.utils';
+export * from './user.server-utils';
 export * from './users.service';
 export * from './session.model';

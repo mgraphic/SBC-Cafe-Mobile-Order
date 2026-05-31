@@ -1,15 +1,16 @@
 {
     "name": "sbc-cafe-shared-module",
-    "version": "5.1.1",
+    "version": "5.2.0",
     "type": "module",
     "exports": {
         ".": {
-            "node": "./dist/index.cjs",
             "types": "./dist/index.d.ts",
             "browser": {
                 "types": "./dist/browser.d.ts",
                 "default": "./dist/browser.browser.js"
-            }
+            },
+            "import": "./dist/index.js",
+            "require": "./dist/index.cjs"
         }
     },
     "files": [
