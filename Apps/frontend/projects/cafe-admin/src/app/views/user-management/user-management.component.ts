@@ -30,16 +30,16 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
 import { UserResponse } from '../../shared/models/user.model';
 
 @Component({
-    selector: 'app-user-management',
-    imports: [
-        ModalComponent,
-        TitleCasePipe,
-        ReactiveFormsModule,
-        NgbDropdownModule,
-        ClipboardModule,
-    ],
-    templateUrl: './user-management.component.html',
-    styleUrl: './user-management.component.scss'
+  selector: 'app-user-management',
+  imports: [
+    ModalComponent,
+    TitleCasePipe,
+    ReactiveFormsModule,
+    NgbDropdownModule,
+    ClipboardModule,
+  ],
+  templateUrl: './user-management.component.html',
+  styleUrl: './user-management.component.scss',
 })
 export class UserManagementComponent implements OnInit {
   private readonly userModalTemplate =
@@ -61,12 +61,13 @@ export class UserManagementComponent implements OnInit {
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
+    mobile: ['', [Validators.pattern(/^\d{10}$/)]],
     role: ['DEFAULT' as UserRole, Validators.required],
     isActive: [false],
     permissions: [this.fb.array<UserPermission[]>([])], // This can be used to manage user permissions
   });
   protected readonly userRoles: KeyValue<UserRole, string>[] = Object.entries(
-    rbacRoles
+    rbacRoles,
   ).map(([key, value]) => ({
     key: key as UserRole,
     value,
@@ -88,8 +89,8 @@ export class UserManagementComponent implements OnInit {
       .pipe(
         take(1),
         map((users) =>
-          users.sort((a, b) => a.lastName.localeCompare(b.lastName))
-        )
+          users.sort((a, b) => a.lastName.localeCompare(b.lastName)),
+        ),
       )
       .subscribe({
         next: (users): void => {
@@ -124,6 +125,7 @@ export class UserManagementComponent implements OnInit {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      mobile: user.mobile,
       role: user.role,
       isActive: user.isActive,
       permissions: user.permissions || [],
@@ -144,6 +146,7 @@ export class UserManagementComponent implements OnInit {
       firstName: null,
       lastName: null,
       email: null,
+      mobile: null,
       role: null,
       isActive: true,
       permissions: [],
@@ -227,7 +230,7 @@ export class UserManagementComponent implements OnInit {
 
   protected onPermissionChange(
     permissionKey: UserPermission,
-    event: Event
+    event: Event,
   ): void {
     const checkbox = event.target as HTMLInputElement;
     if (checkbox.checked) {
@@ -259,7 +262,7 @@ export class UserManagementComponent implements OnInit {
 
   private hasPermission(
     role: UserRole,
-    permission: UserPermissionGroup | UserPermission
+    permission: UserPermissionGroup | UserPermission,
   ): boolean {
     if (isPermission(permission)) {
       // permission is type of UserPermission

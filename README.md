@@ -14,9 +14,13 @@ South Bay Church - Web app for mobile ordering from the cafe
 
 https://github.com/users/mgraphic/projects/2
 
+---
+
 ## Repository
 
 https://github.com/mgraphic/SBC-Cafe-Mobile-Order
+
+---
 
 ## Demo
 
@@ -40,15 +44,33 @@ open http://localhost:8025
 
 ### Login as demo admin user:
 
-**Username/Email:** admin@local
+**Username/Email:** admin@example.com
 
 **User Password:** demo
+
+### Login as Barista User A:
+
+**User Name:** Monica Barista
+
+**User Email:** monica@example.com
+
+**User Password:** baristademo
+
+### Login as Barista User B:
+
+**User Name:** Carlos Barista
+
+**User Email:** carlos@example.com
+
+**User Password:** baristademo
 
 When you want to shut everything down, use the following command to stop and remove all the demo containers and images:
 
 ```sh
 docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && docker rmi -f $(docker images -aq)
 ```
+
+---
 
 ## Dev
 
@@ -79,6 +101,8 @@ When you want to shut everything down, use the following command to stop and rem
 ```sh
 docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && docker rmi -f $(docker images -aq)
 ```
+
+---
 
 ## Stripe Sandbox
 
@@ -113,6 +137,8 @@ Run this command in order to run the Stripe Mock API:
 ```sh
 docker compose -f docker-compose.local.yml up --build stripe-mock-api -d
 ```
+
+---
 
 ## Docker
 
@@ -173,6 +199,8 @@ docker compose -f docker-compose.local.yml up dynamodb-local -d
 # List defined tables (requires AWS-CLI installation)
 AWS_ACCESS_KEY_ID=dummyaccesskey AWS_SECRET_ACCESS_KEY=dummysecretkey aws dynamodb list-tables --endpoint-url http://localhost:8000 --region dummy-region
 ```
+
+---
 
 ## References
 

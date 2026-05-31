@@ -1,6 +1,7 @@
 export interface IUser {
     id: string;
     email: string;
+    mobile: string;
     firstName: string;
     lastName: string;
     passwordHash: string;
@@ -16,6 +17,7 @@ export const jwtPayloadFields = [
     'email',
     'firstName',
     'lastName',
+    'mobile',
     'createdAt',
     'role',
     'permissions',
@@ -58,7 +60,7 @@ export const rbacPermissions: Readonly<Record<UserPermission, string>> = {
 };
 
 export const rbacPermissionsList = Object.keys(
-    rbacPermissions
+    rbacPermissions,
 ) as UserPermission[];
 
 export const rbacRolePermissionGroupAllowances: Readonly<
