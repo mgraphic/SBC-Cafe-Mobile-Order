@@ -1,6 +1,6 @@
 {
     "name": "sbc-cafe-shared-module",
-    "version": "5.2.0",
+    "version": "5.2.1",
     "type": "module",
     "exports": {
         ".": {
@@ -82,7 +82,7 @@
     "dependencies": {
         "@aws-sdk/client-dynamodb": "^3.788.0",
         "@aws-sdk/lib-dynamodb": "^3.788.0",
-        "@mgraphic/cipher-token": "^1.1.4",
+        "@mgraphic/cipher-token": "^1.1.5",
         "dotenv": "^16.4.7",
         "express": "^4.21.2",
         "handlebars": "^4.7.9",
