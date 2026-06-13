@@ -14,3 +14,14 @@
 </div>
 
 <lib-toasts></lib-toasts>
+
+<ng-template #newOrderToast let-data>
+  <div class="toast-header">
+    <strong class="me-auto">New Order</strong>
+  </div>
+  <div class="toast-body">
+    @for (item of data.items; track $index) {
+      <div>{{ item.description }} x {{ item.quantity }}</div>
+    }
+  </div>
+</ng-template>

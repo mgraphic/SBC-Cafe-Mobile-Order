@@ -1,13 +1,12 @@
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import { RealtimeService } from '../../../../../shared-lib/src/lib/services/realtime.service';
-import { Subject } from 'rxjs';
+import { DatePipe } from '@angular/common';
 import {
   NewOrderAlertEventPayload,
   newOrderAlertRoom,
   RealtimeEvent,
 } from 'sbc-cafe-shared-module';
-import { ToastService } from '../../../../../shared-lib/src/public-api';
-import { DatePipe } from '@angular/common';
+import { Subject } from 'rxjs';
+import { RealtimeService } from '../../../../../shared-lib/src/lib/services/realtime.service';
 
 @Component({
   imports: [DatePipe],
@@ -16,7 +15,6 @@ import { DatePipe } from '@angular/common';
 })
 export class OrdersTestComponent implements OnInit, OnDestroy {
   private readonly realtimeService = inject(RealtimeService);
-  private readonly toastService = inject(ToastService);
   private readonly destroySubject = new Subject<void>();
   protected readonly events = signal<
     RealtimeEvent<NewOrderAlertEventPayload>[]

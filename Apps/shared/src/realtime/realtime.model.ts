@@ -1,3 +1,5 @@
+import type { Stripe } from 'stripe';
+
 export const realtimeEventTypes = [
     'order.created',
     'session.created',
@@ -20,7 +22,7 @@ export type RealtimePartialEvent<TPayload = AnyEventPayload> = Partial<
     Pick<RealtimeEvent<TPayload>, 'type' | 'payload'>;
 
 export interface OrderEventPayload {
-    orderId: string;
+    csid: string;
 }
 
 export interface SessionEventPayload {
@@ -28,8 +30,9 @@ export interface SessionEventPayload {
 }
 
 export interface NewOrderAlertEventPayload {
-    orderId: string;
-    sessionId: string;
+    csid: string;
+    items: Stripe.LineItem[];
+    session?: Stripe.Checkout.Session;
 }
 
 export type AnyEventPayload =
@@ -37,7 +40,7 @@ export type AnyEventPayload =
     | SessionEventPayload
     | NewOrderAlertEventPayload;
 
-export type OrderRoomType = `order:${string}`;
+export type OrderRoomType = `csid:${string}`;
 
 export type SessionRoomType = `session:${string}`;
 

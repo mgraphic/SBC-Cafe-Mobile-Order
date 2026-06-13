@@ -5,7 +5,7 @@ import {
 } from './realtime.model';
 
 export function orderRoom(orderId: string): OrderRoomType {
-    return `order:${orderId}`;
+    return `csid:${orderId}`;
 }
 
 export function sessionRoom(sessionId: string): SessionRoomType {

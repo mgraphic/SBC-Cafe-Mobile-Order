@@ -4,17 +4,21 @@ import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import { adminRouter } from './routes/admin.routes';
 import { environment } from './environment';
+import { handleWebhook } from './handlers/webhook.handler';
+import { logger } from './shared/logger.utils';
 import { storeRouter } from './routes/store.routes';
 // @ts-ignore
 import pkg from '../package.json' with { type: 'json' };
-import { logger } from './shared/logger.utils';
 
 const app = express();
+app.use(helmet());
 
-// Middleware
+// Webhook endpoint — must be registered BEFORE express.json() to receive raw body
+app.post('/webhook', express.raw({ type: 'application/json' }), handleWebhook);
+
+// Middleware (registered after /webhook to avoid parsing raw body)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(helmet());
 app.use(cookieParser());
 app.use(apiLogger(logger));
 

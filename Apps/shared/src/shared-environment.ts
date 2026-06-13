@@ -23,6 +23,7 @@ export const sharedEnvironment = (): {
             port: string | undefined;
         };
         secretKey: string;
+        webhookSecret: string;
     };
     realtime: {
         endpoint: string;
@@ -115,6 +116,10 @@ export const sharedEnvironment = (): {
                 port,
             },
             secretKey: getEnvironmentVariable('STRIPE_SECRET_KEY', ''),
+            webhookSecret: getEnvironmentVariable(
+                'STRIPE_WEBHOOK_SECRET',
+                'mock_signature',
+            ),
         },
         realtime: {
             endpoint: getEnvironmentVariable(

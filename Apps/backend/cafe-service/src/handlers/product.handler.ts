@@ -3,16 +3,11 @@ import {
     ApiError,
     STRIPE_LISTING_PAGE_SIZE,
     Stripe,
-    StripeApi,
     StripeProductPrice,
     StripeProductPriceList,
 } from 'sbc-cafe-shared-module';
-import { environment } from '../environment';
 import { logger } from '../shared/logger.utils';
-
-const stripe = new StripeApi(environment.stripeApi.secretKey, {
-    ...environment.stripeApi.url,
-});
+import { stripe } from '../shared/stripe.utils';
 
 export async function getAllItems(
     req: Request,

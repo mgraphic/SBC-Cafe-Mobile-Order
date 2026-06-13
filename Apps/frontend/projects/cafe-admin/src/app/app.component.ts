@@ -1,4 +1,11 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+  viewChild,
+} from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import {
   RealtimeService,
@@ -18,6 +25,10 @@ import { Subject } from 'rxjs';
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit, OnDestroy {
+  private readonly newOrderToastRef =
+    viewChild<TemplateRef<{ $implicit: NewOrderAlertEventPayload }>>(
+      'newOrderToast',
+    );
   private readonly toastService = inject(ToastService);
   private readonly realtimeService = inject(RealtimeService);
   private readonly destroySubject = new Subject<void>();
@@ -30,9 +41,9 @@ export class AppComponent implements OnInit, OnDestroy {
           .registerEventListener<NewOrderAlertEventPayload>(
             newOrderAlertRoom(),
             (event): void => {
-              this.toastService.showInfo(
-                `New order received: ${event.payload.orderId}`,
-              );
+              this.toastService.showInfo(this.newOrderToastRef()!, {
+                contentContext: { $implicit: event.payload },
+              });
             },
           )
           .takeUntilObservable(this.destroySubject);

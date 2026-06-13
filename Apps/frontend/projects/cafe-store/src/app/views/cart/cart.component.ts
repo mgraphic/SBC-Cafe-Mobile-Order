@@ -30,7 +30,6 @@ export class CartComponent implements OnInit {
   }
 
   onCheckout(): void {
-    const orderId = Math.random().toString(36).substring(2, 15); // Replace with actual order ID
-    this.cartService.submitOrder(orderId);
+    this.cartService.submitOrder();
   }
 }

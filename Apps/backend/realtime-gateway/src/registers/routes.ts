@@ -60,8 +60,8 @@ function publishEvent(io: Server, event: RealtimeEvent): void {
 
     switch (event.type) {
         case 'order.created':
-            const { orderId } = event.payload as OrderEventPayload;
-            emitToRoom(orderRoom(orderId));
+            const { csid } = event.payload as OrderEventPayload;
+            emitToRoom(orderRoom(csid));
             break;
 
         case 'session.created':

@@ -13,7 +13,7 @@
     @if (toast.header) {
       @if (isTemplateRef(toast.header)) {
         <ng-template
-          [ngTemplateOutlet]="toast.header"
+          *ngTemplateOutlet="toast.header; context: toast.headerContext"
           ngbToastHeader
         ></ng-template>
       } @else {
@@ -22,7 +22,9 @@
     }
 
     @if (isTemplateRef(toast.content)) {
-      <ng-template [ngTemplateOutlet]="toast.content"></ng-template>
+      <ng-template
+        *ngTemplateOutlet="toast.content; context: toast.contentContext"
+      ></ng-template>
     } @else {
       {{ toast.content }}
     }

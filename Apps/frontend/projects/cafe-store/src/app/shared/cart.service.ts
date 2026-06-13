@@ -1,9 +1,10 @@
-import { inject, Injectable } from '@angular/core';
-import { CartItem } from './cart.model';
-import { Subject } from 'rxjs';
+import { DestroyRef, inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { SessionService } from '../../../../shared-lib/src/public-api';
-import { environment } from 'shared-lib';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Stripe } from 'sbc-cafe-shared-module';
+import { Subject } from 'rxjs';
+import { environment } from '../../../../shared-lib/src/public-api';
+import { CartItem } from './cart.model';
 
 @Injectable({
   providedIn: 'root',
@@ -11,10 +12,22 @@ import { environment } from 'shared-lib';
 export class CartService {
   private readonly cartItems = new Map<string, CartItem>();
   private readonly http = inject(HttpClient);
-  private readonly sessionService = inject(SessionService);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly apiUrl = environment.cafeStoreServiceUrl;
 
   cartUpdated$: Subject<void> = new Subject();
+
+  constructor() {
+    const savedCart = sessionStorage.getItem('cart');
+    if (savedCart) {
+      const items: CartItem[] = JSON.parse(savedCart);
+      items.forEach((item) => this.cartItems.set(item.id, item));
+    }
+
+    this.cartUpdated$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.saveCartToSession());
+  }
 
   addToCart(item: CartItem, qty: number = 1): void {
     const quantity = this.cartItems.get(item.id)?.quantity || 0;
@@ -67,19 +80,31 @@ export class CartService {
     }, 0);
   }
 
-  submitOrder(orderId: string): void {
-    const sessionId = this.sessionService.getSessionId();
+  submitOrder(): void {
+    const items: Stripe.Checkout.SessionCreateParams.LineItem[] =
+      this.getItems().map((item: CartItem) => ({
+        price: item.default_price?.id || (item.default_price as string),
+        quantity: item.quantity,
+      }));
 
     this.http
-      .post(`${this.apiUrl}/submit-order`, { orderId, sessionId })
+      .post(`${this.apiUrl}/submit-order`, {
+        items,
+        successUrl: `${window.location.origin}/order-confirmation?csid={CHECKOUT_SESSION_ID}`,
+        cancelUrl: `${window.location.origin}/cart`,
+      })
       .subscribe({
-        next: (response) => {
-          console.log('Order submitted successfully', response);
-          this.clearCart();
+        next: (response: any) => {
+          if (response.url) window.location.href = response.url;
         },
         error: (error) => {
           console.error('Error submitting order', error);
         },
       });
+  }
+
+  private saveCartToSession(): void {
+    const items = this.getItems();
+    sessionStorage.setItem('cart', JSON.stringify(items));
   }
 }

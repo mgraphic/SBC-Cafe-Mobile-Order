@@ -6,7 +6,7 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from 'shared-lib';
+import { environment } from '../../../../../shared-lib/src/public-api';
 
 @Injectable()
 export class ApiAuthInterceptorService implements HttpInterceptor {

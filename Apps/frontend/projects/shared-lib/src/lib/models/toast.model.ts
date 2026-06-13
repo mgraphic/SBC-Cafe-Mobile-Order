@@ -39,17 +39,19 @@ export type RequiredToastConfig = Required<ToastConfig> & {
   delay: Required<NonNullable<ToastConfig['delay']>>;
 };
 
-export type ToastContent = TemplateRef<any> | string;
+export type ToastContent<C = any> = TemplateRef<C> | string;
 
-export interface ToastEntity {
+export interface ToastEntity<CA = any, CB = any> {
   type?: ToastType;
   ariaLive?: 'assertive' | 'polite';
   autohide?: boolean;
-  content: ToastContent;
+  content: ToastContent<CA>;
+  contentContext?: CA;
   toastClass?: string;
   style?: Partial<CSSStyleDeclaration>;
   delay?: number;
-  header?: ToastContent;
+  header?: ToastContent<CB>;
+  headerContext?: CB;
   hideObserver?: ObservableInput<any>;
 }
 

@@ -14,7 +14,7 @@
             <div class="info">
               @if (item!.default_price.unit_amount! > 0) {
                 <span class="price pricing">{{
-                  item?.default_price?.unit_amount_decimal!
+                  item.default_price.unit_amount_decimal!
                     | convertUnitPrice
                     | currency
                 }}</span>

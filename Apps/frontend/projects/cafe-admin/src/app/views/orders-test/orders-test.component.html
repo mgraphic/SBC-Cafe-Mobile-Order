@@ -3,15 +3,13 @@
     <tr>
       <th>Time</th>
       <th>Order ID</th>
-      <th>Session ID</th>
     </tr>
   </thead>
   <tbody>
     @for (event of events(); track event) {
       <tr>
         <td>{{ event.timestamp | date: "medium" }}</td>
-        <td>{{ event.payload.orderId }}</td>
-        <td>{{ event.payload.sessionId }}</td>
+        <td>{{ event.payload.csid }}</td>
       </tr>
     }
   </tbody>

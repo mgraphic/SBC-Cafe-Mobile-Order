@@ -1,33 +1,52 @@
 import { Request, Response } from 'express';
-import {
-    ApiError,
-    RealtimePartialEvent,
-    NewOrderAlertEventPayload,
-} from 'sbc-cafe-shared-module';
-import { environment } from '../environment';
+import { ApiError, Stripe } from 'sbc-cafe-shared-module';
+import { stripe } from '../shared/stripe.utils';
 
 export async function submitOrder(
-    req: Request,
-    res: Response<{ ok: boolean } | ApiError>,
+    req: Request<
+        unknown,
+        unknown,
+        {
+            items?: Stripe.Checkout.SessionCreateParams.LineItem[];
+            successUrl?: string;
+            cancelUrl?: string;
+        }
+    >,
+    res: Response<{ ok: boolean; url?: string } | ApiError>,
 ): Promise<void> {
-    try {
-        const event: RealtimePartialEvent<NewOrderAlertEventPayload> = {
-            type: 'new-order-alert',
-            payload: {
-                orderId: req.body.orderId,
-                sessionId: req.body.sessionId,
-            },
-        };
+    if (
+        !req.body.items ||
+        !Array.isArray(req.body.items) ||
+        req.body.items.length === 0
+    ) {
+        res.status(400).json({ error: 'No items provided' });
+        return;
+    }
 
-        fetch(`${environment.realtime.endpoint}/publish`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Internal-Api-Key': environment.privateSharedApiKey,
-            },
-            body: JSON.stringify(event),
+    if (!req.body.successUrl) {
+        res.status(400).json({ error: 'No success URL provided' });
+        return;
+    }
+
+    try {
+        const session = await stripe.checkout.sessions.create({
+            line_items: req.body.items ?? [],
+            mode: 'payment',
+            success_url: req.body.successUrl,
+            cancel_url: req.body.cancelUrl,
         });
-        res.status(200).json({ ok: true });
+
+        if (!session.url) {
+            res.status(500).json({
+                error: 'Failed to create checkout session',
+            });
+            return;
+        }
+
+        res.status(200).json({
+            ok: true,
+            url: session.url,
+        });
     } catch (error) {
         res.status(500).json(
             error instanceof Error

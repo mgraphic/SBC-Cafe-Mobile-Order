@@ -15,6 +15,9 @@ services:
         ports:
             - 8080:80
 
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+
     cafe-admin:
         build:
             context: ./Apps/frontend
@@ -61,6 +64,7 @@ services:
             AWS_ENDPOINT_URL: http://dynamodb-local:8000
             STRIPE_BASE_URL: http://stripe-mock-api:4242
             STRIPE_SECRET_KEY: sk_test_mock
+            STRIPE_WEBHOOK_SECRET: mock_signature
             REALTIME_GATEWAY_ENDPOINT_URL: http://rt-gateway:3200
             BREVO_BASE_URL: http://localhost:9000
 

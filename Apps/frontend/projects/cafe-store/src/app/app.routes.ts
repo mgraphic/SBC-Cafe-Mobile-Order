@@ -45,4 +45,11 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./views/cart/cart.component').then((m) => m.CartComponent),
   },
+  {
+    path: 'order-confirmation',
+    loadComponent: () =>
+      import('./views/order-confirmation/order-confirmation.component').then(
+        (m) => m.OrderConfirmationComponent,
+      ),
+  },
 ];
