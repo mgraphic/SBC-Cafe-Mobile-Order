@@ -20,3 +20,10 @@ export type StripeProduct = Stripe.Product & {
 };
 
 export type StripeProductList = Stripe.ApiList<StripeProduct>;
+
+export type StripeCheckoutSessionMetadata = Stripe.Metadata & {
+    customerName: string;
+} & (
+        | { customerEmail: string; customerMobile?: string }
+        | { customerEmail?: string; customerMobile: string }
+    );

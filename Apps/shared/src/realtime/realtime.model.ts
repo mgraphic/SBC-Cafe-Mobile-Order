@@ -1,4 +1,5 @@
 import type { Stripe } from 'stripe';
+import { StripeCheckoutSessionMetadata } from '../stripe/stripe.model';
 
 export const realtimeEventTypes = [
     'order.created',
@@ -33,6 +34,7 @@ export interface NewOrderAlertEventPayload {
     csid: string;
     items: Stripe.LineItem[];
     session?: Stripe.Checkout.Session;
+    metadata?: Stripe.Metadata & StripeCheckoutSessionMetadata;
 }
 
 export type AnyEventPayload =

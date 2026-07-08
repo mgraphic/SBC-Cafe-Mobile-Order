@@ -17,9 +17,17 @@
 
 <ng-template #newOrderToast let-data>
   <div class="toast-header">
-    <strong class="me-auto">New Order</strong>
+    <strong class="me-auto"
+      >New Order from {{ data.metadata.customerName }}</strong
+    >
   </div>
   <div class="toast-body">
+    @if (data.metadata.customerMobile) {
+      <div>Mobile: {{ data.metadata.customerMobile }}</div>
+    }
+    @if (data.metadata.customerEmail) {
+      <div>Email: {{ data.metadata.customerEmail }}</div>
+    }
     @for (item of data.items; track $index) {
       <div>{{ item.description }} x {{ item.quantity }}</div>
     }

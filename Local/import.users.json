@@ -7,7 +7,7 @@
                         "S": "8c6b03599d60daa46b8be691f0542dee250e885777d5f9b43abc488e7de752d3"
                     },
                     "email": { "S": "admin@example.com" },
-                    "mobile": { "S": "15555551111" },
+                    "mobile": { "S": "+15555551111" },
                     "firstName": { "S": "Admin" },
                     "lastName": { "S": "User" },
                     "passwordHash": {
@@ -28,7 +28,7 @@
                         "S": "592a3704a68aa90e56d6dd05fa57dd4610ef975fb72d30b94b27e52f646fbec1"
                     },
                     "email": { "S": "monica@example.com" },
-                    "mobile": { "S": "15555552222" },
+                    "mobile": { "S": "+15555552222" },
                     "firstName": { "S": "Monica" },
                     "lastName": { "S": "Barista" },
                     "passwordHash": {
@@ -49,7 +49,7 @@
                         "S": "7c6c382aee8c74f9a9dc71e49c063952c76d718e52c56cd63e6b67cd3fd7fc86"
                     },
                     "email": { "S": "carlos@example.com" },
-                    "mobile": { "S": "15555553333" },
+                    "mobile": { "S": "+15555553333" },
                     "firstName": { "S": "Carlos" },
                     "lastName": { "S": "Barista" },
                     "passwordHash": {

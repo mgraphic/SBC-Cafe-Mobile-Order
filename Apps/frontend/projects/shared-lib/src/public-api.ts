@@ -5,6 +5,7 @@
 // Components
 export * from './lib/components/combobox/combobox.component';
 export * from './lib/components/paginated/paginated.component';
+export * from './lib/components/phone-input/phone-input.component';
 export * from './lib/components/toasts/toasts.component';
 
 // Models
@@ -30,6 +31,7 @@ export * from './lib/services/session.service';
 
 // Utilities
 export * from './lib/utilities/combobox.utils';
+export * from './lib/utilities/form-validators';
 
 // Other
 export * from './environment';

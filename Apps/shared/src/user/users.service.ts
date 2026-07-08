@@ -11,7 +11,7 @@ export class UsersService {
                 {
                     email: { operation: '=', value: email.toLowerCase() },
                 },
-                'EmailIndex'
+                'EmailIndex',
             )
         )[0];
     }
@@ -29,7 +29,7 @@ export class UsersService {
     }
 
     public async addUser(
-        user: Omit<IUser, 'passwordHash' | 'refreshTokens'>
+        user: Omit<IUser, 'passwordHash' | 'refreshTokens'>,
     ): Promise<boolean> {
         if (!(await this.userExists(user.email))) {
             await this.dynamoDbService.addItem('Users', user);
@@ -44,7 +44,7 @@ export class UsersService {
             'Users',
             {
                 id: { operation: '=', value: id },
-            }
+            },
         );
 
         if (existingUser?.length > 0) {
@@ -56,22 +56,24 @@ export class UsersService {
         await this.dynamoDbService.deleteItem('Users', { id });
     }
 
-    public async getAllUsers(): Promise<IUser[]> {
-        return (await this.dynamoDbService.getAllItems<IUser>(
-            'Users'
+    public async getAllUsers(activeOnly: boolean = false): Promise<IUser[]> {
+        const users = (await this.dynamoDbService.getAllItems<IUser>(
+            'Users',
         )) as IUser[];
+
+        return activeOnly ? users.filter((user) => user.isActive) : users;
     }
 
     public async getUserByRefreshToken(
-        token: string
+        token: string,
     ): Promise<IUser | undefined> {
         const users = await this.getAllUsers();
 
         return users.find(
             (user: IUser): boolean =>
                 !!user.refreshTokens?.some(
-                    (rt: string): boolean => rt === token
-                )
+                    (rt: string): boolean => rt === token,
+                ),
         );
     }
 }

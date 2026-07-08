@@ -68,3 +68,91 @@
     </tfoot>
   </table>
 }
+
+<ng-template #checkoutModal>
+  <div>
+    <div class="modal-header">
+      How would you like to be contacted when your order is ready for pickup?
+      Only your name and either your phone number or email address is required.
+      We will not share your information with anyone else.
+    </div>
+    <div class="modal-body" [formGroup]="checkoutForm">
+      <label for="name" class="form-label">Name</label>
+      <input
+        type="text"
+        id="name"
+        tabIndex="1"
+        formControlName="name"
+        class="form-control"
+        placeholder="Enter your name"
+        [class.is-invalid]="
+          checkoutForm.get('name')?.touched && checkoutForm.get('name')?.invalid
+        "
+      />
+      @if (
+        checkoutForm.get("name")?.touched &&
+        checkoutForm.get("name")?.errors?.["required"]
+      ) {
+        <div class="text-danger small">Name is required.</div>
+      }
+      <label for="mobilePhone" class="form-label mt-4"
+        >Mobile Text Notification</label
+      >
+      <lib-phone-input
+        id="mobilePhone"
+        tabIndex="2"
+        formControlName="phone"
+      ></lib-phone-input>
+      @if (
+        checkoutForm.get("phone")?.touched &&
+        checkoutForm.errors?.["atLeastOneRequired"] &&
+        !checkoutForm.get("email")?.value
+      ) {
+        <div class="text-danger small">Phone or email is required.</div>
+      }
+      <label for="email" class="form-label mt-4">Email Notification</label>
+      <input
+        type="email"
+        id="email"
+        tabIndex="3"
+        formControlName="email"
+        class="form-control"
+        placeholder="Enter your email address"
+        [class.is-invalid]="
+          checkoutForm.get('email')?.touched &&
+          checkoutForm.get('email')?.invalid
+        "
+      />
+      @if (
+        checkoutForm.get("email")?.touched &&
+        checkoutForm.get("email")?.errors?.["email"]
+      ) {
+        <div class="text-danger small">Please enter a valid email address.</div>
+      }
+      @if (
+        checkoutForm.get("email")?.touched &&
+        checkoutForm.errors?.["atLeastOneRequired"] &&
+        !checkoutForm.get("phone")?.value
+      ) {
+        <div class="text-danger small">Phone or email is required.</div>
+      }
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="modalService.dismissAll()"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        [disabled]="checkoutForm.invalid"
+        (click)="onContinueCheckout()"
+      >
+        Continue Checkout
+      </button>
+    </div>
+  </div>
+</ng-template>

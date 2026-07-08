@@ -27,9 +27,22 @@
               {
                 "glob": "**/*",
                 "input": "projects/cafe-store/public"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/intl-tel-input/build/img",
+                "output": "assets/intl-tel-input/img"
+              },
+              {
+                "glob": "utils.js",
+                "input": "node_modules/intl-tel-input/build/js",
+                "output": "assets/intl-tel-input/js"
               }
             ],
-            "styles": ["projects/cafe-store/src/styles.scss"],
+            "styles": [
+              "projects/cafe-store/src/styles.scss",
+              "node_modules/intl-tel-input/build/css/intlTelInput.css"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -108,9 +121,17 @@
               {
                 "glob": "**/*",
                 "input": "projects/cafe-admin/public"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/intl-tel-input/build/img",
+                "output": "assets/intl-tel-input/img"
               }
             ],
-            "styles": ["projects/cafe-admin/src/styles.scss"],
+            "styles": [
+              "projects/cafe-admin/src/styles.scss",
+              "node_modules/intl-tel-input/build/css/intlTelInput.css"
+            ],
             "scripts": []
           },
           "configurations": {

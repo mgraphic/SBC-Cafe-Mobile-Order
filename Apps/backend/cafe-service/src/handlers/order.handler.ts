@@ -1,5 +1,9 @@
 import { Request, Response } from 'express';
-import { ApiError, Stripe } from 'sbc-cafe-shared-module';
+import {
+    ApiError,
+    Stripe,
+    StripeCheckoutSessionMetadata,
+} from 'sbc-cafe-shared-module';
 import { stripe } from '../shared/stripe.utils';
 
 export async function submitOrder(
@@ -10,6 +14,7 @@ export async function submitOrder(
             items?: Stripe.Checkout.SessionCreateParams.LineItem[];
             successUrl?: string;
             cancelUrl?: string;
+            metadata?: StripeCheckoutSessionMetadata;
         }
     >,
     res: Response<{ ok: boolean; url?: string } | ApiError>,
@@ -34,6 +39,7 @@ export async function submitOrder(
             mode: 'payment',
             success_url: req.body.successUrl,
             cancel_url: req.body.cancelUrl,
+            metadata: req.body.metadata,
         });
 
         if (!session.url) {

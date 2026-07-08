@@ -9,7 +9,7 @@
     "inlineSources": true,
     "types": []
   },
-  "exclude": [
-    "**/*.spec.ts"
-  ]
+  "include": ["src/**/*.ts"],
+  "files": ["src/intl-tel-input-utils.d.ts"],
+  "exclude": ["**/*.spec.ts"]
 }

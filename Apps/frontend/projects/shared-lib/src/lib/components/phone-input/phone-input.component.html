@@ -1,0 +1,17 @@
+<ngxsmk-tel-input
+  #telInput
+  autocomplete="tel"
+  autoPlaceholder="polite"
+  utilsScript="assets/intl-tel-input/js/utils.js"
+  [(ngModel)]="value"
+  [name]="name()"
+  [label]="label()"
+  [theme]="theme()"
+  [initialCountry]="initialCountry"
+  [onlyCountries]="onlyCountries"
+  [separateDialCode]="separateDialCode"
+  [lockWhenValid]="lockWhenValid"
+  [formatWhenValid]="formatWhenValid"
+  (blur)="touch()"
+  [disabled]="disabled()"
+></ngxsmk-tel-input>

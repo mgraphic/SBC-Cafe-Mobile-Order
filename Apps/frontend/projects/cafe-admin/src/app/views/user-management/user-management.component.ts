@@ -28,6 +28,11 @@ import { UsersService } from '../../shared/services/users.service';
 import { UserService } from '../../../../../shared-lib/src/lib/services/user.service';
 import { ModalComponent } from '../../shared/components/modal/modal.component';
 import { UserResponse } from '../../shared/models/user.model';
+import {
+  PhoneInputComponent,
+  validateEmail,
+  validatePhoneNumber,
+} from '../../../../../shared-lib/src/public-api';
 
 @Component({
   selector: 'app-user-management',
@@ -37,6 +42,7 @@ import { UserResponse } from '../../shared/models/user.model';
     ReactiveFormsModule,
     NgbDropdownModule,
     ClipboardModule,
+    PhoneInputComponent,
   ],
   templateUrl: './user-management.component.html',
   styleUrl: './user-management.component.scss',
@@ -60,8 +66,8 @@ export class UserManagementComponent implements OnInit {
     id: [''],
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
-    mobile: ['', [Validators.pattern(/^\d{10}$/)]],
+    email: ['', [Validators.required, Validators.email, validateEmail]],
+    mobile: ['', [validatePhoneNumber]],
     role: ['DEFAULT' as UserRole, Validators.required],
     isActive: [false],
     permissions: [this.fb.array<UserPermission[]>([])], // This can be used to manage user permissions

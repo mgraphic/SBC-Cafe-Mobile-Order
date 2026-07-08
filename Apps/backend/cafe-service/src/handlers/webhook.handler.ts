@@ -4,8 +4,12 @@ import { environment } from '../environment';
 import {
     NewOrderAlertEventPayload,
     RealtimePartialEvent,
+    SmsService,
     Stripe,
     StripeApi,
+    StripeCheckoutSessionMetadata,
+    TokenUser,
+    UsersService,
 } from 'sbc-cafe-shared-module';
 import { stripe } from '../shared/stripe.utils';
 
@@ -54,6 +58,11 @@ export async function handleWebhook(
                         .then(
                             (lineItems) => lineItems.data,
                         )) as unknown as Stripe.LineItem[],
+                    metadata: (
+                        (await stripe.checkout.sessions.retrieve(
+                            csid,
+                        )) as unknown as Stripe.Checkout.Session
+                    ).metadata as unknown as StripeCheckoutSessionMetadata,
                 },
             };
 
@@ -65,6 +74,30 @@ export async function handleWebhook(
                 },
                 body: JSON.stringify(rtEvent),
             });
+
+            const userService = new UsersService();
+            const smsService = new SmsService();
+
+            for (const user of await userService.getAllUsers(true)) {
+                try {
+                    const tokenUser = new TokenUser(user);
+
+                    if (!tokenUser.hasRole('ADMIN')) {
+                        continue;
+                    }
+
+                    const result = await smsService.sendMessage({
+                        recipient: user.mobile,
+                        content:
+                            'New order received. Please check the admin dashboard for details.',
+                        type: 'transactional',
+                        tag: 'alert',
+                        unicodeEnabled: false,
+                    });
+                } catch (error) {
+                    logger.error('Failed to send alert SMS message', error);
+                }
+            }
 
             break;
         }

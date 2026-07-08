@@ -1,7 +1,7 @@
 import { DestroyRef, inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Stripe } from 'sbc-cafe-shared-module';
+import { Stripe, StripeCheckoutSessionMetadata } from 'sbc-cafe-shared-module';
 import { Subject } from 'rxjs';
 import { environment } from '../../../../shared-lib/src/public-api';
 import { CartItem } from './cart.model';
@@ -80,7 +80,7 @@ export class CartService {
     }, 0);
   }
 
-  submitOrder(): void {
+  submitOrder(metadata: StripeCheckoutSessionMetadata): void {
     const items: Stripe.Checkout.SessionCreateParams.LineItem[] =
       this.getItems().map((item: CartItem) => ({
         price: item.default_price?.id || (item.default_price as string),
@@ -92,6 +92,7 @@ export class CartService {
         items,
         successUrl: `${window.location.origin}/order-confirmation?csid={CHECKOUT_SESSION_ID}`,
         cancelUrl: `${window.location.origin}/cart`,
+        metadata,
       })
       .subscribe({
         next: (response: any) => {

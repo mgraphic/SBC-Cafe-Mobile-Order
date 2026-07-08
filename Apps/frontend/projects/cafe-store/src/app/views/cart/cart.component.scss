@@ -92,3 +92,24 @@ table {
   color: $primary;
   padding: 2rem;
 }
+
+.modal-body {
+  padding: 2rem;
+
+  label {
+    display: block;
+    font-family: poppins-medium;
+    font-weight: bold;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid $gray-300;
+    border-radius: 0.6rem;
+  }
+
+  .is-invalid {
+    border-color: $danger;
+  }
+}
