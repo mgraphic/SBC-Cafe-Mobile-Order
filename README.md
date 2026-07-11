@@ -42,27 +42,13 @@ open http://localhost:81
 open http://localhost:8025
 ```
 
-### Login as demo admin user:
+### Demo Login Credentials
 
-**Username/Email:** admin@example.com
-
-**User Password:** demo
-
-### Login as Barista User A:
-
-**User Name:** Monica Barista
-
-**User Email:** monica@example.com
-
-**User Password:** baristademo
-
-### Login as Barista User B:
-
-**User Name:** Carlos Barista
-
-**User Email:** carlos@example.com
-
-**User Password:** baristademo
+| Role           | User Name      | Username/Email     | Password    |
+| -------------- | -------------- | ------------------ | ----------- |
+| Demo Admin     | -              | admin@example.com  | demo        |
+| Barista User A | Monica Barista | monica@example.com | baristademo |
+| Barista User B | Carlos Barista | carlos@example.com | baristademo |
 
 When you want to shut everything down, use the following command to stop and remove all the demo containers and images:
 
