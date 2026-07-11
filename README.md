@@ -46,7 +46,7 @@ open http://localhost:8025
 
 | Role           | User Name      | Username/Email     | Password    |
 | -------------- | -------------- | ------------------ | ----------- |
-| Demo Admin     | -              | admin@example.com  | demo        |
+| Demo Admin     | Admin User     | admin@example.com  | demo        |
 | Barista User A | Monica Barista | monica@example.com | baristademo |
 | Barista User B | Carlos Barista | carlos@example.com | baristademo |
 
