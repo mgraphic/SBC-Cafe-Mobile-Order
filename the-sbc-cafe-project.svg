@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-labelledby="title desc">
+  <title id="title">The SBC Cafe Project</title>
+  <desc id="desc">A colorful retro neon framed title graphic reading The SBC Cafe Project.</desc>
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#090b2a"/>
+      <stop offset="45%" stop-color="#17104a"/>
+      <stop offset="100%" stop-color="#071d2f"/>
+    </linearGradient>
+
+    <linearGradient id="frameGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00f5ff"/>
+      <stop offset="30%" stop-color="#7c4dff"/>
+      <stop offset="60%" stop-color="#ff3cac"/>
+      <stop offset="100%" stop-color="#ffd166"/>
+    </linearGradient>
+
+    <linearGradient id="textGrad1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00f5ff"/>
+      <stop offset="50%" stop-color="#7c4dff"/>
+      <stop offset="100%" stop-color="#ff3cac"/>
+    </linearGradient>
+
+    <linearGradient id="textGrad2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffd166"/>
+      <stop offset="48%" stop-color="#ff7a59"/>
+      <stop offset="100%" stop-color="#ff3cac"/>
+    </linearGradient>
+
+    <linearGradient id="textGrad3" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#32f5a6"/>
+      <stop offset="45%" stop-color="#00d9ff"/>
+      <stop offset="100%" stop-color="#7c4dff"/>
+    </linearGradient>
+
+    <radialGradient id="glowA" cx="25%" cy="15%" r="70%">
+      <stop offset="0%" stop-color="#00f5ff" stop-opacity=".28"/>
+      <stop offset="100%" stop-color="#00f5ff" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="glowB" cx="80%" cy="80%" r="70%">
+      <stop offset="0%" stop-color="#ff3cac" stop-opacity=".22"/>
+      <stop offset="100%" stop-color="#ff3cac" stop-opacity="0"/>
+    </radialGradient>
+
+    <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="textGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <pattern id="grid" width="44" height="44" patternUnits="userSpaceOnUse">
+      <path d="M44 0H0V44" fill="none" stroke="#ffffff" stroke-opacity=".035" stroke-width="1"/>
+    </pattern>
+
+    <style>
+      .title {
+        font-family: "Arial Black", "Helvetica Neue", Arial, sans-serif;
+        font-weight: 900;
+        letter-spacing: 5px;
+        text-anchor: middle;
+      }
+      .shadow {
+        fill: none;
+        stroke: #02020a;
+        stroke-width: 18;
+        stroke-linejoin: round;
+        opacity: .85;
+      }
+      .outline {
+        fill: none;
+        stroke: #ffffff;
+        stroke-opacity: .22;
+        stroke-width: 2;
+      }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1400" height="900" rx="34" fill="url(#bg)"/>
+  <rect width="1400" height="900" rx="34" fill="url(#glowA)"/>
+  <rect width="1400" height="900" rx="34" fill="url(#glowB)"/>
+  <rect width="1400" height="900" rx="34" fill="url(#grid)"/>
+
+  <!-- Decorative corner lights -->
+  <circle cx="115" cy="110" r="7" fill="#00f5ff" filter="url(#softGlow)"/>
+  <circle cx="1285" cy="110" r="7" fill="#ffd166" filter="url(#softGlow)"/>
+  <circle cx="115" cy="790" r="7" fill="#32f5a6" filter="url(#softGlow)"/>
+  <circle cx="1285" cy="790" r="7" fill="#ff3cac" filter="url(#softGlow)"/>
+
+  <!-- Outer frame -->
+  <rect x="42" y="42" width="1316" height="816" rx="24"
+        fill="none" stroke="#060817" stroke-width="28"/>
+  <rect x="55" y="55" width="1290" height="790" rx="20"
+        fill="none" stroke="url(#frameGrad)" stroke-width="7"
+        filter="url(#softGlow)"/>
+  <rect x="73" y="73" width="1254" height="754" rx="15"
+        fill="none" stroke="#ffffff" stroke-opacity=".25" stroke-width="2"/>
+
+  <!-- Side accents -->
+  <g opacity=".75">
+    <path d="M95 260V170H185" fill="none" stroke="#00f5ff" stroke-width="5" stroke-linecap="round"/>
+    <path d="M1305 260V170H1215" fill="none" stroke="#ff3cac" stroke-width="5" stroke-linecap="round"/>
+    <path d="M95 640V730H185" fill="none" stroke="#32f5a6" stroke-width="5" stroke-linecap="round"/>
+    <path d="M1305 640V730H1215" fill="none" stroke="#ffd166" stroke-width="5" stroke-linecap="round"/>
+  </g>
+
+  <!-- Main text shadows -->
+  <g class="title shadow">
+    <text x="700" y="285" font-size="142">THE SBC</text>
+    <text x="700" y="500" font-size="170">CAFE</text>
+    <text x="700" y="715" font-size="132">PROJECT</text>
+  </g>
+
+  <!-- Main text -->
+  <g class="title" filter="url(#textGlow)">
+    <text x="700" y="285" font-size="142" fill="url(#textGrad1)">THE SBC</text>
+    <text x="700" y="500" font-size="170" fill="url(#textGrad2)">CAFE</text>
+    <text x="700" y="715" font-size="132" fill="url(#textGrad3)">PROJECT</text>
+  </g>
+
+  <!-- Subtle inner highlights -->
+  <g class="title outline">
+    <text x="700" y="285" font-size="142">THE SBC</text>
+    <text x="700" y="500" font-size="170">CAFE</text>
+    <text x="700" y="715" font-size="132">PROJECT</text>
+  </g>
+
+  <!-- Divider flourishes -->
+  <g stroke-linecap="round" fill="none">
+    <path d="M220 340H470" stroke="#00f5ff" stroke-width="4" opacity=".55"/>
+    <path d="M930 340H1180" stroke="#ff3cac" stroke-width="4" opacity=".55"/>
+    <circle cx="490" cy="340" r="5" fill="#7c4dff"/>
+    <circle cx="910" cy="340" r="5" fill="#ffd166"/>
+
+    <path d="M220 555H470" stroke="#ffd166" stroke-width="4" opacity=".55"/>
+    <path d="M930 555H1180" stroke="#32f5a6" stroke-width="4" opacity=".55"/>
+    <circle cx="490" cy="555" r="5" fill="#ff3cac"/>
+    <circle cx="910" cy="555" r="5" fill="#00d9ff"/>
+  </g>
+</svg>
