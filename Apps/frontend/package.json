@@ -6,7 +6,7 @@
     "stream": "stream-browserify"
   },
   "engines": {
-    "node": ">=18.20.3"
+    "node": ">=22.17.1"
   },
   "scripts": {
     "ng": "ng",

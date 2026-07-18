@@ -4,7 +4,7 @@
   "main": "src/index.ts",
   "type": "module",
   "engines": {
-    "node": ">=20.17.0"
+    "node": ">=22.17.1"
   },
   "scripts": {
     "start": "LEVEL=debug nodemon -e ts -w ./src -x npm run watch:serve",
