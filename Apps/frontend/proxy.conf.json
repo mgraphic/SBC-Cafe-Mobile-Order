@@ -4,13 +4,13 @@
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": false,
-    "pathRewrite": { "^/cafe-service": "/" }
+    "pathRewrite": { "^/cafe-service": "" }
   },
   "/auth-service": {
     "target": "http://localhost:3100",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": false,
-    "pathRewrite": { "^/auth-service": "/" }
+    "pathRewrite": { "^/auth-service": "" }
   }
 }
