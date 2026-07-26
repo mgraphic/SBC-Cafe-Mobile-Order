@@ -9,6 +9,8 @@ export const environment: Readonly<{
   authServiceUrl: string;
   paginatedDefaultPagesize: number;
   publishedSharedApiKey?: string | null;
+  adminUrl: string;
+  storeUrl: string;
 }> = {
   realtimeGatewayServiceUrl: runtimeEnvironment.realtimeGatewayServiceUrl,
   cafeStoreServiceUrl: 'cafe-service/api/v1/store',
@@ -16,10 +18,12 @@ export const environment: Readonly<{
   authServiceUrl: 'auth-service/api/v1',
   paginatedDefaultPagesize: PAGINATED_DEFAULT_PAGESIZE,
   publishedSharedApiKey: runtimeEnvironment.publishedSharedApiKey,
+  adminUrl: runtimeEnvironment.adminUrl,
+  storeUrl: runtimeEnvironment.storeUrl,
 };
 
 export type Environment = typeof environment;
 
-export const ENVIROMENT_INJECTION_TOKEN = new InjectionToken<Environment>(
-  'ENVIROMENT_INJECTION_TOKEN',
+export const ENVIRONMENT_INJECTION_TOKEN = new InjectionToken<Environment>(
+  'ENVIRONMENT_INJECTION_TOKEN',
 );

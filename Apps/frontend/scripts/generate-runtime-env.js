@@ -27,6 +27,8 @@ config({ path: path.resolve(process.cwd(), "../../.env") });
   // Extract the values we need from sharedEnvironment
   const realtimeEndpoint = sharedEnvValues.realtime.endpoint;
   const publishedSharedApiKey = sharedEnvValues.publishedSharedApiKey;
+  const adminUrl = sharedEnvValues.ui.adminUrl;
+  const storeUrl = sharedEnvValues.ui.storeUrl;
 
   // Generate TypeScript content
   const tsContent = `/**
@@ -40,6 +42,8 @@ config({ path: path.resolve(process.cwd(), "../../.env") });
 export const runtimeEnvironment = {
   realtimeGatewayServiceUrl: '${realtimeEndpoint}',
   publishedSharedApiKey: ${publishedSharedApiKey !== null ? `'${publishedSharedApiKey}'` : "null"},
+  adminUrl: '${adminUrl}',
+  storeUrl: '${storeUrl}',
 } as const;
 `;
 
@@ -57,6 +61,8 @@ export const runtimeEnvironment = {
     console.log(
       `   - publishedSharedApiKey: ${publishedSharedApiKey !== null ? "[SET]" : "null"}`,
     );
+    console.log(`   - adminUrl: ${adminUrl}`);
+    console.log(`   - storeUrl: ${storeUrl}`);
   } catch (error) {
     console.error("❌ Failed to generate runtime environment:", error);
     process.exit(1);

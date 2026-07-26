@@ -1,6 +1,6 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { ENVIROMENT_INJECTION_TOKEN, environment } from './environment';
+import { ENVIRONMENT_INJECTION_TOKEN, environment } from './environment';
 import { ToastService } from './lib/services/toast.service';
 import {
   defaultToastConfig,
@@ -15,7 +15,7 @@ import { ConvertUnitPricePipe } from './lib/pipes/convert-unit-price.pipe';
   declarations: [],
   imports: [CommonModule, CurrencyPipe, ConvertUnitPricePipe],
   exports: [CommonModule, CurrencyPipe, ConvertUnitPricePipe],
-  providers: [{ provide: ENVIROMENT_INJECTION_TOKEN, useValue: environment }],
+  providers: [{ provide: ENVIRONMENT_INJECTION_TOKEN, useValue: environment }],
 })
 export class SharedModule {
   static forRoot(config?: {

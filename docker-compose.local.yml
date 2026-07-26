@@ -18,6 +18,10 @@ services:
         extra_hosts:
             - 'host.docker.internal:host-gateway'
 
+        environment:
+            - ADMIN_UI_URL=http://admin:81
+            - STORE_UI_URL=http://store:80
+
     cafe-admin:
         build:
             context: ./Apps/frontend
@@ -29,6 +33,10 @@ services:
 
         ports:
             - 8081:80
+
+        environment:
+            - ADMIN_UI_URL=http://admin:81
+            - STORE_UI_URL=http://store:80
 
     # Demo Backend
     rt-gateway:
@@ -47,6 +55,8 @@ services:
             - CORS_ORIGINS=http://localhost,http://localhost:80,http://localhost:81
             - REALTIME_GATEWAY_ENDPOINT_URL=http://rt-gateway:3200
             - BREVO_BASE_URL=http://wiremock:8080
+            - ADMIN_UI_URL=http://admin:81
+            - STORE_UI_URL=http://store:80
 
     cafe-service:
         build:
@@ -67,6 +77,8 @@ services:
             STRIPE_WEBHOOK_SECRET: mock_signature
             REALTIME_GATEWAY_ENDPOINT_URL: http://rt-gateway:3200
             BREVO_BASE_URL: http://wiremock:8080
+            ADMIN_UI_URL: http://admin:81
+            STORE_UI_URL: http://store:80
 
     auth-service:
         build:
@@ -83,6 +95,8 @@ services:
         environment:
             AWS_ENDPOINT_URL: http://dynamodb-local:8000
             BREVO_BASE_URL: http://wiremock:8080
+            ADMIN_UI_URL: http://admin:81
+            STORE_UI_URL: http://store:80
 
     store:
         image: nginx:stable-alpine

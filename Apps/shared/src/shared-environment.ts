@@ -10,6 +10,10 @@ export const sharedEnvironment = (): {
     refreshTokenSecret: string;
     privateSharedApiKey: string;
     publishedSharedApiKey: string | null;
+    ui: {
+        adminUrl: string;
+        storeUrl: string;
+    };
     aws: {
         accessKeyId?: string;
         secretAccessKey?: string;
@@ -91,6 +95,16 @@ export const sharedEnvironment = (): {
         ),
         privateSharedApiKey,
         publishedSharedApiKey,
+        ui: {
+            adminUrl: getEnvironmentVariable(
+                'ADMIN_UI_URL',
+                'http://localhost:3000',
+            ),
+            storeUrl: getEnvironmentVariable(
+                'STORE_UI_URL',
+                'http://localhost:3001',
+            ),
+        },
         aws: {
             accessKeyId: getEnvironmentVariable(
                 'AWS_ACCESS_KEY_ID',
