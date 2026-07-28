@@ -98,11 +98,11 @@ export const sharedEnvironment = (): {
         ui: {
             adminUrl: getEnvironmentVariable(
                 'ADMIN_UI_URL',
-                'http://localhost:3000',
+                'http://localhost:4201',
             ),
             storeUrl: getEnvironmentVariable(
                 'STORE_UI_URL',
-                'http://localhost:3001',
+                'http://localhost:4200',
             ),
         },
         aws: {
