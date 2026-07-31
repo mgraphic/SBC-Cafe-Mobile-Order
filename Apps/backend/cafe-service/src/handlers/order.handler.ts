@@ -3,6 +3,8 @@ import {
     ApiError,
     Stripe,
     StripeCheckoutSessionMetadata,
+    StripeLineItem,
+    StripeOrderDetails,
 } from 'sbc-cafe-shared-module';
 import { stripe } from '../shared/stripe.utils';
 
@@ -52,6 +54,49 @@ export async function submitOrder(
         res.status(200).json({
             ok: true,
             url: session.url,
+        });
+    } catch (error) {
+        res.status(500).json(
+            error instanceof Error
+                ? { error: error.message }
+                : { error: 'Unknown error' },
+        );
+    }
+}
+
+export async function getOrder(
+    req: Request<{ orderId: string }>,
+    res: Response<
+        | {
+              ok: boolean;
+              orderDetails?: StripeOrderDetails;
+          }
+        | ApiError
+    >,
+): Promise<void> {
+    const { orderId } = req.params;
+
+    try {
+        const session = await stripe.checkout.sessions.retrieve(orderId);
+
+        if (!session) {
+            res.status(404).json({ error: 'Order not found' });
+            return;
+        }
+
+        const items = (await stripe.checkout.sessions.listLineItems(orderId, {
+            limit: 100,
+            expand: ['data.price.product'],
+        })) as Stripe.ApiList<StripeLineItem>;
+
+        console.log('\n\n', JSON.stringify(items), '\n\n');
+
+        res.status(200).json({
+            ok: true,
+            orderDetails: {
+                order: session,
+                items: items.data || [],
+            },
         });
     } catch (error) {
         res.status(500).json(

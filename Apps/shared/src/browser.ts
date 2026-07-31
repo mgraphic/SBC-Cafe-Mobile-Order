@@ -41,11 +41,13 @@ export {
     isProductId,
     STRIPE_LISTING_PAGE_SIZE,
     type Stripe,
+    type StripeCheckoutSessionMetadata,
+    type StripeLineItem,
+    type StripeOrderDetails,
     type StripeProduct,
     type StripeProductList,
     type StripeProductPrice,
     type StripeProductPriceList,
-    type StripeCheckoutSessionMetadata,
 } from './stripe';
 export { type ApiError } from './express';
 export * from './realtime';

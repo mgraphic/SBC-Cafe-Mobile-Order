@@ -2,12 +2,14 @@ import { Response, Request } from 'express';
 import { logger } from '../shared/logger.utils';
 import { environment } from '../environment';
 import {
+    MailerService,
     NewOrderAlertEventPayload,
     RealtimePartialEvent,
     SmsService,
     Stripe,
     StripeApi,
     StripeCheckoutSessionMetadata,
+    StripeLineItem,
     TokenUser,
     UsersService,
 } from 'sbc-cafe-shared-module';
@@ -49,23 +51,26 @@ export async function handleWebhook(
 
             const csid =
                 paymentIntent.payment_details?.order_reference ?? 'unknown';
+            const session = await stripe.checkout.sessions.retrieve(csid);
+            const items = (await stripe.checkout.sessions.listLineItems(csid, {
+                limit: 100,
+                expand: ['data.price.product'],
+            })) as Stripe.ApiList<StripeLineItem>;
+            const metadata = (
+                (await stripe.checkout.sessions.retrieve(
+                    csid,
+                )) as unknown as Stripe.Checkout.Session
+            ).metadata as unknown as StripeCheckoutSessionMetadata;
             const rtEvent: RealtimePartialEvent<NewOrderAlertEventPayload> = {
                 type: 'new-order-alert',
                 payload: {
                     csid,
-                    items: (await stripe.checkout.sessions
-                        .listLineItems(csid, { limit: 100 })
-                        .then(
-                            (lineItems) => lineItems.data,
-                        )) as unknown as Stripe.LineItem[],
-                    metadata: (
-                        (await stripe.checkout.sessions.retrieve(
-                            csid,
-                        )) as unknown as Stripe.Checkout.Session
-                    ).metadata as unknown as StripeCheckoutSessionMetadata,
+                    items: items.data || [],
+                    metadata,
                 },
             };
 
+            // Publish real-time event to the admin dashboard
             fetch(`${environment.realtime.endpoint}/publish`, {
                 method: 'POST',
                 headers: {
@@ -75,6 +80,7 @@ export async function handleWebhook(
                 body: JSON.stringify(rtEvent),
             });
 
+            // Send SMS alert to all admin users
             const userService = new UsersService();
             const smsService = new SmsService();
 
@@ -97,6 +103,64 @@ export async function handleWebhook(
                 } catch (error) {
                     logger.error('Failed to send alert SMS message', error);
                 }
+            }
+
+            // Send order confirmation email to customer
+            try {
+                const customerEmail = session.metadata?.customerEmail; //session.customer_details?.email;
+
+                if (customerEmail) {
+                    const mailerService = MailerService.getInstance();
+
+                    // Transform line items into email template format
+                    const lineItems = items.data.map((item) => {
+                        const product = item.price?.product as Stripe.Product;
+                        return {
+                            description: item.description || 'Order item',
+                            quantity: item.quantity || 1,
+                            unitPrice: Number(
+                                ((item.price?.unit_amount || 0) / 100).toFixed(
+                                    2,
+                                ),
+                            ),
+                            totalPrice: Number(
+                                ((item.amount_total || 0) / 100).toFixed(2),
+                            ),
+                            imageUrl: product?.images?.[0] || undefined,
+                        };
+                    });
+
+                    const totalAmount = Number(
+                        ((session.amount_total || 0) / 100).toFixed(2),
+                    );
+
+                    const metadata =
+                        session.metadata as unknown as StripeCheckoutSessionMetadata;
+                    const customerName = metadata?.customerName || 'Customer';
+
+                    await mailerService.sendOrderConfirmation(
+                        customerEmail,
+                        'Your Order Confirmation',
+                        {
+                            customerName,
+                            orderNumber: csid,
+                            paymentStatus: session.payment_status || 'pending',
+                            items: lineItems,
+                            totalAmount,
+                            orderUrl: `${environment.ui.storeUrl}/order-confirmation?csid=${csid}`,
+                        },
+                    );
+
+                    logger.info(
+                        `Order confirmation email sent to ${customerEmail}`,
+                    );
+                } else {
+                    logger.warn(
+                        `No customer email found for checkout session ${csid}`,
+                    );
+                }
+            } catch (error) {
+                logger.error('Failed to send order confirmation email', error);
             }
 
             break;

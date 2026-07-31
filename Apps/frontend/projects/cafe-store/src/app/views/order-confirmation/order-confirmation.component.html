@@ -1,1 +1,80 @@
-<p>order-confirmation works!</p>
+@if (orderDetails(); as details) {
+  @if (details.items?.length) {
+    @if (details.order; as order) {
+      <div class="item order-header">
+        <h2>Order Confirmed</h2>
+        <p>
+          @if (order.metadata; as metadata) {
+            Thanks{{
+              metadata["customerName"] ? ", " + metadata["customerName"] : ""
+            }}.
+          } @else {
+            Thanks.
+          }
+          Your order is being prepared.
+        </p>
+      </div>
+
+      <table class="table table-border">
+        <tbody>
+          @for (item of details.items; track item.id) {
+            <tr>
+              <td rowspan="2" class="image">
+                <img alt="coffee" [src]="item.price.product.images?.[0]" />
+              </td>
+              <td rowspan="2" class="info">
+                <h4>{{ item.description || "Order item" }}</h4>
+
+                <div class="info">
+                  @if (item.quantity) {
+                    <span class="price pricing">Qty: {{ item.quantity }}</span>
+                  }
+                  @if (item.amount_total != null) {
+                    <span class="free">
+                      {{ item.amount_total | convertUnitPrice | currency }}
+                    </span>
+                  }
+                </div>
+              </td>
+              <td class="remove">
+                <span
+                  class="status"
+                  [class.paid]="order.payment_status === 'paid'"
+                >
+                  {{ order.payment_status || "pending" }}
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td class="quantity">
+                @if (item.price; as price) {
+                  @if (price.unit_amount_decimal; as unitAmountDecimal) {
+                    Unit:
+                    {{ unitAmountDecimal | convertUnitPrice | currency }}
+                  }
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2" class="checkout">
+              <a class="btn btn-secondary" routerLink="/menu">Back to Menu</a>
+            </td>
+            <td class="total">
+              <h4>Total</h4>
+              <span class="price pricing">
+                {{ order.amount_total ?? 0 | convertUnitPrice | currency }}
+              </span>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    }
+  } @else {
+    <div class="no-items">No order items found</div>
+  }
+} @else {
+  <div class="no-items">Loading order confirmation...</div>
+}

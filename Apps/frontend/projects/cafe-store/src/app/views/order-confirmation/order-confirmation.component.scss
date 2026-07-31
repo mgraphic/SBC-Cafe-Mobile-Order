@@ -1,0 +1,105 @@
+@use "../../../theme" as *;
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 0;
+
+  h2 {
+    margin: 0;
+  }
+
+  p {
+    margin: 0.5rem 0 0;
+    color: $secondary;
+    text-align: center;
+  }
+
+  .info {
+    font-family: poppins-medium;
+
+    .price {
+      color: $primary;
+    }
+
+    .free {
+      color: $gray-500;
+      font-style: italic;
+    }
+  }
+}
+
+table {
+  h4 {
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  img {
+    width: 20vw;
+    height: 20vw;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+  }
+
+  td {
+    &.image {
+      align-content: center;
+      text-align: center;
+    }
+
+    &.info {
+      align-content: center;
+    }
+
+    &.remove,
+    &.quantity {
+      align-content: center;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    &.remove {
+      border-bottom: none;
+    }
+
+    &.checkout {
+      padding-top: 2rem !important;
+      align-content: center;
+      text-align: center;
+      border-bottom: none;
+    }
+
+    &.total {
+      padding-top: 2rem !important;
+      align-content: center;
+      text-align: center;
+      border-bottom: none;
+    }
+  }
+}
+
+.no-items {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: $primary;
+  padding: 2rem;
+}
+
+.status {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: $gray-300;
+  color: $secondary;
+  font-family: poppins-medium;
+  text-transform: capitalize;
+
+  &.paid {
+    background: rgba($green, 0.15);
+    color: $green;
+  }
+}

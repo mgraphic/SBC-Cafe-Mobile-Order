@@ -71,6 +71,11 @@ export class CartComponent implements OnInit {
 
   onCheckout(): void {
     this.checkoutForm.reset();
+    this.checkoutForm.patchValue({
+      name: localStorage.getItem('checkout-name') || null,
+      phone: localStorage.getItem('checkout-phone') || null,
+      email: localStorage.getItem('checkout-email') || null,
+    });
     this.modalService.open(this.checkoutModal(), { size: 'lg' });
   }
 
@@ -78,12 +83,25 @@ export class CartComponent implements OnInit {
     this.checkoutForm.markAllAsTouched();
     if (this.checkoutForm.valid) {
       const { name, phone, email } = this.checkoutForm.value;
-      console.log('Checkout with:', { name, phone, email });
+
       this.cartService.submitOrder({
         customerName: name || 'Anonymous',
         customerEmail: email || undefined,
         customerMobile: phone || undefined,
       } as StripeCheckoutSessionMetadata);
+
+      if (name) {
+        localStorage.setItem('checkout-name', name);
+      }
+
+      if (phone) {
+        localStorage.setItem('checkout-phone', phone);
+      }
+
+      if (email) {
+        localStorage.setItem('checkout-email', email);
+      }
+
       this.modalService.dismissAll();
     }
   }

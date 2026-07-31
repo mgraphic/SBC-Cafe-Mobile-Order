@@ -1,19 +1,21 @@
 import { DestroyRef, inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+// import { HttpClient } from '@angular/common/http';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Stripe, StripeCheckoutSessionMetadata } from 'sbc-cafe-shared-module';
-import { Subject } from 'rxjs';
-import { environment } from '../../../../shared-lib/src/public-api';
+import { Subject, take } from 'rxjs';
+// import { environment } from '../../../../shared-lib/src/public-api';
 import { CartItem } from './cart.model';
+import { OrderService } from '../../../../shared-lib/src/lib/services/order.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CartService {
   private readonly cartItems = new Map<string, CartItem>();
-  private readonly http = inject(HttpClient);
+  // private readonly http = inject(HttpClient);
   private readonly destroyRef = inject(DestroyRef);
-  private readonly apiUrl = environment.cafeStoreServiceUrl;
+  // private readonly apiUrl = environment.cafeStoreServiceUrl;
+  private readonly orderService = inject(OrderService);
 
   cartUpdated$: Subject<void> = new Subject();
 
@@ -87,13 +89,12 @@ export class CartService {
         quantity: item.quantity,
       }));
 
-    this.http
-      .post(`${this.apiUrl}/submit-order`, {
+    this.orderService
+      .submitOrder({
         items,
-        successUrl: `${window.location.origin}/order-confirmation?csid={CHECKOUT_SESSION_ID}`,
-        cancelUrl: `${window.location.origin}/cart`,
         metadata,
       })
+      .pipe(take(1))
       .subscribe({
         next: (response: any) => {
           if (response.url) window.location.href = response.url;

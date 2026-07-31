@@ -27,3 +27,14 @@ export type StripeCheckoutSessionMetadata = Stripe.Metadata & {
         | { customerEmail: string; customerMobile?: string }
         | { customerEmail?: string; customerMobile: string }
     );
+
+export type StripeLineItem = Stripe.LineItem & {
+    price: Stripe.Price & {
+        product: StripeProduct;
+    };
+};
+
+export type StripeOrderDetails = {
+    order: Stripe.Checkout.Session;
+    items: StripeLineItem[];
+};

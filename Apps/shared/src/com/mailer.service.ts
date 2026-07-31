@@ -5,6 +5,7 @@ import { join } from 'path';
 import { sharedEnvironment } from '../shared-environment';
 import {
     MailerTemplateGreeting,
+    MailerTemplateOrderConfirmation,
     MailerTemplateProperties,
     SendMailerConfig,
 } from './com.model';
@@ -12,6 +13,11 @@ import Handlebars, { TemplateDelegate } from 'handlebars';
 import { SettingsService } from '../settings';
 import { Attachment } from 'nodemailer/lib/mailer';
 import { Logger } from 'winston';
+
+// Register Handlebars helpers
+Handlebars.registerHelper('eq', function (a, b) {
+    return a === b;
+});
 
 export class MailerService {
     private static instance: MailerService | null = null;
@@ -72,6 +78,36 @@ export class MailerService {
         const html = htmlTemplate(templateData);
         const textTemplate = await this.getTextTemplate<MailerTemplateGreeting>(
             'mailer-greeting-template',
+        );
+        const text = textTemplate(templateData);
+
+        await this.sendEmail({
+            to,
+            subject,
+            text,
+            html,
+            attachments,
+        });
+    }
+
+    public async sendOrderConfirmation(
+        to: string,
+        subject: string,
+        data: Omit<MailerTemplateOrderConfirmation, 'subject'>,
+        attachments?: Attachment[],
+    ): Promise<void> {
+        const templateProperties = await this.getTemplateProperties();
+        const templateData = {
+            subject,
+            ...templateProperties,
+            ...data,
+        };
+        const htmlTemplate = await this.getHtmlTemplate<MailerTemplateOrderConfirmation>(
+            'mailer-order-confirmation-template',
+        );
+        const html = htmlTemplate(templateData);
+        const textTemplate = await this.getTextTemplate<MailerTemplateOrderConfirmation>(
+            'mailer-order-confirmation-template',
         );
         const text = textTemplate(templateData);
 

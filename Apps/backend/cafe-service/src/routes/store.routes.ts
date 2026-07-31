@@ -6,7 +6,7 @@ import {
     getItemById,
     getItemBySlug,
 } from '../handlers/product.handler';
-import { submitOrder } from '../handlers/order.handler';
+import { getOrder, submitOrder } from '../handlers/order.handler';
 
 export const storeRouter: Router = Router();
 
@@ -44,3 +44,4 @@ storeRouter.get('/item/:identifier', (req: Request, res: Response) => {
     }
 });
 storeRouter.post('/submit-order', submitOrder);
+storeRouter.get('/order/:orderId', getOrder);

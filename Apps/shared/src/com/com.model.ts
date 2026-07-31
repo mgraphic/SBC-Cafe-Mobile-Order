@@ -30,6 +30,22 @@ export type MailerTemplateGreeting = {
     buttonText?: string;
 };
 
+export type MailerTemplateOrderConfirmation = {
+    subject: string;
+    customerName: string;
+    orderNumber: string;
+    paymentStatus: string;
+    items: Array<{
+        description: string;
+        quantity: number;
+        unitPrice: number;
+        totalPrice: number;
+        imageUrl?: string;
+    }>;
+    totalAmount: number;
+    orderUrl?: string;
+};
+
 export interface MailerTemplateProperties {
     senderName: string;
     organizationName: string;

@@ -1,0 +1,420 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="x-apple-disable-message-reformatting" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>{{subject}}</title>
+        <style type="text/css">
+            body {
+                margin: 0;
+                padding: 0;
+                -webkit-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+            }
+            table {
+                border-collapse: collapse;
+                mso-table-lspace: 0pt;
+                mso-table-rspace: 0pt;
+            }
+            img {
+                border: 0;
+                height: auto;
+                line-height: 100%;
+                outline: none;
+                text-decoration: none;
+                -ms-interpolation-mode: bicubic;
+            }
+            @media only screen and (max-width: 600px) {
+                .container {
+                    width: 100% !important;
+                }
+                .content {
+                    padding: 10px !important;
+                }
+            }
+        </style>
+    </head>
+    <body
+        style="
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
+        "
+    >
+        <!-- Wrapper Table -->
+        <table
+            role="presentation"
+            width="100%"
+            cellpadding="0"
+            cellspacing="0"
+            border="0"
+            style="background-color: #f4f4f4"
+        >
+            <tr>
+                <td align="center" style="padding: 20px 0">
+                    <!-- Main Container -->
+                    <table
+                        role="presentation"
+                        class="container"
+                        width="600"
+                        cellpadding="0"
+                        cellspacing="0"
+                        border="0"
+                        style="
+                            background-color: #ffffff;
+                            border-radius: 8px;
+                            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                        "
+                    >
+                        <!-- Header -->
+                        <tr>
+                            <td
+                                align="center"
+                                style="
+                                    padding: 40px 30px 30px 30px;
+                                    background-color: #4caf50;
+                                    border-radius: 8px 8px 0 0;
+                                "
+                            >
+                                <h1
+                                    style="
+                                        margin: 0;
+                                        color: #ffffff;
+                                        font-size: 28px;
+                                        font-weight: bold;
+                                    "
+                                >
+                                    Order Confirmed
+                                </h1>
+                            </td>
+                        </tr>
+
+                        <!-- Content -->
+                        <tr>
+                            <td class="content" style="padding: 40px 30px">
+                                <p
+                                    style="
+                                        margin: 0 0 20px 0;
+                                        color: #333333;
+                                        font-size: 16px;
+                                        line-height: 1.6;
+                                    "
+                                >
+                                    Hi {{customerName}},
+                                </p>
+
+                                <p
+                                    style="
+                                        margin: 0 0 20px 0;
+                                        color: #333333;
+                                        font-size: 16px;
+                                        line-height: 1.6;
+                                    "
+                                >
+                                    Thank you for your order! Your order is being prepared.
+                                </p>
+
+                                <!-- Order Information -->
+                                <table
+                                    role="presentation"
+                                    cellpadding="0"
+                                    cellspacing="0"
+                                    border="0"
+                                    width="100%"
+                                    style="
+                                        margin: 20px 0;
+                                        background-color: #f9f9f9;
+                                        border-radius: 4px;
+                                    "
+                                >
+                                    <tr>
+                                        <td style="padding: 15px">
+                                            <p
+                                                style="
+                                                    margin: 0 0 5px 0;
+                                                    color: #666666;
+                                                    font-size: 14px;
+                                                "
+                                            >
+                                                <strong>Order Number:</strong> {{orderNumber}}
+                                            </p>
+                                            <p
+                                                style="
+                                                    margin: 0;
+                                                    color: #666666;
+                                                    font-size: 14px;
+                                                "
+                                            >
+                                                <strong>Payment Status:</strong>
+                                                <span
+                                                    style="
+                                                        text-transform: capitalize;
+                                                        color: {{#eq paymentStatus 'paid'}}#4caf50{{else}}#ff9800{{/eq}};
+                                                        font-weight: bold;
+                                                    "
+                                                >
+                                                    {{paymentStatus}}
+                                                </span>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <!-- Order Items -->
+                                <h2
+                                    style="
+                                        margin: 30px 0 15px 0;
+                                        color: #333333;
+                                        font-size: 20px;
+                                        font-weight: bold;
+                                    "
+                                >
+                                    Order Details
+                                </h2>
+
+                                <!-- Items Table -->
+                                <table
+                                    role="presentation"
+                                    cellpadding="0"
+                                    cellspacing="0"
+                                    border="0"
+                                    width="100%"
+                                    style="
+                                        border: 1px solid #eeeeee;
+                                        border-radius: 4px;
+                                    "
+                                >
+                                    {{#each items}}
+                                    <tr>
+                                        <td
+                                            style="
+                                                padding: 15px;
+                                                border-bottom: 1px solid #eeeeee;
+                                            "
+                                        >
+                                            <table
+                                                role="presentation"
+                                                cellpadding="0"
+                                                cellspacing="0"
+                                                border="0"
+                                                width="100%"
+                                            >
+                                                <tr>
+                                                    {{#if imageUrl}}
+                                                    <td
+                                                        width="80"
+                                                        style="padding-right: 15px"
+                                                    >
+                                                        <img
+                                                            src="{{imageUrl}}"
+                                                            alt="{{description}}"
+                                                            width="80"
+                                                            height="80"
+                                                            style="
+                                                                border-radius: 4px;
+                                                                display: block;
+                                                            "
+                                                        />
+                                                    </td>
+                                                    {{/if}}
+                                                    <td style="vertical-align: top">
+                                                        <h4
+                                                            style="
+                                                                margin: 0 0 8px 0;
+                                                                color: #333333;
+                                                                font-size: 16px;
+                                                                font-weight: bold;
+                                                            "
+                                                        >
+                                                            {{description}}
+                                                        </h4>
+                                                        <p
+                                                            style="
+                                                                margin: 0 0 5px 0;
+                                                                color: #666666;
+                                                                font-size: 14px;
+                                                            "
+                                                        >
+                                                            Qty: {{quantity}}
+                                                        </p>
+                                                        <p
+                                                            style="
+                                                                margin: 0;
+                                                                color: #666666;
+                                                                font-size: 14px;
+                                                            "
+                                                        >
+                                                            Unit: ${{unitPrice}}
+                                                        </p>
+                                                    </td>
+                                                    <td
+                                                        align="right"
+                                                        style="
+                                                            vertical-align: top;
+                                                            white-space: nowrap;
+                                                        "
+                                                    >
+                                                        <p
+                                                            style="
+                                                                margin: 0;
+                                                                color: #333333;
+                                                                font-size: 16px;
+                                                                font-weight: bold;
+                                                            "
+                                                        >
+                                                            ${{totalPrice}}
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+
+                                    <!-- Total Row -->
+                                    <tr>
+                                        <td style="padding: 20px; background-color: #f9f9f9">
+                                            <table
+                                                role="presentation"
+                                                cellpadding="0"
+                                                cellspacing="0"
+                                                border="0"
+                                                width="100%"
+                                            >
+                                                <tr>
+                                                    <td>
+                                                        <h3
+                                                            style="
+                                                                margin: 0;
+                                                                color: #333333;
+                                                                font-size: 18px;
+                                                                font-weight: bold;
+                                                            "
+                                                        >
+                                                            Total
+                                                        </h3>
+                                                    </td>
+                                                    <td align="right">
+                                                        <h3
+                                                            style="
+                                                                margin: 0;
+                                                                color: #4caf50;
+                                                                font-size: 20px;
+                                                                font-weight: bold;
+                                                            "
+                                                        >
+                                                            ${{totalAmount}}
+                                                        </h3>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <!-- Call to Action Button (Optional) -->
+                                {{#if orderUrl}}
+                                <table
+                                    role="presentation"
+                                    cellpadding="0"
+                                    cellspacing="0"
+                                    border="0"
+                                    style="margin: 30px 0"
+                                >
+                                    <tr>
+                                        <td
+                                            align="center"
+                                            style="
+                                                border-radius: 4px;
+                                                background-color: #4caf50;
+                                            "
+                                        >
+                                            <a
+                                                href="{{orderUrl}}"
+                                                target="_blank"
+                                                style="
+                                                    display: inline-block;
+                                                    padding: 14px 30px;
+                                                    color: #ffffff;
+                                                    text-decoration: none;
+                                                    font-size: 16px;
+                                                    font-weight: bold;
+                                                    border-radius: 4px;
+                                                "
+                                            >
+                                                View Order Details
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </table>
+                                {{/if}}
+
+                                <p
+                                    style="
+                                        margin: 20px 0 0 0;
+                                        color: #333333;
+                                        font-size: 16px;
+                                        line-height: 1.6;
+                                    "
+                                >
+                                    If you have any questions about your order, please don't hesitate to contact us.
+                                </p>
+
+                                <p
+                                    style="
+                                        margin: 20px 0 0 0;
+                                        color: #333333;
+                                        font-size: 16px;
+                                        line-height: 1.6;
+                                    "
+                                >
+                                    Best regards,<br />
+                                    <strong>{{senderName}}</strong>
+                                </p>
+                            </td>
+                        </tr>
+
+                        <!-- Footer -->
+                        <tr>
+                            <td
+                                align="center"
+                                style="
+                                    padding: 30px;
+                                    background-color: #f9f9f9;
+                                    border-radius: 0 0 8px 8px;
+                                    border-top: 1px solid #eeeeee;
+                                "
+                            >
+                                <p
+                                    style="
+                                        margin: 0 0 10px 0;
+                                        color: #666666;
+                                        font-size: 14px;
+                                        line-height: 1.5;
+                                    "
+                                >
+                                    {{organizationName}}
+                                </p>
+                                <p
+                                    style="
+                                        margin: 0 0 10px 0;
+                                        color: #999999;
+                                        font-size: 12px;
+                                        line-height: 1.5;
+                                    "
+                                >
+                                    {{organizationAddress}}
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                    <!-- End Main Container -->
+                </td>
+            </tr>
+        </table>
+        <!-- End Wrapper Table -->
+    </body>
+</html>

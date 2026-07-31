@@ -1,0 +1,29 @@
+Hi {{customerName}},
+
+Thank you for your order! Your order is being prepared.
+
+Order Number: {{orderNumber}}
+Payment Status: {{paymentStatus}}
+
+ORDER DETAILS
+============================================================
+
+{{#each items}}
+{{description}}
+Qty: {{quantity}} | Unit: ${{unitPrice}} | Total: ${{totalPrice}}
+
+{{/each}}
+============================================================
+TOTAL: ${{totalAmount}}
+
+{{#if orderUrl}}
+View your order details: {{orderUrl}}
+{{/if}}
+
+If you have any questions about your order, please don't hesitate to contact us.
+
+Best regards,
+{{senderName}}
+
+{{organizationName}}
+{{organizationAddress}}
