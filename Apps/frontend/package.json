@@ -59,7 +59,7 @@
   "devDependencies": {
     "@angular-builders/jest": "^19.0.1",
     "@angular/build": "^20.3.32",
-    "@angular/cli": "^20.3.32",
+    "@angular/cli": "^21.0.4",
     "@angular/compiler-cli": "^20.3.26",
     "@angular/localize": "^20.3.26",
     "@briebug/jest-schematic": "^6.0.0",
