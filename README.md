@@ -2,7 +2,7 @@
 
 # SBC Cafe Mobile Order Project
 
-<a href="https://nodejs.org"><img src="https://img.shields.io/badge/NodeJS-v22.17.1-blue?logo=nodedotjs&logoColor=%23fff" alt="NodeJS v22.17.1" /></a> <a href="https://angular.love/angular-20-whats-new"><img src="https://img.shields.io/badge/Built%20With%20Angular%20v20-blue?logo=angular&logoColor=white" alt="Angular 20" /></a>
+<a href="https://nodejs.org"><img src="https://img.shields.io/badge/NodeJS-v22.17.1-blue?logo=nodedotjs&logoColor=%23fff" alt="NodeJS v22.22.3" /></a> <a href="https://angular.love/angular-20-whats-new"><img src="https://img.shields.io/badge/Built%20With%20Angular%20v20-blue?logo=angular&logoColor=white" alt="Angular 20" /></a>
 
 <br />
 <br />

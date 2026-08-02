@@ -8,6 +8,8 @@ services:
             context: ./Apps/frontend
             args:
                 APP_NAME: cafe-store
+                ADMIN_UI_URL: http://localhost:81
+                STORE_UI_URL: http://localhost:80
 
         image: cafe-store
         container_name: cafe-store
@@ -19,14 +21,16 @@ services:
             - 'host.docker.internal:host-gateway'
 
         environment:
-            - ADMIN_UI_URL=http://localhost:81
-            - STORE_UI_URL=http://localhost:80
+            ADMIN_UI_URL: http://localhost:81
+            STORE_UI_URL: http://localhost:80
 
     cafe-admin:
         build:
             context: ./Apps/frontend
             args:
                 APP_NAME: cafe-admin
+                ADMIN_UI_URL: http://localhost:81
+                STORE_UI_URL: http://localhost:80
 
         image: cafe-admin
         container_name: cafe-admin
@@ -35,8 +39,8 @@ services:
             - 8081:80
 
         environment:
-            - ADMIN_UI_URL=http://localhost:81
-            - STORE_UI_URL=http://localhost:80
+            ADMIN_UI_URL: http://localhost:81
+            STORE_UI_URL: http://localhost:80
 
     # Demo Backend
     rt-gateway:
@@ -52,11 +56,11 @@ services:
             - '3200:3200'
 
         environment:
-            - CORS_ORIGINS=http://localhost,http://localhost:80,http://localhost:81
-            - REALTIME_GATEWAY_ENDPOINT_URL=http://rt-gateway:3200
-            - BREVO_BASE_URL=http://wiremock:8080
-            - ADMIN_UI_URL=http://localhost:81
-            - STORE_UI_URL=http://localhost:80
+            CORS_ORIGINS: http://localhost,http://localhost:80,http://localhost:81
+            REALTIME_GATEWAY_ENDPOINT_URL: http://rt-gateway:3200
+            BREVO_BASE_URL: http://wiremock:8080
+            ADMIN_UI_URL: http://localhost:81
+            STORE_UI_URL: http://localhost:80
 
     cafe-service:
         build:

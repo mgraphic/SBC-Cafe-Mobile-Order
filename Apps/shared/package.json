@@ -17,7 +17,7 @@
         "dist"
     ],
     "engines": {
-        "node": ">=22.17.1"
+        "node": ">=22.22.3"
     },
     "scripts": {
         "build": "npm run build:package && npm run build:pack",

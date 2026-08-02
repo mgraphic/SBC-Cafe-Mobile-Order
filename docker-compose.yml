@@ -5,6 +5,8 @@ services:
             context: ./Apps/frontend
             args:
                 APP_NAME: cafe-store
+                ADMIN_UI_URL: http://localhost:4201
+                STORE_UI_URL: http://localhost:4200
 
         image: cafe-store
         container_name: cafe-store
@@ -17,6 +19,8 @@ services:
             context: ./Apps/frontend
             args:
                 APP_NAME: cafe-admin
+                ADMIN_UI_URL: http://localhost:4201
+                STORE_UI_URL: http://localhost:4200
 
         image: cafe-admin
         container_name: cafe-admin

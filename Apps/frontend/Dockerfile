@@ -6,6 +6,10 @@ WORKDIR /app
 FROM base AS build
 ARG APP_NAME
 ARG CACHE_BUST=1
+ARG ADMIN_UI_URL=http://localhost:4201
+ARG STORE_UI_URL=http://localhost:4200
+ENV ADMIN_UI_URL=$ADMIN_UI_URL
+ENV STORE_UI_URL=$STORE_UI_URL
 # Cache-busting timestamp: 2025-07-23-22:50
 COPY package*.json .npmrc ./
 COPY custom_modules ./custom_modules
