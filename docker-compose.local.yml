@@ -61,6 +61,7 @@ services:
             BREVO_BASE_URL: http://wiremock:8080
             ADMIN_UI_URL: http://localhost:81
             STORE_UI_URL: http://localhost:80
+            SMTP_CONFIG: '{"host":"mailpit","port":1025,"secure":false}'
 
     cafe-service:
         build:
@@ -83,7 +84,7 @@ services:
             BREVO_BASE_URL: http://wiremock:8080
             ADMIN_UI_URL: http://localhost:81
             STORE_UI_URL: http://localhost:80
-
+            SMTP_CONFIG: '{"host":"mailpit","port":1025,"secure":false}'
     auth-service:
         build:
             context: ./Apps/backend/auth-service
@@ -101,6 +102,7 @@ services:
             BREVO_BASE_URL: http://wiremock:8080
             ADMIN_UI_URL: http://localhost:81
             STORE_UI_URL: http://localhost:80
+            SMTP_CONFIG: '{"host":"mailpit","port":1025,"secure":false}'
 
     store:
         image: nginx:stable-alpine
