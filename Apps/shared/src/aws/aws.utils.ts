@@ -33,17 +33,27 @@ export function valueToAttributeValue<T>(value: T): AttributeValue {
 
 export function attributeValueToValue<T>(value: AttributeValue): T {
     switch (true) {
-        case !!value.S:
+        case 'S' in value:
             return value.S as T;
-        case !!value.N:
+        case 'N' in value:
             return Number(value.N) as T;
-        case !!value.BOOL:
+        case 'BOOL' in value:
             return value.BOOL as T;
-        case !!value.L:
+        case 'NULL' in value:
+            return null as T;
+        case 'B' in value:
+            return value.B as T;
+        case 'SS' in value:
+            return value.SS as T;
+        case 'NS' in value:
+            return value.NS?.map((item) => Number(item)) as unknown as T;
+        case 'BS' in value:
+            return value.BS as T;
+        case 'L' in value:
             return value.L?.map((item) =>
                 attributeValueToValue(item),
             ) as unknown as T;
-        case !!value.M:
+        case 'M' in value:
             return Object.entries(value.M || []).reduce(
                 (acc, [key, item]) => ({
                     ...acc,

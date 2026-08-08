@@ -4,6 +4,7 @@ import {
     activateUser,
     addUser,
     canActivateUser,
+    changePassword,
     deleteUser,
     getUser,
     getUserById,
@@ -30,3 +31,4 @@ adminRouter.post('/addUser', addUser);
 adminRouter.put('/updateUser/:id', updateUser);
 adminRouter.delete('/deleteUser/:id', deleteUser);
 adminRouter.post('/getUserLogs', getUserLogs);
+adminRouter.put('/changePassword', changePassword);

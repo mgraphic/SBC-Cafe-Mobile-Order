@@ -1,0 +1,13 @@
+Hi {{#if recipientName}}{{recipientName}}{{else}}there{{/if}},
+
+Use the one-time passcode below to complete your verification.
+
+OTP: {{otp}}
+
+This code expires in {{validityMinutes}} minutes.
+
+Best regards,
+{{senderName}}
+
+{{organizationName}}
+{{organizationAddress}}

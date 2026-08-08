@@ -267,6 +267,47 @@ export async function getUserLogs(req: Request, res: Response): Promise<void> {
     res.status(200).json(result);
 }
 
+export async function changePassword(
+    req: Request,
+    res: Response,
+): Promise<void> {
+    const id: string = req.body.id as string;
+
+    if (!id) {
+        res.status(400).json({ error: 'ID is required' });
+        return;
+    }
+
+    if (req.user?.getUserId() !== id) {
+        res.status(403).json({
+            error: 'You are not authorized to change this password',
+        });
+        return;
+    }
+
+    const userService = new UsersService();
+    const user = await userService.getUserById(id);
+
+    if (!user) {
+        res.status(404).json({ error: 'User not found' });
+        return;
+    }
+
+    if (!req.body.password) {
+        res.status(400).json({ error: 'Password is required' });
+        return;
+    }
+
+    try {
+        const passwordHash = tokenizePassword(user, req.body.password);
+        await userService.updateUser(user.id, { passwordHash });
+        res.status(200).json({ message: 'Password changed successfully' });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to change password' });
+        logger.error(error);
+    }
+}
+
 export async function canActivateUser(
     req: Request,
     res: Response,

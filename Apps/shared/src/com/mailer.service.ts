@@ -6,6 +6,7 @@ import { sharedEnvironment } from '../shared-environment';
 import {
     MailerTemplateGreeting,
     MailerTemplateOrderConfirmation,
+    MailerTemplateOtp,
     MailerTemplateProperties,
     SendMailerConfig,
 } from './com.model';
@@ -102,12 +103,44 @@ export class MailerService {
             ...templateProperties,
             ...data,
         };
-        const htmlTemplate = await this.getHtmlTemplate<MailerTemplateOrderConfirmation>(
-            'mailer-order-confirmation-template',
+        const htmlTemplate =
+            await this.getHtmlTemplate<MailerTemplateOrderConfirmation>(
+                'mailer-order-confirmation-template',
+            );
+        const html = htmlTemplate(templateData);
+        const textTemplate =
+            await this.getTextTemplate<MailerTemplateOrderConfirmation>(
+                'mailer-order-confirmation-template',
+            );
+        const text = textTemplate(templateData);
+
+        await this.sendEmail({
+            to,
+            subject,
+            text,
+            html,
+            attachments,
+        });
+    }
+
+    public async sendOtpEmail(
+        to: string,
+        subject: string,
+        data: Omit<MailerTemplateOtp, 'subject'>,
+        attachments?: Attachment[],
+    ): Promise<void> {
+        const templateProperties = await this.getTemplateProperties();
+        const templateData = {
+            subject,
+            ...templateProperties,
+            ...data,
+        };
+        const htmlTemplate = await this.getHtmlTemplate<MailerTemplateOtp>(
+            'mailer-otp-template',
         );
         const html = htmlTemplate(templateData);
-        const textTemplate = await this.getTextTemplate<MailerTemplateOrderConfirmation>(
-            'mailer-order-confirmation-template',
+        const textTemplate = await this.getTextTemplate<MailerTemplateOtp>(
+            'mailer-otp-template',
         );
         const text = textTemplate(templateData);
 

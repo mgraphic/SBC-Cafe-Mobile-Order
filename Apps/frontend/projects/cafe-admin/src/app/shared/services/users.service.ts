@@ -26,7 +26,7 @@ export class UsersService {
 
   getUser(email: string): Observable<IUser> {
     return this.http.get<IUser>(
-      `${this.baseUrl}/getUser/${encodeURIComponent(email)}`
+      `${this.baseUrl}/getUser/${encodeURIComponent(email)}`,
     );
   }
 
@@ -37,43 +37,43 @@ export class UsersService {
   getLogs(
     pagable: IPageable,
     lookup?: UserTrackerLogsLookup,
-    lookupValue?: string
+    lookupValue?: string,
   ): Observable<PaginatedPayload<ITracker>> {
     return this.http.post<{ data: ITracker[]; metadata: IPageableMetadata }>(
       `${this.baseUrl}/getUserLogs`,
-      { ...pagable, lookup, lookupValue }
+      { ...pagable, lookup, lookupValue },
     );
   }
 
   addUser(user: UserResponse): Observable<HttpResponse<UserResponse>> {
     return this.http.post<HttpResponse<UserResponse>>(
       `${this.baseUrl}/addUser`,
-      user
+      user,
     );
   }
 
   updateUser(
     id: string,
-    user: Partial<IUser>
+    user: Partial<IUser>,
   ): Observable<HttpResponse<UserResponse>> {
     return this.http
       .put<HttpResponse<UserResponse>>(`${this.baseUrl}/updateUser/${id}`, user)
       .pipe(
         // Wait for 0.5 seconds before emitting the result
-        delay(500)
+        delay(500),
       );
   }
 
   deleteUser(id: string): Observable<HttpResponse<UserResponse>> {
     return this.http.delete<HttpResponse<UserResponse>>(
-      `${this.baseUrl}/deleteUser/${id}`
+      `${this.baseUrl}/deleteUser/${id}`,
     );
   }
 
   canActivateUser(id: string): Observable<boolean> {
     return this.http
       .get<HttpResponse<{ canActivate: boolean }>>(
-        `${this.baseUrl}/canActivateUser/${id}`
+        `${this.baseUrl}/canActivateUser/${id}`,
       )
       .pipe(map((response) => !!response.data?.canActivate));
   }
@@ -81,6 +81,13 @@ export class UsersService {
   activateUser(id: string, password: string): Observable<HttpResponse> {
     return this.http.put<HttpResponse>(`${this.baseUrl}/activateUser/${id}`, {
       password,
+    });
+  }
+
+  changePassword(id: string, password: string): Observable<HttpResponse> {
+    return this.http.put<HttpResponse>(`${this.baseUrl}/changePassword`, {
+      password,
+      id,
     });
   }
 }

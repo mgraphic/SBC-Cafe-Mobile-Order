@@ -23,7 +23,7 @@ export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly jwtHelper = inject(JwtHelperService);
   private readonly isLoggedInSubject = new BehaviorSubject<boolean>(
-    this.hasToken()
+    this.hasToken(),
   );
   private user: JwtUserPayload | null = null;
 
@@ -42,7 +42,7 @@ export class AuthService {
           next: (response: IAuthResponse) => {
             this.storeToken(response.accessToken);
             this.user = this.jwtHelper.decodeToken<JwtUserPayload>(
-              response.accessToken
+              response.accessToken,
             );
             this.isLoggedInSubject.next(true);
           },
@@ -54,7 +54,7 @@ export class AuthService {
             this.isLoggedInSubject.next(false);
           },
         }),
-        switchMap((response) => of(response))
+        switchMap((response) => of(response)),
       );
   }
 
@@ -63,6 +63,40 @@ export class AuthService {
     this.user = null;
     this.isLoggedInSubject.next(false);
     this.http.get(`${this.authServiceUrl}/logout`).pipe(take(1)).subscribe();
+  }
+
+  public loginOtp(username: string, otp: string): Observable<IAuthResponse> {
+    return this.http
+      .post<IAuthResponse>(`${this.authServiceUrl}/login/otp`, {
+        username,
+        otp,
+      })
+      .pipe(
+        tap({
+          next: (response: IAuthResponse) => {
+            this.storeToken(response.accessToken);
+            this.user = this.jwtHelper.decodeToken<JwtUserPayload>(
+              response.accessToken,
+            );
+            this.isLoggedInSubject.next(true);
+          },
+
+          error: (error: HttpErrorResponse) => {
+            console.error('Login OTP error:', error);
+            this.removeToken();
+            this.user = null;
+            this.isLoggedInSubject.next(false);
+          },
+        }),
+        switchMap((response) => of(response)),
+      );
+  }
+
+  public getOtp(username: string, sendTo: 'email' | 'sms'): Observable<void> {
+    return this.http.post<void>(`${this.authServiceUrl}/get-otp`, {
+      username,
+      sendTo,
+    });
   }
 
   private refresh(): Observable<IAuthResponse> {
@@ -78,7 +112,7 @@ export class AuthService {
           this.removeToken();
           this.isLoggedInSubject.next(false);
         },
-      })
+      }),
     );
   }
 
@@ -127,7 +161,7 @@ export class AuthService {
   public getUser(): JwtUserPayload | null {
     if (!this.user && this.hasToken()) {
       this.user = this.jwtHelper.decodeToken<JwtUserPayload>(
-        this.getToken() as string
+        this.getToken() as string,
       );
     }
 

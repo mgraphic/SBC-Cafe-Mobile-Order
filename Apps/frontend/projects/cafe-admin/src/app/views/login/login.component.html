@@ -1,0 +1,130 @@
+<div class="container">
+  <div class="row">
+    <div class="col-6 offset-3 p-3">
+      @if (loginMode() === "password") {
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            name="email"
+            [(ngModel)]="email"
+          />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            name="password"
+            [(ngModel)]="password"
+          />
+        </div>
+      }
+
+      @if (loginMode() === "forgot-password") {
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            name="email"
+            [(ngModel)]="email"
+          />
+        </div>
+        <div class="form-group">
+          <label for="send-to">Send OTP to</label>
+          <label>
+            <input
+              type="radio"
+              name="send-to"
+              value="email"
+              [(ngModel)]="sendTo"
+            />
+            Email
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="send-to"
+              value="sms"
+              [(ngModel)]="sendTo"
+            />
+            SMS
+          </label>
+        </div>
+      }
+
+      @if (loginMode() === "otp") {
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            name="email"
+            [(ngModel)]="email"
+          />
+        </div>
+        <div class="form-group">
+          <label for="otp">OTP</label>
+          <input
+            type="text"
+            class="form-control"
+            id="otp"
+            name="otp"
+            [(ngModel)]="otp"
+          />
+        </div>
+      }
+
+      <div class="button-group">
+        @if (loginMode() === "password") {
+          <button
+            type="button"
+            class="btn btn-primary-outline"
+            (click)="loginMode.set('forgot-password')"
+          >
+            Forgot Password
+          </button>
+          <button type="button" class="btn btn-primary" (click)="login()">
+            Login
+          </button>
+        }
+
+        @if (loginMode() === "forgot-password") {
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="loginMode.set('password')"
+          >
+            Cancel
+          </button>
+          <button type="button" class="btn btn-primary" (click)="requestOtp()">
+            Send OTP Login Code
+          </button>
+        }
+
+        @if (loginMode() === "otp") {
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="loginMode.set('password')"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="loginWithOtp()"
+          >
+            Login with OTP
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>

@@ -46,6 +46,13 @@ export type MailerTemplateOrderConfirmation = {
     orderUrl?: string;
 };
 
+export type MailerTemplateOtp = {
+    subject: string;
+    recipientName?: string;
+    otp: string;
+    validityMinutes: number;
+};
+
 export interface MailerTemplateProperties {
     senderName: string;
     organizationName: string;

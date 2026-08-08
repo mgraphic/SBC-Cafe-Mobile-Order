@@ -10,6 +10,7 @@ export interface IUser {
     role: UserRole;
     permissions: UserPermission[];
     refreshTokens: string[];
+    otp?: string;
 }
 
 export const jwtPayloadFields = [

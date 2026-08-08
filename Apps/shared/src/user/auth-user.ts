@@ -3,6 +3,8 @@ import { UsersService } from './users.service';
 import { authenticateUser } from './user.server-utils';
 
 export class AuthUser {
+    public static OTP_VALIDITY_DURATION = 10 * 60 * 1000; // 10 minutes in milliseconds
+
     private user: IUser | null;
     private authState: 'authenticated' | null = null;
 
@@ -48,5 +50,42 @@ export class AuthUser {
 
     public getRefreshTokens(): string[] {
         return this.user?.refreshTokens || [];
+    }
+
+    public validateOtp(otp: string): boolean {
+        if (!this.user || !this.user.otp || !otp) {
+            return false;
+        }
+
+        const [userOtp, userOtpTimestamp] = this.user.otp.split(':');
+
+        if (!userOtp || !userOtpTimestamp) {
+            return false;
+        }
+
+        const otpTimestamp = parseInt(userOtpTimestamp, 10);
+
+        if (Date.now() - otpTimestamp > AuthUser.OTP_VALIDITY_DURATION) {
+            return false; // OTP has expired
+        }
+
+        return otp === userOtp;
+    }
+
+    public loginOtp(otp: string): boolean {
+        this.authState = null;
+
+        if (this.user && this.validateOtp(otp)) {
+            this.authState = 'authenticated';
+        }
+
+        try {
+            const usersService = new UsersService();
+            usersService.updateUser(this.user?.id || '', { otp: '' });
+        } catch (error) {
+            console.error('Error clearing OTP:', error);
+        }
+
+        return this.isAuthenticated();
     }
 }

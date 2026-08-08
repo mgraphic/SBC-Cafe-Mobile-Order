@@ -1,10 +1,19 @@
 import { Router } from 'express';
 import { authVerify, userLogTracker } from 'sbc-cafe-shared-module';
-import { login, logout, refresh, register } from '../handlers/auth.handler';
+import {
+    login,
+    loginOtp,
+    logout,
+    refresh,
+    register,
+    getOtp,
+} from '../handlers/auth.handler';
 
 export const authRouter: Router = Router();
 
 // Public API
+authRouter.post('/get-otp', getOtp);
+authRouter.post('/login/otp', loginOtp);
 authRouter.post('/login', login);
 authRouter.get('/logout', logout);
 authRouter.get('/refresh', refresh);
