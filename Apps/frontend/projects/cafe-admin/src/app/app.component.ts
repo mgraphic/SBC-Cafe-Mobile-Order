@@ -17,6 +17,7 @@ import {
   newOrderAlertRoom,
 } from 'sbc-cafe-shared-module';
 import { Subject } from 'rxjs';
+import { UserService } from '../../../shared-lib/src/lib/services/user.service';
 
 @Component({
   selector: 'app-root',
@@ -32,6 +33,8 @@ export class AppComponent implements OnInit, OnDestroy {
   private readonly toastService = inject(ToastService);
   private readonly realtimeService = inject(RealtimeService);
   private readonly destroySubject = new Subject<void>();
+
+  protected readonly userService = inject(UserService);
 
   ngOnInit(): void {
     const checkAndRegister = () => {
