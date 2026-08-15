@@ -48,6 +48,43 @@
                   >
                     Delete
                   </button>
+                  @if (user.isActive) {
+                    <button
+                      class="btn btn-link"
+                      (click)="confirmDisableUser(user)"
+                      [disabled]="
+                        !userService.hasPermission('USER_EDIT') ||
+                        !userService.hasPermission('USER') ||
+                        user.id === userService.getUserData().id
+                      "
+                    >
+                      Disable
+                    </button>
+                  } @else {
+                    <button
+                      class="btn btn-link"
+                      (click)="enableUser(user)"
+                      [disabled]="
+                        !userService.hasPermission('USER_EDIT') ||
+                        !userService.hasPermission('USER') ||
+                        user.id === userService.getUserData().id
+                      "
+                    >
+                      Enable
+                    </button>
+                  }
+                  <button
+                    class="btn btn-link"
+                    (click)="disableUser(user)"
+                    [disabled]="
+                      !userService.hasPermission('USER_EDIT') ||
+                      !userService.hasPermission('USER') ||
+                      user.id === userService.getUserData().id ||
+                      !user.isActive
+                    "
+                  >
+                    Disable
+                  </button>
                 </td>
               </tr>
             }
@@ -187,6 +224,37 @@
           Copy Link
         </button>
       </div>
+    </ng-template>
+  </app-modal>
+</ng-template>
+
+<ng-template #confirmDisableUserModalTemplate let-modal>
+  <app-modal [modalRef]="modal" modalTitle="Confirm Disable User">
+    <ng-template #titleContent>
+      <p>Confirm Disable User</p>
+    </ng-template>
+
+    <ng-template #bodyContent>
+      <p>
+        Are you sure you want to disable the user
+        <strong
+          >{{ modalUserContext!.firstName }}
+          {{ modalUserContext!.lastName }}</strong
+        >?
+      </p>
+    </ng-template>
+
+    <ng-template #footerContent>
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="btn btn-danger"
+        (click)="disableUser(modalUserContext!); modal.close()"
+      >
+        Disable
+      </button>
     </ng-template>
   </app-modal>
 </ng-template>

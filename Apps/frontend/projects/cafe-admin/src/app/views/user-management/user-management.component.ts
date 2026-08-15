@@ -53,6 +53,9 @@ export class UserManagementComponent implements OnInit {
   private readonly newUserSucessModalTemplate = viewChild<
     TemplateRef<HTMLElement>
   >('newUserSucessModalTemplate');
+  private readonly confirmDisableUserModalTemplate = viewChild<
+    TemplateRef<HTMLElement>
+  >('confirmDisableUserModalTemplate');
   private readonly usersService = inject(UsersService);
   private readonly modalService = inject(NgbModal);
   private readonly fb = inject(FormBuilder);
@@ -61,6 +64,7 @@ export class UserManagementComponent implements OnInit {
 
   protected modalMode?: 'add' | 'edit';
   protected activationUrl?: string;
+  protected modalUserContext?: IUser;
   protected users: IUser[] = [];
   protected userForm = this.fb.group({
     id: [''],
@@ -143,25 +147,46 @@ export class UserManagementComponent implements OnInit {
     });
   }
 
-  protected toggleUserActivation(user: IUser): void {
+  protected enableUser(user: IUser): void {
     if (user.id) {
-      const action$ = user.isActive
-        ? this.usersService.disableUser(user.id)
-        : this.usersService.enableUser(user.id);
-
-      action$.subscribe({
+      this.usersService.enableUser(user.id).subscribe({
         next: () => {
-          console.log(
-            `User ${user.isActive ? 'disabled' : 'enabled'} successfully`,
-          );
+          console.log('User enabled successfully');
           this.fetchUsers();
         },
         error: (error) => {
-          console.error(
-            `Error ${user.isActive ? 'disabling' : 'enabling'} user:`,
-            error,
-          );
+          console.error('Error enabling user:', error);
         },
+      });
+    }
+  }
+
+  protected disableUser(user: IUser): void {
+    if (user.id) {
+      this.usersService.disableUser(user.id).subscribe({
+        next: () => {
+          console.log('User disabled successfully');
+          this.fetchUsers();
+        },
+        error: (error) => {
+          console.error('Error disabling user:', error);
+        },
+      });
+    }
+  }
+
+  protected confirmDisableUser(user: IUser): void {
+    if (user.id) {
+      this.modalUserContext = user;
+      const modalRef = this.modalService.open(
+        this.confirmDisableUserModalTemplate,
+        {
+          size: 'md',
+        },
+      );
+
+      modalRef.closed.pipe(take(1)).subscribe(() => {
+        this.modalUserContext = undefined;
       });
     }
   }
