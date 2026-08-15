@@ -42,7 +42,9 @@ export class DynamoDbService {
 
     private constructor() {
         this.client = dynamoDbClient;
-        this.docClient = DynamoDBDocumentClient.from(this.client);
+        this.docClient = DynamoDBDocumentClient.from(this.client, {
+            marshallOptions: { removeUndefinedValues: true },
+        });
     }
 
     public static getInstance(): DynamoDbService {

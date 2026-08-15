@@ -179,7 +179,7 @@ export class UserManagementComponent implements OnInit {
     if (user.id) {
       this.modalUserContext = user;
       const modalRef = this.modalService.open(
-        this.confirmDisableUserModalTemplate,
+        this.confirmDisableUserModalTemplate(),
         {
           size: 'md',
         },

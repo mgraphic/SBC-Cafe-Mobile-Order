@@ -60,7 +60,7 @@ export class UsersService {
         await this.updateUser(id, {
             isActive: false,
             refreshTokens: [],
-            otp: undefined,
+            otp: '',
         });
     }
 

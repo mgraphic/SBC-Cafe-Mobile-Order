@@ -46,7 +46,7 @@ export class ChangePasswordComponent {
         },
         error: (err) => {
           this.toastService.showError(
-            'Change password failed: ' + err.error.message,
+            'Change password failed: ' + err.error.error,
           );
         },
       });

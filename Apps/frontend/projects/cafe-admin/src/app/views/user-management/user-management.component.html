@@ -73,18 +73,6 @@
                       Enable
                     </button>
                   }
-                  <button
-                    class="btn btn-link"
-                    (click)="disableUser(user)"
-                    [disabled]="
-                      !userService.hasPermission('USER_EDIT') ||
-                      !userService.hasPermission('USER') ||
-                      user.id === userService.getUserData().id ||
-                      !user.isActive
-                    "
-                  >
-                    Disable
-                  </button>
                 </td>
               </tr>
             }
@@ -238,8 +226,8 @@
       <p>
         Are you sure you want to disable the user
         <strong
-          >{{ modalUserContext!.firstName }}
-          {{ modalUserContext!.lastName }}</strong
+          >{{ modalUserContext?.firstName }}
+          {{ modalUserContext?.lastName }}</strong
         >?
       </p>
     </ng-template>
