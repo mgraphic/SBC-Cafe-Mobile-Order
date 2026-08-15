@@ -56,6 +56,18 @@ export class UsersService {
         await this.dynamoDbService.deleteItem('Users', { id });
     }
 
+    public async deactivateUser(id: string): Promise<void> {
+        await this.updateUser(id, {
+            isActive: false,
+            refreshTokens: [],
+            otp: undefined,
+        });
+    }
+
+    public async activateUser(id: string): Promise<void> {
+        await this.updateUser(id, { isActive: true });
+    }
+
     public async getAllUsers(activeOnly: boolean = false): Promise<IUser[]> {
         const users = (await this.dynamoDbService.getAllItems<IUser>(
             'Users',

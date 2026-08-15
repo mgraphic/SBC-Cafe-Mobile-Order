@@ -108,18 +108,20 @@
             }
           </select>
         </div>
-        <hr />
-        <div class="form-check">
-          <input
-            type="checkbox"
-            id="isActive"
-            formControlName="isActive"
-            class="form-check-input"
-          />
-          <label class="form-check-label" for="isActive">
-            Active / Enabled
-          </label>
-        </div>
+        @if (modalMode === "add") {
+          <hr />
+          <div class="form-check">
+            <input
+              type="checkbox"
+              id="isActive"
+              formControlName="isActive"
+              class="form-check-input"
+            />
+            <label class="form-check-label" for="isActive">
+              Active / Enabled
+            </label>
+          </div>
+        }
         <hr />
         <label for="permissions">Permissions</label>
         @for (permission of userPermissions; track permission.key) {

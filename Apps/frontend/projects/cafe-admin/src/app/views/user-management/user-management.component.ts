@@ -143,6 +143,29 @@ export class UserManagementComponent implements OnInit {
     });
   }
 
+  protected toggleUserActivation(user: IUser): void {
+    if (user.id) {
+      const action$ = user.isActive
+        ? this.usersService.disableUser(user.id)
+        : this.usersService.enableUser(user.id);
+
+      action$.subscribe({
+        next: () => {
+          console.log(
+            `User ${user.isActive ? 'disabled' : 'enabled'} successfully`,
+          );
+          this.fetchUsers();
+        },
+        error: (error) => {
+          console.error(
+            `Error ${user.isActive ? 'disabling' : 'enabling'} user:`,
+            error,
+          );
+        },
+      });
+    }
+  }
+
   protected addUser(): void {
     // Reset current user permissions for new user
     this.currentUserPermissions = [];

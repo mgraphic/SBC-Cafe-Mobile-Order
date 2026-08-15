@@ -11,6 +11,8 @@ import {
     getUserLogs,
     getUsers,
     updateUser,
+    disableUser,
+    enableUser,
 } from '../handlers/user.handler';
 
 export const adminRouter: Router = Router();
@@ -31,4 +33,6 @@ adminRouter.post('/addUser', addUser);
 adminRouter.put('/updateUser/:id', updateUser);
 adminRouter.delete('/deleteUser/:id', deleteUser);
 adminRouter.post('/getUserLogs', getUserLogs);
+adminRouter.put('/enableUser/:id', enableUser);
+adminRouter.put('/disableUser/:id', disableUser);
 adminRouter.put('/changePassword', changePassword);

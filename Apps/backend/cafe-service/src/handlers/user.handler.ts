@@ -239,6 +239,64 @@ export async function deleteUser(req: Request, res: Response): Promise<void> {
     res.status(200).json({ message: 'User deleted successfully' });
 }
 
+export async function enableUser(req: Request, res: Response): Promise<void> {
+    if (
+        !req.user?.hasPermission('USER') ||
+        !req.user?.hasPermission('USER_EDIT')
+    ) {
+        res.sendStatus(403);
+        return;
+    }
+
+    const id: string = req.params.id as string;
+
+    if (!id) {
+        res.status(400).json({ error: 'ID is required' });
+        return;
+    }
+
+    const userService = new UsersService();
+    const user = await userService.getUserById(id);
+
+    if (!user) {
+        res.status(404).json({ error: 'User not found' });
+        return;
+    }
+
+    await userService.activateUser(user.id);
+
+    res.status(200).json({ message: 'User enabled successfully' });
+}
+
+export async function disableUser(req: Request, res: Response): Promise<void> {
+    if (
+        !req.user?.hasPermission('USER') ||
+        !req.user?.hasPermission('USER_EDIT')
+    ) {
+        res.sendStatus(403);
+        return;
+    }
+
+    const id: string = req.params.id as string;
+
+    if (!id) {
+        res.status(400).json({ error: 'ID is required' });
+        return;
+    }
+
+    const userService = new UsersService();
+    const user = await userService.getUserById(id);
+
+    if (!user) {
+        res.status(404).json({ error: 'User not found' });
+        return;
+    }
+
+    await userService.deactivateUser(user.id);
+
+    res.status(200).json({ message: 'User disabled successfully' });
+}
+
 export async function getUserLogs(req: Request, res: Response): Promise<void> {
     if (
         !req.user?.hasPermission('USER') ||

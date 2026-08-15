@@ -70,6 +70,20 @@ export class UsersService {
     );
   }
 
+  enableUser(id: string): Observable<HttpResponse<UserResponse>> {
+    return this.http.put<HttpResponse<UserResponse>>(
+      `${this.baseUrl}/enableUser/${id}`,
+      {},
+    );
+  }
+
+  disableUser(id: string): Observable<HttpResponse<UserResponse>> {
+    return this.http.put<HttpResponse<UserResponse>>(
+      `${this.baseUrl}/disableUser/${id}`,
+      {},
+    );
+  }
+
   canActivateUser(id: string): Observable<boolean> {
     return this.http
       .get<HttpResponse<{ canActivate: boolean }>>(
