@@ -160,6 +160,86 @@
       "response": []
     },
     {
+      "name": "Cafe Service | ADMIN/enableUser",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{cafeServiceUrl}}/api/v1/admin/enableUser/7c6c382aee8c74f9a9dc71e49c063952c76d718e52c56cd63e6b67cd3fd7fc86",
+          "host": [
+            "{{cafeServiceUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "admin",
+            "enableUser",
+            "7c6c382aee8c74f9a9dc71e49c063952c76d718e52c56cd63e6b67cd3fd7fc86"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Cafe Service | ADMIN/disableUser",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{cafeServiceUrl}}/api/v1/admin/disableUser/7c6c382aee8c74f9a9dc71e49c063952c76d718e52c56cd63e6b67cd3fd7fc86",
+          "host": [
+            "{{cafeServiceUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "admin",
+            "disableUser",
+            "7c6c382aee8c74f9a9dc71e49c063952c76d718e52c56cd63e6b67cd3fd7fc86"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
       "name": "Auth Service | Version",
       "request": {
         "method": "GET",
@@ -190,14 +270,19 @@
               ""
             ],
             "type": "text/javascript",
-            "packages": {}
+            "packages": {},
+            "requests": {}
           }
         },
         {
           "listen": "prerequest",
           "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
             "packages": {},
-            "type": "text/javascript"
+            "requests": {}
           }
         }
       ],
@@ -206,7 +291,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"username\": \"admin@local\",\n    \"password\": \"demo\"\n}",
+          "raw": "{\n    \"username\": \"admin@example.com\",\n    \"password\": \"demo\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -222,6 +307,119 @@
             "api",
             "v1",
             "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Auth Service | Get OTP",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var responseData = pm.response.json();",
+              "pm.environment.set('accessToken', responseData.accessToken);",
+              "pm.environment.set('refreshToken', pm.cookies.get('jwt'));",
+              "",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"username\": \"admin@example.com\",\n    \"sendTo\": \"email\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{authServiceUrl}}/api/v1/get-otp",
+          "host": [
+            "{{authServiceUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "get-otp"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Auth Service | Login OTP",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var responseData = pm.response.json();",
+              "pm.environment.set('accessToken', responseData.accessToken);",
+              "pm.environment.set('refreshToken', pm.cookies.get('jwt'));",
+              "",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"username\": \"admin@example.com\",\n    \"otp\": \"123456\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{authServiceUrl}}/api/v1/login/otp",
+          "host": [
+            "{{authServiceUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "login",
+            "otp"
           ]
         }
       },
