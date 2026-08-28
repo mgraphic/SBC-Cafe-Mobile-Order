@@ -41,9 +41,6 @@ services:
         ports:
             - '3000:3000'
 
-        volumes:
-            - .:/code
-
         environment:
             - APP_ENV
             - PORT
@@ -65,9 +62,6 @@ services:
         ports:
             - '3100:3100'
 
-        volumes:
-            - .:/code
-
         environment:
             - APP_ENV
             - PORT
@@ -77,3 +71,23 @@ services:
             - AWS_SECRET_ACCESS_KEY
             - AWS_DEFAULT_REGION
             - AWS_ENDPOINT_URL
+
+    rt-gateway:
+        build:
+            context: ./Apps/backend/realtime-gateway
+            dockerfile: Dockerfile
+
+        image: rt-gateway
+        container_name: rt-gateway
+        restart: on-failure
+
+        ports:
+            - '3200:3200'
+
+        environment:
+            - CORS_ORIGINS
+            - REALTIME_GATEWAY_ENDPOINT_URL
+            - BREVO_BASE_URL
+            - ADMIN_UI_URL
+            - STORE_UI_URL
+            - SMTP_CONFIG

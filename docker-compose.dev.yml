@@ -18,9 +18,6 @@ services:
         expose:
             - 8000
 
-        volumes:
-            - './Docker/dynamodb:/home/dynamodblocal/data'
-
         ports:
             - '8000:8000'
 
@@ -32,11 +29,10 @@ services:
 
         image: amazon/aws-cli
         working_dir: /
+        restart: no
 
         volumes:
-            - type: bind
-              source: ./Local
-              target: /upload
+            - ./Local:/upload:ro
 
         environment:
             AWS_ACCESS_KEY_ID: dummyaccesskey
@@ -108,7 +104,7 @@ services:
         ports:
             - '4242:4242'
         volumes:
-            - './Local/stripe-mock-api-data:/app/data'
+            - './Local/stripe-mock-api-data:/app/data:ro'
         environment:
             WEBHOOK_URL: http://host.docker.internal:3000/webhook
             WEBHOOK_SECRET: mock_signature
