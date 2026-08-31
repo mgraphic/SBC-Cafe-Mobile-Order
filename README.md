@@ -84,6 +84,16 @@ Run this command to build and run the db and mock servers _(Stripe and Brevo alo
 docker compose -f docker-compose.dev.yml up --build -d
 ```
 
+### Splunk
+
+Open [Splunk Web](http://localhost:8001) and sign in with the following local credentials:
+
+| Username | Password     |
+| -------- | ------------ |
+| admin    | ChangeMe123! |
+
+The HTTP Event Collector is available at `http://localhost:8088` with token `local-splunk-hec-token`.
+
 When you want to shut everything down, use the following command to stop and remove all the demo containers:
 
 ```sh

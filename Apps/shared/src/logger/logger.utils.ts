@@ -1,5 +1,6 @@
 import winston from 'winston';
 import { AnyObject, LoggerLevel } from './logger.model';
+import { SplunkHecTransport } from './splunk.transport';
 
 /**
  * Creates a new winston logger with the given level and service name.
@@ -22,31 +23,61 @@ export function getLogger(
     level: LoggerLevel,
     service: string,
     environment: string,
-    redact: { redactedKeys?: string[]; redactedRegex?: RegExp[] } = {}
+    options: {
+        redactedKeys?: string[];
+        redactedRegex?: RegExp[];
+        splunk?: {
+            url?: string;
+            token?: string;
+            index?: string;
+            source?: string;
+            sourcetype?: string;
+        };
+    } = {},
 ): winston.Logger {
-    const { redactedKeys, redactedRegex } = redact;
+    const { redactedKeys, redactedRegex, splunk } = options;
     const { combine, timestamp, colorize, printf } = winston.format;
+    const splunkUrl = splunk?.url?.trim();
+    const splunkToken = splunk?.token?.trim();
+    const transports: winston.transport[] = [
+        new winston.transports.Console({
+            format: combine(
+                colorize(),
+                printf((info) => {
+                    let message = info.message as any;
+
+                    switch (typeof message) {
+                        case 'object':
+                        case 'function':
+                        case 'symbol':
+                            message = stringify(message);
+                    }
+
+                    return `${info.timestamp} [${info.level}] [${info.service}] [${info.environment}] : ${message}`;
+                }),
+            ),
+        }),
+    ];
+
+    if (splunkUrl && splunkToken) {
+        transports.push(
+            new SplunkHecTransport({
+                url: splunkUrl,
+                token: splunkToken,
+                index: splunk?.index,
+                source: splunk?.source ?? service,
+                sourcetype: splunk?.sourcetype,
+            }),
+        );
+    }
 
     return winston.createLogger({
         level,
-        transports: [new winston.transports.Console()],
+        transports,
         format: combine(
             timestamp(),
             tagger({ service, environment }),
             redactor({ redactedKeys, redactedRegex }),
-            colorize(),
-            printf((info) => {
-                let message = info.message as any;
-
-                switch (typeof message) {
-                    case 'object':
-                    case 'function':
-                    case 'symbol':
-                        message = stringify(message);
-                }
-
-                return `${info.timestamp} [${info.level}] [${info.service}] [${info.environment}] : ${message}`;
-            })
         ),
     });
 }
@@ -78,7 +109,7 @@ function deepRedactByRegex<T extends AnyObject>(
     obj: T,
     regexList: RegExp[],
     redactWith: any = '[REDACTED]',
-    seen = new WeakMap()
+    seen = new WeakMap(),
 ): T {
     if (obj === null || typeof obj !== 'object') {
         if (typeof obj === 'string') {
@@ -97,7 +128,7 @@ function deepRedactByRegex<T extends AnyObject>(
 
     if (Array.isArray(obj)) {
         const redactedArray = obj.map((item) =>
-            deepRedactByRegex(item, regexList, redactWith, seen)
+            deepRedactByRegex(item, regexList, redactWith, seen),
         );
         seen.set(obj, redactedArray);
         return redactedArray as any;
@@ -111,7 +142,7 @@ function deepRedactByRegex<T extends AnyObject>(
             value,
             regexList,
             redactWith,
-            seen
+            seen,
         );
     }
 
@@ -122,7 +153,7 @@ function deepRedactKeys<T extends AnyObject>(
     obj: T,
     keysToRedact: string[],
     redactWith: any = '[REDACTED]',
-    seen = new WeakMap()
+    seen = new WeakMap(),
 ): T {
     if (obj === null || typeof obj !== 'object') {
         return obj;
@@ -134,7 +165,7 @@ function deepRedactKeys<T extends AnyObject>(
 
     if (Array.isArray(obj)) {
         const redactedArray = obj.map((item) =>
-            deepRedactKeys(item, keysToRedact, redactWith, seen)
+            deepRedactKeys(item, keysToRedact, redactWith, seen),
         );
         seen.set(obj, redactedArray);
         return redactedArray as any;
@@ -151,7 +182,7 @@ function deepRedactKeys<T extends AnyObject>(
                 value,
                 keysToRedact,
                 redactWith,
-                seen
+                seen,
             );
         }
     }

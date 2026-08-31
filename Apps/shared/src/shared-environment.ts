@@ -6,6 +6,13 @@ export const sharedEnvironment = (): {
     level: LoggerLevel;
     redactedRegex: string[];
     redactedKeys: string[];
+    splunk: {
+        url?: string;
+        token?: string;
+        index?: string;
+        source?: string;
+        sourcetype?: string;
+    };
     accessTokenSecret: string;
     refreshTokenSecret: string;
     privateSharedApiKey: string;
@@ -85,6 +92,16 @@ export const sharedEnvironment = (): {
         level: getEnvironmentVariable('LEVEL', 'info') as LoggerLevel,
         redactedRegex,
         redactedKeys,
+        splunk: {
+            url: getEnvironmentVariable('SPLUNK_HEC_URL', undefined),
+            token: getEnvironmentVariable('SPLUNK_HEC_TOKEN', undefined),
+            index: getEnvironmentVariable('SPLUNK_HEC_INDEX', undefined),
+            source: getEnvironmentVariable('SPLUNK_HEC_SOURCE', undefined),
+            sourcetype: getEnvironmentVariable(
+                'SPLUNK_HEC_SOURCETYPE',
+                undefined,
+            ),
+        },
         accessTokenSecret: getEnvironmentVariable(
             'ACCESS_TOKEN_SECRET',
             'access-token-secret',

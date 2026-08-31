@@ -2,6 +2,7 @@ services:
     # Database
     dynamodb-local:
         image: amazon/dynamodb-local
+        container_name: dynamodb-local
         working_dir: /home/dynamodblocal
         restart: always
 
@@ -28,6 +29,7 @@ services:
                 condition: service_healthy
 
         image: amazon/aws-cli
+        container_name: db-init
         working_dir: /
         restart: no
 
@@ -95,6 +97,25 @@ services:
             MP_MAX_MESSAGES: 5000
             MP_SMTP_AUTH_ACCEPT_ANY: 1
             MP_SMTP_AUTH_ALLOW_INSECURE: 1
+
+    # Log Collection
+    splunk:
+        image: splunk/splunk:latest
+        container_name: splunk
+        restart: always
+        ports:
+            # Splunk Web
+            - '8001:8000'
+
+            # HTTP Event Collector
+            - '8088:8088'
+
+        environment:
+            SPLUNK_GENERAL_TERMS: --accept-sgt-current-at-splunk-com
+            SPLUNK_START_ARGS: --accept-license
+            SPLUNK_PASSWORD: ChangeMe123!
+            SPLUNK_HEC_TOKEN: local-splunk-hec-token
+            SPLUNK_HEC_SSL: 'false'
 
     # Stripe Mock API
     stripe-mock-api:

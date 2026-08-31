@@ -14,6 +14,7 @@ export const logger = getLogger(
     {
         redactedRegex: environment.redactedRegex.map((s) => stringToRegex(s)),
         redactedKeys: environment.redactedKeys,
+        splunk: environment.splunk,
     },
 );
 

@@ -65,6 +65,9 @@ services:
             STORE_UI_URL: http://localhost:80
             SMTP_CONFIG: '{"host":"mailpit","port":1025,"secure":false}'
 
+        depends_on:
+            - splunk
+
     cafe-service:
         build:
             context: ./Apps/backend/cafe-service
@@ -87,6 +90,16 @@ services:
             ADMIN_UI_URL: http://localhost:81
             STORE_UI_URL: http://localhost:80
             SMTP_CONFIG: '{"host":"mailpit","port":1025,"secure":false}'
+
+        depends_on:
+            - splunk
+            - stripe-mock-api
+            - rt-gateway
+            - wiremock
+            - mailpit
+            - dynamodb-local
+            - db-init
+
     auth-service:
         build:
             context: ./Apps/backend/auth-service
@@ -105,6 +118,13 @@ services:
             ADMIN_UI_URL: http://localhost:81
             STORE_UI_URL: http://localhost:80
             SMTP_CONFIG: '{"host":"mailpit","port":1025,"secure":false}'
+
+        depends_on:
+            - splunk
+            - wiremock
+            - mailpit
+            - dynamodb-local
+            - db-init
 
     store:
         image: nginx:stable-alpine
