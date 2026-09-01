@@ -1,0 +1,158 @@
+{
+    "TableName": "Orders",
+    "KeySchema": [
+        {
+            "KeyType": "HASH",
+            "AttributeName": "csid"
+        },
+        {
+            "KeyType": "RANGE",
+            "AttributeName": "createdAt"
+        }
+    ],
+    "AttributeDefinitions": [
+        {
+            "AttributeName": "csid",
+            "AttributeType": "S"
+        },
+        {
+            "AttributeName": "createdAt",
+            "AttributeType": "S"
+        },
+        {
+            "AttributeName": "completedAt",
+            "AttributeType": "S"
+        },
+        {
+            "AttributeName": "customerName",
+            "AttributeType": "S"
+        },
+        {
+            "AttributeName": "customerEmail",
+            "AttributeType": "S"
+        },
+        {
+            "AttributeName": "customerMobile",
+            "AttributeType": "S"
+        },
+        {
+            "AttributeName": "paymentStatus",
+            "AttributeType": "S"
+        },
+        {
+            "AttributeName": "pid",
+            "AttributeType": "S"
+        },
+        {
+            "AttributeName": "orderStatus",
+            "AttributeType": "S"
+        }
+    ],
+    "BillingMode": "PROVISIONED",
+    "GlobalSecondaryIndexes": [
+        {
+            "IndexName": "CustomerNameIndex",
+            "Projection": {
+                "ProjectionType": "ALL"
+            },
+            "KeySchema": [
+                {
+                    "AttributeName": "customerName",
+                    "KeyType": "HASH"
+                },
+                {
+                    "AttributeName": "createdAt",
+                    "KeyType": "RANGE"
+                }
+            ],
+            "ProvisionedThroughput": {
+                "ReadCapacityUnits": 5,
+                "WriteCapacityUnits": 5
+            }
+        },
+        {
+            "IndexName": "CustomerEmailIndex",
+            "Projection": {
+                "ProjectionType": "ALL"
+            },
+            "KeySchema": [
+                {
+                    "AttributeName": "customerEmail",
+                    "KeyType": "HASH"
+                },
+                {
+                    "AttributeName": "createdAt",
+                    "KeyType": "RANGE"
+                }
+            ],
+            "ProvisionedThroughput": {
+                "ReadCapacityUnits": 5,
+                "WriteCapacityUnits": 5
+            }
+        },
+        {
+            "IndexName": "CustomerMobileIndex",
+            "Projection": {
+                "ProjectionType": "ALL"
+            },
+            "KeySchema": [
+                {
+                    "AttributeName": "customerMobile",
+                    "KeyType": "HASH"
+                },
+                {
+                    "AttributeName": "createdAt",
+                    "KeyType": "RANGE"
+                }
+            ],
+            "ProvisionedThroughput": {
+                "ReadCapacityUnits": 5,
+                "WriteCapacityUnits": 5
+            }
+        },
+        {
+            "IndexName": "OrderStatusCreatedAtIndex",
+            "Projection": {
+                "ProjectionType": "ALL"
+            },
+            "KeySchema": [
+                {
+                    "AttributeName": "orderStatus",
+                    "KeyType": "HASH"
+                },
+                {
+                    "AttributeName": "createdAt",
+                    "KeyType": "RANGE"
+                }
+            ],
+            "ProvisionedThroughput": {
+                "ReadCapacityUnits": 5,
+                "WriteCapacityUnits": 5
+            }
+        },
+        {
+            "IndexName": "OrderStatusCompletedAtIndex",
+            "Projection": {
+                "ProjectionType": "ALL"
+            },
+            "KeySchema": [
+                {
+                    "AttributeName": "orderStatus",
+                    "KeyType": "HASH"
+                },
+                {
+                    "AttributeName": "completedAt",
+                    "KeyType": "RANGE"
+                }
+            ],
+            "ProvisionedThroughput": {
+                "ReadCapacityUnits": 5,
+                "WriteCapacityUnits": 5
+            }
+        }
+    ],
+    "ProvisionedThroughput": {
+        "ReadCapacityUnits": 5,
+        "WriteCapacityUnits": 10
+    }
+}
