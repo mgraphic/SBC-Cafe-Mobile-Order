@@ -94,6 +94,8 @@ Open [Splunk Web](http://localhost:8001) and sign in with the following local cr
 
 The HTTP Event Collector is available at `http://localhost:8088` with token `local-splunk-hec-token`.
 
+For a general search, type `index=main` in the Splunk search bar.
+
 When you want to shut everything down, use the following command to stop and remove all the demo containers:
 
 ```sh
