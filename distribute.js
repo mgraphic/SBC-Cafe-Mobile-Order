@@ -66,8 +66,7 @@ const targetPath = [
 (async () => {
     await sleep(2000); // Simulate some startup time
 
-    console.log({ sourcePath });
-    console.log({ targetPath });
+    console.log({ sourcePath, targetPath: [...targetPath] });
 
     console.log(
         `\r\n${ANSI_COLORS.bold}${ANSI_COLORS.blue}File to Distribute: ${getLatestFile(sourcePath)}${ANSI_COLORS.reset}`,
@@ -198,7 +197,7 @@ async function copyLatestFileToTargets(sourceDir, targetDirs) {
         stopSpinner(spinner3, step3);
 
         // 4. Copy the latestFile into the targetDir/custom_modules dir
-        const step4 = `Copy the latest file (${latestFile}) into custom_modules: ${targetName}`;
+        const step4 = `Copy ${latestFile} file: ${targetName}`;
         const spinner4 = startSpinner(step4);
         const targetFilePath = path.join(customModulesDir, latestFile);
         await attempt(() =>
