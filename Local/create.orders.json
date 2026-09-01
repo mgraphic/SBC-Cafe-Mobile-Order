@@ -24,6 +24,10 @@
             "AttributeType": "S"
         },
         {
+            "AttributeName": "updatedAt",
+            "AttributeType": "S"
+        },
+        {
             "AttributeName": "customerName",
             "AttributeType": "S"
         },
