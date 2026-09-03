@@ -1,5 +1,9 @@
 import Transport from 'winston-transport';
 
+// winston stores extra arguments passed to a leveled log method (e.g. logger.info('msg', 1))
+// under this symbol instead of `info.meta` unless the last argument is a plain object.
+const SPLAT = Symbol.for('splat');
+
 export type SplunkHecOptions = {
     /** Base URL of the Splunk HTTP Event Collector, e.g. https://localhost:8088 */
     url: string;
@@ -53,13 +57,24 @@ export class SplunkHecTransport extends Transport {
 
         const { message, level, timestamp, ...rest } = info;
 
+        let meta = rest.meta ?? (info as any)[SPLAT];
+
+        if (Array.isArray(meta) && meta.length === 1) {
+            meta = meta[0];
+        }
+
         this.buffer.push(
             stringifyEvent({
                 time: timestamp ? Date.parse(timestamp) / 1000 : undefined,
                 index: this.index,
                 source: this.source,
                 sourcetype: this.sourcetype,
-                event: { level, message, ...rest },
+                event: {
+                    level,
+                    message,
+                    ...(meta !== undefined ? { meta } : {}),
+                    ...rest,
+                },
             }),
         );
 

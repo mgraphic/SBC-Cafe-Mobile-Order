@@ -2,6 +2,10 @@ import winston from 'winston';
 import { AnyObject, LoggerLevel } from './logger.model';
 import { SplunkHecTransport } from './splunk.transport';
 
+// winston stores extra arguments passed to a leveled log method (e.g. logger.info('msg', 1))
+// under this symbol instead of `info.meta` unless the last argument is a plain object.
+const SPLAT = Symbol.for('splat');
+
 /**
  * Creates a new winston logger with the given level and service name.
  *
@@ -53,7 +57,20 @@ export function getLogger(
                             message = stringify(message);
                     }
 
-                    return `${info.timestamp} [${info.level}] [${info.service}] [${info.environment}] : ${message}`;
+                    let meta = (info.meta as any) ?? (info as any)[SPLAT];
+
+                    if (Array.isArray(meta) && meta.length === 1) {
+                        meta = meta[0];
+                    }
+
+                    switch (typeof meta) {
+                        case 'object':
+                        case 'function':
+                        case 'symbol':
+                            meta = stringify(meta);
+                    }
+
+                    return `${info.timestamp} [${info.level}] [${info.service}] [${info.environment}] : ${message} ${meta ? `${meta}` : ''}`;
                 }),
             ),
         }),
