@@ -14,18 +14,19 @@ import { take } from 'rxjs/internal/operators/take';
   styleUrl: './order-confirmation.component.scss',
 })
 export class OrderConfirmationComponent implements OnInit {
-  protected readonly orderDetails = signal<Partial<StripeOrderDetails> | null>(null);
+  protected readonly orderDetails = signal<Partial<StripeOrderDetails> | null>(
+    null,
+  );
 
   private readonly cartService = inject(CartService);
   private readonly orderService = inject(OrderService);
   private readonly activatedRoute = inject(ActivatedRoute);
 
-
   public ngOnInit(): void {
     this.cartService.clearCart();
 
     this.orderService
-      .getOrderDetails(
+      .getCheckoutSession(
         this.activatedRoute.snapshot.queryParamMap.get('csid') ?? '',
       )
       .pipe(take(1))

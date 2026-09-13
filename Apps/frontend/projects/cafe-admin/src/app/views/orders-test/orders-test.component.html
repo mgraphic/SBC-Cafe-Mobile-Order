@@ -1,16 +1,20 @@
-<table>
-  <thead>
-    <tr>
-      <th>Time</th>
-      <th>Order ID</th>
-    </tr>
-  </thead>
-  <tbody>
-    @for (event of events(); track event) {
-      <tr>
-        <td>{{ event.timestamp | date: "medium" }}</td>
-        <td>{{ event.payload.csid }}</td>
-      </tr>
-    }
-  </tbody>
-</table>
+<div class="container">
+  <div class="row">
+    <table>
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Order ID</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (event of events(); track event) {
+          <tr>
+            <td>{{ event.timestamp | date: "medium" }}</td>
+            <td>{{ event.payload.csid }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

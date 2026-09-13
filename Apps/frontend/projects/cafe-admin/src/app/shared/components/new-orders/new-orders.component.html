@@ -1,0 +1,44 @@
+<div class="row mt-5">
+  <div class="col-12">
+    <lib-paginated
+      [totalItems]="pageable().totalItems || 0"
+      [pageSize]="pageable().pageSize"
+      [(page)]="currentPage"
+    ></lib-paginated>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <table class="table">
+      <tbody>
+        @if (displayItems()) {
+          @for (order of orderDetails(); track order.order.csid) {
+            <tr>
+              <td [ngbTooltip]="order.order.csid">
+                {{ order.order.customerName }}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <ul>
+                  @for (item of order.items; track item.id) {
+                    <li>{{ item.quantity }} x {{ item.description }}</li>
+                  }
+                </ul>
+              </td>
+            </tr>
+          }
+        } @else {
+          @for (order of orders(); track order.csid) {
+            <tr>
+              <td [ngbTooltip]="order.csid">
+                {{ order.customerName }}
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

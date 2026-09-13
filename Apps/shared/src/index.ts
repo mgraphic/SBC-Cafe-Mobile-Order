@@ -2,6 +2,7 @@ export * from './aws';
 export * from './com';
 export * from './logger';
 export * from './express';
+export * from './order';
 export * from './realtime';
 export * from './settings';
 export * from './stripe';

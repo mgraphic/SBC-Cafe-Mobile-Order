@@ -1,4 +1,4 @@
-import { getOrder } from './order.handler';
+import { getCheckoutSession } from './order.handler';
 import { stripe } from '../shared/stripe.utils';
 
 jest.mock('../shared/stripe.utils', () => ({
@@ -12,7 +12,7 @@ jest.mock('../shared/stripe.utils', () => ({
     },
 }));
 
-describe('getOrder', () => {
+describe('getCheckoutSession', () => {
     let mockResponse: any;
 
     beforeEach(() => {
@@ -34,8 +34,8 @@ describe('getOrder', () => {
     });
 
     it('expands price product data when fetching order items', async () => {
-        await getOrder(
-            { params: { orderId: 'cs_test_123' } } as any,
+        await getCheckoutSession(
+            { params: { csid: 'cs_test_123' } } as any,
             mockResponse as any,
         );
 

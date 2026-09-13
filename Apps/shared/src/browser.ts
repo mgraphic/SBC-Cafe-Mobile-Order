@@ -1,17 +1,17 @@
 export {
+    PAGINATED_DEFAULT_PAGESIZE,
+    PAGINATED_PAGESIZE_OPTIONS,
     type IPageable,
     type IPageableMetadata,
     type PaginatedPayload,
-    PAGINATED_DEFAULT_PAGESIZE,
-    PAGINATED_PAGESIZE_OPTIONS,
 } from './aws/aws.model';
 export type { ITracker, UserTrackerLogsLookup } from './tracker';
 export {
     ACCESS_TOKEN_EXPIRY,
-    REFRESH_TOKEN_EXPIRY,
     JWT_CLEARCOOKIE_OPTIONS,
     JWT_COOKIE_EXPIRY,
     JWT_COOKIE_OPTIONS,
+    REFRESH_TOKEN_EXPIRY,
 } from './user/jwt.config';
 export {
     jwtPayloadFields,
@@ -20,12 +20,12 @@ export {
     rbacRoleHiarchyMap,
     rbacRolePermissionGroupAllowances,
     rbacRoles,
+    userRoles,
     type IUser,
     type JwtUserPayload,
     type UserPermission,
     type UserPermissionGroup,
     type UserRole,
-    userRoles,
 } from './user/user.model';
 export { type SessionData } from './user/session.model';
 export {
@@ -51,3 +51,15 @@ export {
 } from './stripe';
 export { type ApiError } from './express';
 export * from './realtime';
+export {
+    ORDER_TABLE_NAME,
+    closedOrderStatuseTypes,
+    openOrderStatuseTypes,
+    type CafeOrderDetails,
+    type ClosedOrderStatus,
+    type NewOrderPayload,
+    type OpenOrderStatus,
+    type OrderCustomerContact,
+    type Order,
+    type OrderLookupField,
+} from './order/order.model';

@@ -4,6 +4,8 @@ import { environment } from '../environment';
 import {
     MailerService,
     NewOrderAlertEventPayload,
+    NewOrderPayload,
+    OrderService,
     RealtimePartialEvent,
     SmsService,
     Stripe,
@@ -19,8 +21,6 @@ export async function handleWebhook(
     req: Request,
     res: Response,
 ): Promise<void> {
-    logger.info('Received webhook event');
-
     const sig = req.headers['stripe-signature'];
     const endpointSecret = environment.stripeApi.webhookSecret;
     let event: Stripe.Event;
@@ -31,6 +31,8 @@ export async function handleWebhook(
             sig || '',
             endpointSecret,
         );
+
+        logger.info(`Received Stripe webhook event: ${JSON.stringify(event)}`);
     } catch (err: any) {
         logger.error(`Webhook signature verification failed: ${err.message}`);
         res.status(400).send(`Webhook Error: ${err.message}`);
@@ -41,68 +43,97 @@ export async function handleWebhook(
         case 'checkout.session.completed': {
             const session = event.data.object;
             logger.info('Checkout session completed:', session.id);
-            // TODO: fulfill the order
-            break;
-        }
 
-        case 'payment_intent.succeeded': {
-            const paymentIntent = event.data.object;
-            logger.info('PaymentIntent succeeded:', paymentIntent.id);
+            const csid = session.id;
+            const metadata = session.metadata as StripeCheckoutSessionMetadata;
+            let items: Partial<Stripe.ApiList<StripeLineItem>> = { data: [] };
 
-            const csid =
-                paymentIntent.payment_details?.order_reference ?? 'unknown';
-            const session = await stripe.checkout.sessions.retrieve(csid);
-            const items = (await stripe.checkout.sessions.listLineItems(csid, {
-                limit: 100,
-                expand: ['data.price.product'],
-            })) as Stripe.ApiList<StripeLineItem>;
-            const metadata = (
-                (await stripe.checkout.sessions.retrieve(
+            // Add order to cafe DB
+            try {
+                const orderService = new OrderService();
+                const orderPayload: Partial<NewOrderPayload> = {
                     csid,
-                )) as unknown as Stripe.Checkout.Session
-            ).metadata as unknown as StripeCheckoutSessionMetadata;
-            const rtEvent: RealtimePartialEvent<NewOrderAlertEventPayload> = {
-                type: 'new-order-alert',
-                payload: {
-                    csid,
-                    items: items.data || [],
-                    metadata,
-                },
-            };
+                    customerName: metadata.customerName,
+                    customerEmail: metadata.customerEmail,
+                    customerMobile: metadata.customerMobile,
+                    paymentStatus: session.payment_status,
+                    pid: session.payment_intent as string,
+                };
+
+                await orderService.addOrder(
+                    JSON.parse(JSON.stringify(orderPayload)),
+                );
+            } catch (error) {
+                logger.error('Failed to add order to cafe DB', error);
+            }
+
+            // Fetch the line items for the completed checkout session from Stripe
+            try {
+                items = (await stripe.checkout.sessions.listLineItems(csid, {
+                    limit: 100,
+                    expand: ['data.price.product'],
+                })) as Stripe.ApiList<StripeLineItem>;
+            } catch (error) {
+                logger.error(
+                    'Failed to list line items for checkout session',
+                    error,
+                );
+            }
 
             // Publish real-time event to the admin dashboard
-            fetch(`${environment.realtime.endpoint}/publish`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Internal-Api-Key': environment.privateSharedApiKey,
-                },
-                body: JSON.stringify(rtEvent),
-            });
+            try {
+                const rtEvent: RealtimePartialEvent<NewOrderAlertEventPayload> =
+                    {
+                        type: 'new-order-alert',
+                        payload: {
+                            csid,
+                            items: items.data || [],
+                            metadata,
+                        },
+                    };
+
+                await fetch(`${environment.realtime.endpoint}/publish`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Internal-Api-Key': environment.privateSharedApiKey,
+                    },
+                    body: JSON.stringify(rtEvent),
+                });
+            } catch (error) {
+                logger.error('Failed to publish real-time event', error);
+            }
 
             // Send SMS alert to all admin users
-            const userService = new UsersService();
-            const smsService = new SmsService();
+            try {
+                const userService = new UsersService();
+                const smsService = new SmsService();
 
-            for (const user of await userService.getAllUsers(true)) {
-                try {
-                    const tokenUser = new TokenUser(user);
+                for (const user of await userService.getAllUsers(true)) {
+                    try {
+                        const tokenUser = new TokenUser(user);
 
-                    if (!tokenUser.hasRole('ADMIN')) {
-                        continue;
+                        if (!tokenUser.hasRole('ADMIN')) {
+                            continue;
+                        }
+
+                        const result = await smsService.sendMessage({
+                            recipient: user.mobile,
+                            content:
+                                'New order received. Please check the admin dashboard for details.',
+                            type: 'transactional',
+                            tag: 'alert',
+                            unicodeEnabled: false,
+                        });
+                    } catch (error) {
+                        logger.error('Failed to send alert SMS message', error);
                     }
-
-                    const result = await smsService.sendMessage({
-                        recipient: user.mobile,
-                        content:
-                            'New order received. Please check the admin dashboard for details.',
-                        type: 'transactional',
-                        tag: 'alert',
-                        unicodeEnabled: false,
-                    });
-                } catch (error) {
-                    logger.error('Failed to send alert SMS message', error);
                 }
+            } catch (error) {
+                logger.error(
+                    'Failed to send alert SMS messages to admin users',
+                    error,
+                );
             }
 
             // Send order confirmation email to customer
@@ -113,8 +144,9 @@ export async function handleWebhook(
                     const mailerService = MailerService.getInstance();
 
                     // Transform line items into email template format
-                    const lineItems = items.data.map((item) => {
+                    const lineItems = (items.data || []).map((item) => {
                         const product = item.price?.product as Stripe.Product;
+
                         return {
                             description: item.description || 'Order item',
                             quantity: item.quantity || 1,
@@ -134,9 +166,8 @@ export async function handleWebhook(
                         ((session.amount_total || 0) / 100).toFixed(2),
                     );
 
-                    const metadata =
-                        session.metadata as unknown as StripeCheckoutSessionMetadata;
-                    const customerName = metadata?.customerName || 'Customer';
+                    const customerName =
+                        session.metadata?.customerName || 'Customer';
 
                     await mailerService.sendOrderConfirmation(
                         customerEmail,
@@ -166,15 +197,20 @@ export async function handleWebhook(
             break;
         }
 
+        case 'payment_intent.succeeded': {
+            const paymentIntent = event.data.object;
+            logger.info('PaymentIntent succeeded:', paymentIntent.id);
+            break;
+        }
+
         case 'payment_intent.payment_failed': {
             const failedPayment = event.data.object;
-            logger.info('PaymentIntent failed:', failedPayment.id);
+            logger.warn('PaymentIntent failed:', failedPayment.id);
             break;
         }
 
         default:
             logger.warn(`Unhandled event type: ${event.type}`);
-            logger.info(JSON.stringify(event));
     }
 
     res.status(200).json({ received: true });

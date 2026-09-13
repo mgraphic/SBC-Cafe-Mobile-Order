@@ -1,6 +1,15 @@
-<p>dashboard works!</p>
-<p>You must be logged in to see this page</p>
+<div class="container">
+  <div class="row">
+    <p>dashboard works!</p>
+    <p>You must be logged in to see this page</p>
 
-@if(user()){
-<p>{{ user()?.firstName }} {{ user()?.lastName }} ({{ user()?.email }})</p>
-}
+    @if (user()) {
+      <p>
+        {{ user()?.firstName }} {{ user()?.lastName }} ({{ user()?.email }})
+      </p>
+    }
+  </div>
+  <div class="row">
+    <app-new-orders showItems="true" />
+  </div>
+</div>

@@ -24,10 +24,6 @@
             "AttributeType": "S"
         },
         {
-            "AttributeName": "updatedAt",
-            "AttributeType": "S"
-        },
-        {
             "AttributeName": "customerName",
             "AttributeType": "S"
         },
@@ -37,14 +33,6 @@
         },
         {
             "AttributeName": "customerMobile",
-            "AttributeType": "S"
-        },
-        {
-            "AttributeName": "paymentStatus",
-            "AttributeType": "S"
-        },
-        {
-            "AttributeName": "pid",
             "AttributeType": "S"
         },
         {
