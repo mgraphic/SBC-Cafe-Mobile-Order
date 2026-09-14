@@ -14,7 +14,7 @@
     "prestart": "npm run generate:env",
     "start": "ng serve",
     "prebuild": "npm run generate:env",
-    "build": "ng build",
+    "build": "ng build --project=shared-lib",
     "watch": "ng build --watch --configuration development",
     "test": "ng test --coverage",
     "test:watch": "ng test --watch",

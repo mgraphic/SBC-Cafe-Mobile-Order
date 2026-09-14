@@ -1,0 +1,28 @@
+.item-row {
+  margin-bottom: 10px;
+
+  .qty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+  }
+
+  .img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 75%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 50%;
+    }
+  }
+
+  .desc {
+    font-style: italic;
+  }
+}

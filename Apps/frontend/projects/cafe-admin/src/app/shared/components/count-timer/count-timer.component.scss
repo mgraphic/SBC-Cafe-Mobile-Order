@@ -1,0 +1,15 @@
+.timer-clock {
+  display: inline-flex;
+  align-items: center;
+  font-family: monospace, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.35em 0.65em;
+  border-radius: 0.375rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+
+  i {
+    font-size: 0.85rem;
+  }
+}

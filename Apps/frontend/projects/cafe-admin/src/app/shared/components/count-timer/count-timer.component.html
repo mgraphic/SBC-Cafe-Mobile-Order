@@ -1,0 +1,21 @@
+<span
+  class="timer-clock badge"
+  [class.bg-light]="elapsed().totalSeconds < 300"
+  [class.text-dark]="elapsed().totalSeconds < 300"
+  [class.border]="elapsed().totalSeconds < 300"
+  [class.bg-warning-subtle]="
+    elapsed().totalSeconds >= 300 && elapsed().totalSeconds < 600
+  "
+  [class.text-warning-emphasis]="
+    elapsed().totalSeconds >= 300 && elapsed().totalSeconds < 600
+  "
+  [class.border-warning]="
+    elapsed().totalSeconds >= 300 && elapsed().totalSeconds < 600
+  "
+  [class.bg-danger-subtle]="elapsed().totalSeconds >= 600"
+  [class.text-danger-emphasis]="elapsed().totalSeconds >= 600"
+  [class.border-danger]="elapsed().totalSeconds >= 600"
+>
+  <i class="bi bi-clock me-1"></i>
+  <span>{{ elapsed().formatted }}</span>
+</span>

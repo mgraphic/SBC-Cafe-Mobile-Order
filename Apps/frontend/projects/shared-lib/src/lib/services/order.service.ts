@@ -10,8 +10,8 @@ import {
   StripeCheckoutSessionMetadata,
   StripeOrderDetails,
 } from 'sbc-cafe-shared-module';
-import { environment } from 'shared-lib';
 import { runtimeEnvironment } from '../../runtime-environment.generated';
+import { environment } from '../../environment';
 
 @Injectable({
   providedIn: 'root',

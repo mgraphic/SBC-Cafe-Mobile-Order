@@ -1,3 +1,4 @@
+import { DestroyRef } from '@angular/core';
 import { Observable, take, tap } from 'rxjs';
 import { AnyEventPayload, RealtimeEventListener } from 'sbc-cafe-shared-module';
 
@@ -36,5 +37,18 @@ export class RealtimeEventListenerWithObservable<
     this.on();
 
     return this;
+  }
+
+  public takeUntilDestroyRef(
+    destroyRef: DestroyRef,
+  ): RealtimeEventListenerWithObservable<T> {
+    const destroyed$ = new Observable<void>((subscriber) => {
+      destroyRef.onDestroy(() => {
+        subscriber.next();
+        subscriber.complete();
+      });
+    });
+
+    return this.takeUntilObservable(destroyed$);
   }
 }
