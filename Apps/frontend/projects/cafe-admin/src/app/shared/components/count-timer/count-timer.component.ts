@@ -7,17 +7,19 @@ import {
   computed,
   ChangeDetectionStrategy,
 } from '@angular/core';
+import { SharedModule } from '../../shared.module';
 
 @Component({
   selector: 'app-count-timer',
   standalone: true,
-  imports: [],
+  imports: [SharedModule],
   templateUrl: './count-timer.component.html',
   styleUrl: './count-timer.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CountTimerComponent implements OnInit, OnDestroy {
   public readonly startTime = input.required<string | number | Date>();
+  public readonly size = input<'sm' | 'md' | 'lg'>('md');
 
   protected readonly now = signal<number>(Date.now());
   private timerId: ReturnType<typeof setInterval> | null = null;

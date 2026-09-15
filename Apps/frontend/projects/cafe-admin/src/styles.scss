@@ -27,6 +27,31 @@
   src: url("/fonts/Poppins/Poppins-Bold.ttf") format("truetype");
 }
 
+@font-face {
+  font-family: azeretmono;
+  src: url("/fonts/AzeretMono/AzeretMono-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: azeretmono-medium;
+  src: url("/fonts/AzeretMono/AzeretMono-Medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: azeretmono-semi-bold;
+  src: url("/fonts/AzeretMono/AzeretMono-SemiBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: azeretmono-bold;
+  src: url("/fonts/AzeretMono/AzeretMono-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: azeretmono-extra-bold;
+  src: url("/fonts/AzeretMono/AzeretMono-ExtraBold.ttf") format("truetype");
+}
+
 /* Colors: */
 $primary: #633ed1;
 $secondary: #b4a2e1;
