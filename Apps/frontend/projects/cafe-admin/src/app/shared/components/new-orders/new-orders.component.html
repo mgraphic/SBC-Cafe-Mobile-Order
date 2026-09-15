@@ -34,9 +34,27 @@
                   <app-count-timer [startTime]="order.order.createdAt" />
                 </td>
               }
+              <td>
+                @if (userService.hasPermission("ORDER_COMPLETE")) {
+                  <button
+                    class="btn btn-outline-primary btn-sm me-2"
+                    (click)="completeOrder(order.order.csid)"
+                  >
+                    Complete
+                  </button>
+                }
+                @if (userService.hasPermission("ORDER_CANCEL")) {
+                  <button
+                    class="btn btn-outline-danger btn-sm"
+                    (click)="openCancelOrderModal(order.order.csid)"
+                  >
+                    Cancel
+                  </button>
+                }
+              </td>
             </tr>
             <tr>
-              <td [attr.colspan]="displayTimer() ? 5 : 4">
+              <td [attr.colspan]="displayTimer() ? 6 : 5">
                 @for (item of order.items; track item.id) {
                   <div class="row item-row">
                     <div class="col-1 qty">
@@ -50,11 +68,6 @@
                     </div>
                   </div>
                 }
-                <!-- <ul>
-                  @for (item of order.items; track item.id) {
-                    <li>{{ item.quantity }} x {{ item.description }}</li>
-                  }
-                </ul> -->
               </td>
             </tr>
           }
@@ -78,6 +91,24 @@
                   <app-count-timer [startTime]="order.createdAt" />
                 </td>
               }
+              <td>
+                @if (userService.hasPermission("ORDER_COMPLETE")) {
+                  <button
+                    class="btn btn-outline-primary btn-sm me-2"
+                    (click)="completeOrder(order.csid)"
+                  >
+                    Complete
+                  </button>
+                }
+                @if (userService.hasPermission("ORDER_CANCEL")) {
+                  <button
+                    class="btn btn-outline-danger btn-sm"
+                    (click)="openCancelOrderModal(order.csid)"
+                  >
+                    Cancel
+                  </button>
+                }
+              </td>
             </tr>
           }
         }
@@ -85,3 +116,38 @@
     </table>
   </div>
 </div>
+
+<ng-template
+  #cancelOrderConfirmationTemplate
+  let-modal
+  let-csid="selectedOrderCsid"
+>
+  <div class="modal-header">
+    <h5 class="modal-title">Cancel Order</h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="modal"
+      aria-label="Close"
+      (click)="modal.close()"
+    ></button>
+  </div>
+  <div class="modal-body">Are you sure you want to cancel this order?</div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      data-bs-dismiss="modal"
+      (click)="modal.close()"
+    >
+      Close
+    </button>
+    <button
+      type="button"
+      class="btn btn-danger"
+      (click)="cancelOrder(csid); modal.close()"
+    >
+      Cancel Order
+    </button>
+  </div>
+</ng-template>

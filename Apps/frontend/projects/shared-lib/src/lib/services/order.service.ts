@@ -93,4 +93,22 @@ export class OrderService {
       pagable,
     );
   }
+
+  public completeOrder(
+    checkoutSessionId: string,
+  ): Observable<{ success: boolean }> {
+    return this.http.post<{ success: boolean }>(
+      `${this.adminApiUrl}/order/complete/${checkoutSessionId}`,
+      {},
+    );
+  }
+
+  public cancelOrder(
+    checkoutSessionId: string,
+  ): Observable<{ success: boolean }> {
+    return this.http.post<{ success: boolean }>(
+      `${this.adminApiUrl}/order/cancel/${checkoutSessionId}`,
+      {},
+    );
+  }
 }

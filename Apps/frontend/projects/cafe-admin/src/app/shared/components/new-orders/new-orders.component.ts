@@ -1,5 +1,7 @@
 import { BooleanInput } from '@angular/cdk/coercion';
 import { DatePipe } from '@angular/common';
+import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { ToastService } from '../../../../../../shared-lib/src/lib/services/toast.service';
 import { take } from 'rxjs/operators';
 import {
   Component,
@@ -12,6 +14,8 @@ import {
   untracked,
   OnInit,
   DestroyRef,
+  viewChild,
+  TemplateRef,
 } from '@angular/core';
 import {
   Order,
@@ -31,11 +35,13 @@ import { Observable } from 'rxjs';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { RealtimeService } from '../../../../../../shared-lib/src/public-api';
 import { CountTimerComponent } from '../count-timer/count-timer.component';
+import { UserService } from '../../../../../../shared-lib/src/lib/services/user.service';
 
 @Component({
   selector: 'app-new-orders',
   imports: [
     NgbTooltipModule,
+    NgbModalModule,
     DatePipe,
     FormatPhoneNumberPipe,
     PaginatedComponent,
@@ -48,6 +54,10 @@ export class NewOrdersComponent implements OnInit {
   public readonly showItems = input<BooleanInput>(false);
   public readonly showTimer = input<BooleanInput>(false);
 
+  private readonly cancelOrderConfirmationRef = viewChild<
+    TemplateRef<{ selectedOrderCsid: string }>
+  >('cancelOrderConfirmationTemplate');
+
   protected readonly displayItems = computed(() => Boolean(this.showItems()));
   protected readonly displayTimer = computed(() => Boolean(this.showTimer()));
   protected readonly currentPage = model<number>(1);
@@ -59,8 +69,11 @@ export class NewOrdersComponent implements OnInit {
   });
 
   private readonly orderService = inject(OrderService);
+  private readonly toastService = inject(ToastService);
+  private readonly modalService = inject(NgbModal);
   private readonly realtimeService = inject(RealtimeService);
   private readonly destroyRef = inject(DestroyRef);
+  protected readonly userService = inject(UserService);
 
   public constructor() {
     effect(() => {
@@ -97,6 +110,61 @@ export class NewOrdersComponent implements OnInit {
     };
 
     checkAndRegister();
+  }
+
+  protected completeOrder(csid: string): void {
+    if (!this.userService.hasPermission('ORDER_COMPLETE')) {
+      this.toastService.showError(
+        'You do not have permission to complete orders',
+      );
+      return;
+    }
+
+    if (confirm('Are you sure you want to complete and close this order?')) {
+      this.orderService
+        .completeOrder(csid)
+        .pipe(take(1))
+        .subscribe({
+          next: (response) => {
+            if (response.success) {
+              this.fetchOrders();
+            }
+          },
+          error: (err) => {
+            this.toastService.showError('Failed to complete order');
+            console.error('Failed to complete order', err);
+          },
+        });
+    }
+  }
+
+  protected cancelOrder(csid: string): void {
+    if (!this.userService.hasPermission('ORDER_CANCEL')) {
+      this.toastService.showError(
+        'You do not have permission to cancel orders',
+      );
+      return;
+    }
+
+    this.orderService
+      .cancelOrder(csid)
+      .pipe(take(1))
+      .subscribe({
+        next: (response) => {
+          if (response.success) {
+            this.fetchOrders();
+          }
+        },
+        error: (err) => {
+          this.toastService.showError('Failed to cancel order');
+          console.error('Failed to cancel order', err);
+        },
+      });
+  }
+
+  protected openCancelOrderModal(csid: string): void {
+    const modalRef = this.modalService.open(this.cancelOrderConfirmationRef());
+    modalRef.componentInstance.selectedOrderCsid = csid;
   }
 
   private fetchOrders(): void {

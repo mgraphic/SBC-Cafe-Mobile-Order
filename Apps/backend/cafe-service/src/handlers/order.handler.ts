@@ -224,3 +224,57 @@ export async function getOpenOrderDetails(
         );
     }
 }
+
+export async function completeOrder(
+    req: Request<{ csid: string }, unknown, unknown, unknown>,
+    res: Response<{ success: boolean } | ApiError>,
+): Promise<void> {
+    if (
+        !req.user?.hasPermission('ORDER') ||
+        !req.user?.hasPermission('ORDER_COMPLETE')
+    ) {
+        res.sendStatus(403);
+        return;
+    }
+
+    const orderService = new OrderService();
+    const { csid } = req.params;
+
+    try {
+        await orderService.completeOrder(csid);
+        res.status(200).json({ success: true });
+    } catch (error) {
+        res.status(500).json(
+            error instanceof Error
+                ? { error: error.message }
+                : { error: 'Unknown error' },
+        );
+    }
+}
+
+export async function cancelOrder(
+    req: Request<{ csid: string }, unknown, unknown, unknown>,
+    res: Response<{ success: boolean } | ApiError>,
+): Promise<void> {
+    if (
+        !req.user?.hasPermission('ORDER') ||
+        !req.user?.hasPermission('ORDER_CANCEL')
+    ) {
+        res.sendStatus(403);
+        return;
+    }
+
+    const orderService = new OrderService();
+    const { csid } = req.params;
+
+    try {
+        await orderService.cancelOrder(csid);
+        res.status(200).json({ success: true });
+    } catch (error) {
+        res.status(500).json(
+            error instanceof Error
+                ? { error: error.message }
+                : { error: 'Unknown error' },
+        );
+    }
+}

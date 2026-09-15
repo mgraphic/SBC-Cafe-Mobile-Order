@@ -19,6 +19,8 @@ import {
     getOpenOrders,
     getOrder,
     getOpenOrderDetails,
+    completeOrder,
+    cancelOrder,
 } from '../handlers/order.handler';
 
 export const adminRouter: Router = Router();
@@ -43,6 +45,8 @@ adminRouter.put('/enableUser/:id', enableUser);
 adminRouter.put('/disableUser/:id', disableUser);
 adminRouter.put('/changePassword', changePassword);
 adminRouter.get('/checkoutSession/:csid', getCheckoutSession);
+adminRouter.post('/order/complete/:csid', completeOrder);
+adminRouter.post('/order/cancel/:csid', cancelOrder);
 adminRouter.get('/order/:csid', getOrder);
 adminRouter.post('/openOrders', getOpenOrders);
 adminRouter.post('/openOrderDetails', getOpenOrderDetails);
