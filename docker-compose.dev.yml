@@ -104,6 +104,17 @@ services:
         image: splunk/splunk:latest
         container_name: splunk
         restart: always
+
+        healthcheck:
+            test:
+                [
+                    'CMD-SHELL',
+                    'curl -fsS http://localhost:8088/services/collector/health >/dev/null',
+                ]
+            interval: 10s
+            timeout: 5s
+            retries: 12
+
         ports:
             # Splunk Web
             - '8001:8000'

@@ -1,5 +1,5 @@
 import { BooleanInput } from '@angular/cdk/coercion';
-import { DatePipe } from '@angular/common';
+import { CurrencyPipe, DatePipe, JsonPipe } from '@angular/common';
 import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from '../../../../../../shared-lib/src/lib/services/toast.service';
 import { take } from 'rxjs/operators';
@@ -36,16 +36,20 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { RealtimeService } from '../../../../../../shared-lib/src/public-api';
 import { CountTimerComponent } from '../count-timer/count-timer.component';
 import { UserService } from '../../../../../../shared-lib/src/lib/services/user.service';
+import { ModalComponent } from '../modal/modal.component';
 
 @Component({
   selector: 'app-new-orders',
   imports: [
     NgbTooltipModule,
     NgbModalModule,
+    CurrencyPipe,
     DatePipe,
     FormatPhoneNumberPipe,
+    ModalComponent,
     PaginatedComponent,
     CountTimerComponent,
+    JsonPipe,
   ],
   templateUrl: './new-orders.component.html',
   styleUrl: './new-orders.component.scss',
@@ -54,6 +58,10 @@ export class NewOrdersComponent implements OnInit {
   public readonly showItems = input<BooleanInput>(false);
   public readonly showTimer = input<BooleanInput>(false);
 
+  private readonly completeOrderConfirmationRef = viewChild<
+    TemplateRef<{ orderDetails: CafeOrderDetails }>
+  >('completeOrderConfirmationTemplate');
+
   private readonly cancelOrderConfirmationRef = viewChild<
     TemplateRef<{ selectedOrderCsid: string }>
   >('cancelOrderConfirmationTemplate');
@@ -61,8 +69,13 @@ export class NewOrdersComponent implements OnInit {
   protected readonly displayItems = computed(() => Boolean(this.showItems()));
   protected readonly displayTimer = computed(() => Boolean(this.showTimer()));
   protected readonly currentPage = model<number>(1);
+  protected readonly loadingOrderDetails = signal<boolean>(false);
   protected readonly orders = signal<Order[]>([]);
+  protected readonly selectedOrderCsid = signal<string | null>(null);
   protected readonly orderDetails = signal<CafeOrderDetails[]>([]);
+  protected readonly selectedOrderdetails = signal<CafeOrderDetails | null>(
+    null,
+  );
   protected readonly pageable = signal<IPageable>({
     pageSize: environment.paginatedDefaultPagesize,
     pageNumber: 1,
@@ -117,6 +130,7 @@ export class NewOrdersComponent implements OnInit {
       this.toastService.showError(
         'You do not have permission to complete orders',
       );
+
       return;
     }
 
@@ -163,8 +177,41 @@ export class NewOrdersComponent implements OnInit {
   }
 
   protected openCancelOrderModal(csid: string): void {
+    this.selectedOrderCsid.set(csid);
     const modalRef = this.modalService.open(this.cancelOrderConfirmationRef());
-    modalRef.componentInstance.selectedOrderCsid = csid;
+  }
+
+  protected openCompleteOrderModal(csid: string): void {
+    if (this.displayItems()) {
+      this.selectedOrderdetails.set(
+        this.orderDetails().find((order) => order.order.csid === csid)!,
+      );
+      this.modalService.open(this.completeOrderConfirmationRef(), {
+        size: 'lg',
+      });
+
+      return;
+    }
+
+    this.loadingOrderDetails.set(true);
+
+    this.orderService
+      .getOrder(csid)
+      .pipe(take(1))
+      .subscribe({
+        next: (response) => {
+          const modalRef = this.modalService.open(
+            this.completeOrderConfirmationRef(),
+          );
+          modalRef.componentInstance.orderDetails = response;
+          this.loadingOrderDetails.set(false);
+        },
+        error: (err) => {
+          this.toastService.showError('Failed to fetch order details');
+          console.error('Failed to fetch order details', err);
+          this.loadingOrderDetails.set(false);
+        },
+      });
   }
 
   private fetchOrders(): void {

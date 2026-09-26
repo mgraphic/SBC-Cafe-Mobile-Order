@@ -1,5 +1,4 @@
 td {
-  // align-items: center;
   vertical-align: middle;
 }
 
@@ -21,6 +20,8 @@ td {
     img {
       width: 1.6rem;
       height: 1.6rem;
+      flex: 0 0 1.6rem;
+      aspect-ratio: 1;
       object-fit: cover;
       object-position: center;
       border-radius: 50%;

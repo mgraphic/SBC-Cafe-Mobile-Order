@@ -38,7 +38,7 @@
                 @if (userService.hasPermission("ORDER_COMPLETE")) {
                   <button
                     class="btn btn-outline-primary btn-sm me-2"
-                    (click)="completeOrder(order.order.csid)"
+                    (click)="openCompleteOrderModal(order.order.csid)"
                   >
                     Complete
                   </button>
@@ -97,6 +97,11 @@
                     class="btn btn-outline-primary btn-sm me-2"
                     (click)="completeOrder(order.csid)"
                   >
+                    <span
+                      class="spinner-border spinner-border-sm"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
                     Complete
                   </button>
                 }
@@ -117,37 +122,97 @@
   </div>
 </div>
 
-<ng-template
-  #cancelOrderConfirmationTemplate
-  let-modal
-  let-csid="selectedOrderCsid"
->
-  <div class="modal-header">
-    <h5 class="modal-title">Cancel Order</h5>
-    <button
-      type="button"
-      class="btn-close"
-      data-bs-dismiss="modal"
-      aria-label="Close"
-      (click)="modal.close()"
-    ></button>
-  </div>
-  <div class="modal-body">Are you sure you want to cancel this order?</div>
-  <div class="modal-footer">
-    <button
-      type="button"
-      class="btn btn-outline-secondary"
-      data-bs-dismiss="modal"
-      (click)="modal.close()"
-    >
-      Close
-    </button>
-    <button
-      type="button"
-      class="btn btn-danger"
-      (click)="cancelOrder(csid); modal.close()"
-    >
-      Cancel Order
-    </button>
-  </div>
+<ng-template #completeOrderConfirmationTemplate let-modal>
+  <app-modal [modalRef]="modal" modalTitle="Complete Order">
+    <ng-template #bodyContent>
+      <p>Are you sure you want to complete this order?</p>
+
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>
+              <span [ngbTooltip]="selectedOrderdetails()!.order.csid">
+                {{ selectedOrderdetails()!.order.customerName }}
+              </span>
+            </td>
+            <td>
+              {{
+                selectedOrderdetails()!.order.customerMobile | formatPhoneNumber
+              }}
+            </td>
+            <td>
+              {{ selectedOrderdetails()!.order.customerEmail }}
+            </td>
+            <td>
+              {{ selectedOrderdetails()!.order.createdAt | date: "short" }}
+            </td>
+          </tr>
+          <tr>
+            <td [attr.colspan]="displayTimer() ? 6 : 5">
+              @for (item of selectedOrderdetails()!.items; track item.id) {
+                <div class="row item-row">
+                  <div class="col-1 qty">
+                    {{ item.quantity }}
+                  </div>
+                  <div class="col-1 img">
+                    <img alt="coffee" [src]="item.price.product.images[0]" />
+                  </div>
+                  <div class="col-10 desc">
+                    {{ item.description }}
+                  </div>
+                </div>
+              }
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-template>
+
+    <ng-template #footerContent>
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        data-bs-dismiss="modal"
+        (click)="modal.close()"
+      >
+        Close
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="
+          completeOrder(selectedOrderdetails()!.order.csid); modal.close()
+        "
+      >
+        Complete Order
+      </button>
+    </ng-template>
+  </app-modal>
+</ng-template>
+
+<ng-template #cancelOrderConfirmationTemplate let-modal>
+  <app-modal [modalRef]="modal" modalTitle="Cancel Order">
+    <ng-template #bodyContent>
+      <div class="modal-body">Are you sure you want to cancel this order?</div>
+    </ng-template>
+    <ng-template #footerContent>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          data-bs-dismiss="modal"
+          (click)="modal.close()"
+        >
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="cancelOrder(selectedOrderCsid()!); modal.close()"
+        >
+          Cancel Order
+        </button>
+      </div>
+    </ng-template>
+  </app-modal>
 </ng-template>
