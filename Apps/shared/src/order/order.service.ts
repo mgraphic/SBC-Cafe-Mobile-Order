@@ -142,17 +142,14 @@ export class OrderService {
         if (existingOrder?.length > 0) {
             await this.dynamoDbService.updateItem(
                 'Orders',
-                { csid },
+                { csid, createdAt: existingOrder[0].createdAt },
                 orderPayload,
             );
         }
     }
 
     public async completeOrder(csid: string): Promise<void> {
-        await this.updateOrder(csid, {
-            orderStatus: 'fulfilled',
-            completedAt: new Date().toISOString(),
-        });
+        await this.updateOrder(csid, { orderStatus: 'fulfilled' });
     }
 
     public async archiveOrder(csid: string): Promise<void> {
