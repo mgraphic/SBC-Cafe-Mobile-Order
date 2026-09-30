@@ -132,22 +132,20 @@ export class NewOrdersComponent implements OnInit {
       return;
     }
 
-    if (confirm('Are you sure you want to complete and close this order?')) {
-      this.orderService
-        .completeOrder(csid)
-        .pipe(take(1))
-        .subscribe({
-          next: (response) => {
-            if (response.success) {
-              this.fetchOrders();
-            }
-          },
-          error: (err) => {
-            this.toastService.showError('Failed to complete order');
-            console.error('Failed to complete order', err);
-          },
-        });
-    }
+    this.orderService
+      .completeOrder(csid)
+      .pipe(take(1))
+      .subscribe({
+        next: (response) => {
+          if (response.success) {
+            this.fetchOrders();
+          }
+        },
+        error: (err) => {
+          this.toastService.showError('Failed to complete order');
+          console.error('Failed to complete order', err);
+        },
+      });
   }
 
   protected cancelOrder(csid: string): void {
