@@ -1,5 +1,5 @@
 import { BooleanInput } from '@angular/cdk/coercion';
-import { CurrencyPipe, DatePipe, JsonPipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from '../../../../../../shared-lib/src/lib/services/toast.service';
 import { take } from 'rxjs/operators';
@@ -43,13 +43,11 @@ import { ModalComponent } from '../modal/modal.component';
   imports: [
     NgbTooltipModule,
     NgbModalModule,
-    CurrencyPipe,
     DatePipe,
     FormatPhoneNumberPipe,
     ModalComponent,
     PaginatedComponent,
     CountTimerComponent,
-    JsonPipe,
   ],
   templateUrl: './new-orders.component.html',
   styleUrl: './new-orders.component.scss',
