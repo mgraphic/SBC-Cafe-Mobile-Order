@@ -1,7 +1,12 @@
 import { io, Socket } from 'socket.io-client';
 import { RealtimeEventListener } from './realtime-event-listener';
 import { AnyEventPayload, RealtimeRoom, RealtimeEvent } from './realtime.model';
-import { orderRoom, sessionRoom, newOrderAlertRoom } from './rooms';
+import {
+    orderRoom,
+    sessionRoom,
+    newOrderAlertRoom,
+    orderUpdatedRoom,
+} from './rooms';
 
 export class RealtimeService {
     private static instance?: RealtimeService;
@@ -80,6 +85,16 @@ export class RealtimeService {
             newOrderAlertRoom(),
             (...ack: unknown[]) => {
                 console.log('Joined New Order Alert Room', ...ack);
+            },
+        );
+    }
+
+    public joinOrderUpdated(): void {
+        this.socket?.emit(
+            'joinRoom',
+            orderUpdatedRoom(),
+            (...ack: unknown[]) => {
+                console.log(`Joined ${orderUpdatedRoom()}`, ...ack);
             },
         );
     }

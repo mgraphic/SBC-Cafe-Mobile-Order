@@ -2,6 +2,7 @@ import {
     NewOrderAlertRoomType,
     OrderRoomType,
     SessionRoomType,
+    OrderUpdatedRoomType,
 } from './realtime.model';
 
 export function orderRoom(orderId: string): OrderRoomType {
@@ -14,4 +15,8 @@ export function sessionRoom(sessionId: string): SessionRoomType {
 
 export function newOrderAlertRoom(): NewOrderAlertRoomType {
     return 'new-order-alerts';
+}
+
+export function orderUpdatedRoom(): OrderUpdatedRoomType {
+    return 'order-updated-alerts';
 }

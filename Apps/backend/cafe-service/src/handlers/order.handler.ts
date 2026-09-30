@@ -5,14 +5,17 @@ import {
     IPageable,
     Order,
     OrderService,
+    OrderUpdatedEventPayload,
     PAGINATED_DEFAULT_PAGESIZE,
     PaginatedPayload,
+    RealtimePartialEvent,
     Stripe,
     StripeCheckoutSessionMetadata,
     StripeLineItem,
     StripeOrderDetails,
 } from 'sbc-cafe-shared-module';
 import { stripe } from '../shared/stripe.utils';
+import { environment } from '../environment';
 
 export async function submitOrder(
     req: Request<
@@ -243,6 +246,20 @@ export async function completeOrder(
     try {
         await orderService.completeOrder(csid);
         res.status(200).json({ success: true });
+
+        const rtEvent: RealtimePartialEvent<OrderUpdatedEventPayload> = {
+            type: 'order.updated',
+            payload: { csid },
+        };
+
+        await fetch(`${environment.realtime.endpoint}/publish`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Internal-Api-Key': environment.privateSharedApiKey,
+            },
+            body: JSON.stringify(rtEvent),
+        });
     } catch (error) {
         res.status(500).json(
             error instanceof Error
@@ -270,6 +287,20 @@ export async function cancelOrder(
     try {
         await orderService.cancelOrder(csid);
         res.status(200).json({ success: true });
+
+        const rtEvent: RealtimePartialEvent<OrderUpdatedEventPayload> = {
+            type: 'order.updated',
+            payload: { csid },
+        };
+
+        await fetch(`${environment.realtime.endpoint}/publish`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Internal-Api-Key': environment.privateSharedApiKey,
+            },
+            body: JSON.stringify(rtEvent),
+        });
     } catch (error) {
         res.status(500).json(
             error instanceof Error

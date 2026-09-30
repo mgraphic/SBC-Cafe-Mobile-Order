@@ -24,6 +24,8 @@ import {
   PaginatedPayload,
   NewOrderAlertEventPayload,
   newOrderAlertRoom,
+  OrderUpdatedEventPayload,
+  orderUpdatedRoom,
 } from 'sbc-cafe-shared-module';
 import { OrderService } from '../../../../../../shared-lib/src/lib/services/order.service';
 import {
@@ -106,9 +108,20 @@ export class NewOrdersComponent implements OnInit {
     // Wait for socket to be ready before registering listener
     const checkAndRegister = () => {
       if (this.realtimeService.isReady()) {
+        this.realtimeService.joinNewOrderAlert();
         this.realtimeService
           .registerEventListener<NewOrderAlertEventPayload>(
             newOrderAlertRoom(),
+            (): void => {
+              this.fetchOrders();
+            },
+          )
+          .takeUntilDestroyRef(this.destroyRef);
+
+        this.realtimeService.joinOrderUpdated();
+        this.realtimeService
+          .registerEventListener<OrderUpdatedEventPayload>(
+            orderUpdatedRoom(),
             (): void => {
               this.fetchOrders();
             },

@@ -3,6 +3,7 @@ import { StripeCheckoutSessionMetadata } from '../stripe/stripe.model';
 
 export const realtimeEventTypes = [
     'order.created',
+    'order.updated',
     'session.created',
     'new-order-alert',
 ] as const;
@@ -26,6 +27,10 @@ export interface OrderEventPayload {
     csid: string;
 }
 
+export interface OrderUpdatedEventPayload {
+    csid: string;
+}
+
 export interface SessionEventPayload {
     sessionId: string;
 }
@@ -39,6 +44,7 @@ export interface NewOrderAlertEventPayload {
 
 export type AnyEventPayload =
     | OrderEventPayload
+    | OrderUpdatedEventPayload
     | SessionEventPayload
     | NewOrderAlertEventPayload;
 
@@ -48,7 +54,10 @@ export type SessionRoomType = `session:${string}`;
 
 export type NewOrderAlertRoomType = 'new-order-alerts';
 
+export type OrderUpdatedRoomType = 'order-updated-alerts';
+
 export type RealtimeRoom =
     | OrderRoomType
+    | OrderUpdatedRoomType
     | SessionRoomType
     | NewOrderAlertRoomType;

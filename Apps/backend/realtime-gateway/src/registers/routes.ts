@@ -5,6 +5,8 @@ import {
     newOrderAlertRoom,
     OrderEventPayload,
     orderRoom,
+    OrderUpdatedEventPayload,
+    orderUpdatedRoom,
     RealtimeEvent,
     RealtimeRoom,
     SessionEventPayload,
@@ -62,6 +64,10 @@ function publishEvent(io: Server, event: RealtimeEvent): void {
         case 'order.created':
             const { csid } = event.payload as OrderEventPayload;
             emitToRoom(orderRoom(csid));
+            break;
+
+        case 'order.updated':
+            emitToRoom(orderUpdatedRoom());
             break;
 
         case 'session.created':
