@@ -54,6 +54,7 @@ services:
     # Mock Server
     wiremock:
         image: wiremock/wiremock:latest-alpine
+        platform: linux/amd64
         container_name: wiremock
         restart: always
         ports:
@@ -73,13 +74,18 @@ services:
             ]
 
     # Mailer Webhook for Wiremock
-    mailer:
+    mailer-webhook:
         depends_on:
             - mailpit
             - wiremock
         image: marshallgraphics/sbc-cmo-wiremock-mailer-webhook:latest
+        platform: linux/amd64
         container_name: mailer-webhook
         restart: always
+        networks:
+            default:
+                aliases:
+                    - mailer
         ports:
             - '4000:4000'
         environment:
@@ -89,10 +95,11 @@ services:
     # Email Testing
     mailpit:
         image: axllent/mailpit:latest
+
         container_name: mailpit
         restart: always
         ports:
-            - '1025:1025' # SMTP server
+            - '1030:1025' # SMTP server
             - '8025:8025' # Web UI
         environment:
             MP_MAX_MESSAGES: 5000
@@ -102,6 +109,7 @@ services:
     # Log Collection
     splunk:
         image: splunk/splunk:latest
+        platform: linux/amd64
         container_name: splunk
         restart: always
 
@@ -132,6 +140,7 @@ services:
     # Stripe Mock API
     stripe-mock-api:
         image: marshallgraphics/sbc-cmo-stripe-mock-api:latest
+        platform: linux/amd64
         container_name: stripe-mock-api
         restart: always
         ports:

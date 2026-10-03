@@ -13,7 +13,7 @@
     "postServeActions": {
         "webhook": {
             "method": "POST",
-            "url": "http://mailer:4000/send-email",
+            "url": "http://mailer-webhook:4000/send-email",
             "headers": {
                 "Content-Type": "application/json"
             },

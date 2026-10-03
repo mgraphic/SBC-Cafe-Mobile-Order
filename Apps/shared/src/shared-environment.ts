@@ -163,7 +163,7 @@ export const sharedEnvironment = (): {
             'SMTP_CONFIG',
             JSON.stringify({
                 host: 'localhost',
-                port: 1025,
+                port: 1030,
                 secure: false,
             }),
         ),

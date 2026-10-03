@@ -64,6 +64,9 @@ services:
             ADMIN_UI_URL: http://localhost:81
             STORE_UI_URL: http://localhost:80
             SMTP_CONFIG: '{"host":"mailpit","port":1025,"secure":false}'
+            SPLUNK_HEC_URL: http://splunk:8088
+            SPLUNK_HEC_TOKEN: local-splunk-hec-token
+            SPLUNK_HEC_INDEX: main
 
         depends_on:
             - splunk
@@ -90,6 +93,9 @@ services:
             ADMIN_UI_URL: http://localhost:81
             STORE_UI_URL: http://localhost:80
             SMTP_CONFIG: '{"host":"mailpit","port":1025,"secure":false}'
+            SPLUNK_HEC_URL: http://splunk:8088
+            SPLUNK_HEC_TOKEN: local-splunk-hec-token
+            SPLUNK_HEC_INDEX: main
 
         depends_on:
             - splunk
@@ -118,6 +124,9 @@ services:
             ADMIN_UI_URL: http://localhost:81
             STORE_UI_URL: http://localhost:80
             SMTP_CONFIG: '{"host":"mailpit","port":1025,"secure":false}'
+            SPLUNK_HEC_URL: http://splunk:8088
+            SPLUNK_HEC_TOKEN: local-splunk-hec-token
+            SPLUNK_HEC_INDEX: main
 
         depends_on:
             - splunk
