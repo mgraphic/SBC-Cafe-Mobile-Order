@@ -1,4 +1,4 @@
-import nodemailer, { Transporter } from 'nodemailer';
+import nodemailer, { Attachment, Transporter } from 'nodemailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 import fs from 'fs';
 import { join } from 'path';
@@ -12,7 +12,6 @@ import {
 } from './com.model';
 import Handlebars, { TemplateDelegate } from 'handlebars';
 import { SettingsService } from '../settings';
-import { Attachment } from 'nodemailer/lib/mailer';
 import { Logger } from 'winston';
 
 // Register Handlebars helpers

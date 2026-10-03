@@ -1,4 +1,4 @@
-import { Attachment } from 'nodemailer/lib/mailer';
+import { Attachment } from 'nodemailer';
 
 export interface SmsMessageRequest {
     sender: string;
