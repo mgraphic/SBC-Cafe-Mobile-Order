@@ -1,4 +1,9 @@
-import { Component, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavigationService } from '../../shared/navigation.service';
 import { CartService } from '../../shared/cart.service';
@@ -13,6 +18,7 @@ import { take } from 'rxjs';
   selector: 'app-details',
   imports: [SharedModule],
   templateUrl: './details.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './details.component.scss',
 })
 export class DetailsComponent implements OnInit {

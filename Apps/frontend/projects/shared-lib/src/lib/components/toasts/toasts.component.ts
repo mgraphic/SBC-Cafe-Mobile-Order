@@ -6,6 +6,7 @@ import {
   HostBinding,
   TemplateRef,
   viewChildren,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { NgbToastModule, NgbToast } from '@ng-bootstrap/ng-bootstrap';
 import { take, Observable } from 'rxjs';
@@ -18,11 +19,12 @@ import { ToastConfigService } from '../../services/toast-config.service';
 import { ToastControllerService } from '../../services/toast-controller.service';
 
 @Component({
-    selector: 'lib-toasts',
-    imports: [NgbToastModule, SharedModule],
-    templateUrl: './toasts.component.html',
-    styleUrls: ['./toasts.component.scss'],
-    encapsulation: ViewEncapsulation.None
+  selector: 'lib-toasts',
+  imports: [NgbToastModule, SharedModule],
+  templateUrl: './toasts.component.html',
+  styleUrls: ['./toasts.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  encapsulation: ViewEncapsulation.None,
 })
 export class ToastsComponent implements AfterViewChecked {
   protected toastControllerService = inject(ToastControllerService);

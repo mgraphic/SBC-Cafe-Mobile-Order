@@ -20,7 +20,12 @@
           @for (item of details.items; track item.id) {
             <tr>
               <td rowspan="2" class="image">
-                <img alt="coffee" [src]="item.price.product.images?.[0]" />
+                <img
+                  alt="coffee"
+                  [src]="
+                    $safeNavigationMigration(item.price.product.images?.[0])
+                  "
+                />
               </td>
               <td rowspan="2" class="info">
                 <h4>{{ item.description || "Order item" }}</h4>

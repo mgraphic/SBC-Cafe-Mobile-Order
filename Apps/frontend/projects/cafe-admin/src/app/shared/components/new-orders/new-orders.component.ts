@@ -16,6 +16,7 @@ import {
   DestroyRef,
   viewChild,
   TemplateRef,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import {
   Order,
@@ -52,6 +53,7 @@ import { ModalComponent } from '../modal/modal.component';
     CountTimerComponent,
   ],
   templateUrl: './new-orders.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './new-orders.component.scss',
 })
 export class NewOrdersComponent implements OnInit {

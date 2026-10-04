@@ -1,4 +1,10 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  inject,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './shared/components/header/header.component';
@@ -6,10 +12,11 @@ import { FooterComponent } from './shared/components/footer/footer.component';
 import { SharedModule } from '../../../shared-lib/src/public-api';
 
 @Component({
-    selector: 'app-root',
-    imports: [RouterOutlet, HeaderComponent, FooterComponent, SharedModule],
-    templateUrl: './app.component.html',
-    styleUrl: './app.component.scss'
+  selector: 'app-root',
+  imports: [RouterOutlet, HeaderComponent, FooterComponent, SharedModule],
+  templateUrl: './app.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
   protected showHeader = true;

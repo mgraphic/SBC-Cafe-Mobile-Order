@@ -5,6 +5,7 @@ import {
   OnInit,
   TemplateRef,
   viewChild,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import {
@@ -23,6 +24,7 @@ import { UserService } from '../../../shared-lib/src/lib/services/user.service';
   selector: 'app-root',
   imports: [RouterOutlet, RouterModule, ToastsComponent],
   templateUrl: './app.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit, OnDestroy {

@@ -1,4 +1,11 @@
-import { Component, inject, input, model, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  input,
+  model,
+  signal,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { AuthService } from '../../shared/services/auth.service';
@@ -9,6 +16,7 @@ import { ToastService } from '../../../../../shared-lib/src/public-api';
   selector: 'app-login',
   imports: [SharedModule],
   templateUrl: './login.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {

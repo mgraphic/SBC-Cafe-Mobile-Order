@@ -4,6 +4,7 @@ import {
   OnInit,
   TemplateRef,
   viewChild,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { NgbDropdownModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -45,6 +46,7 @@ import {
     PhoneInputComponent,
   ],
   templateUrl: './user-management.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './user-management.component.scss',
 })
 export class UserManagementComponent implements OnInit {

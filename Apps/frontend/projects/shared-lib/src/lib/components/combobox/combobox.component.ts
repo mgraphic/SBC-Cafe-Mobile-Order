@@ -5,6 +5,7 @@ import {
   ElementRef,
   input,
   model,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import {
   FormsModule,
@@ -26,17 +27,18 @@ import { ComboboxValueType } from '../../models/shared.model';
 import { comboboxValueFormatter } from '../../utilities/combobox.utils';
 
 @Component({
-    selector: 'lib-combobox',
-    imports: [FormsModule, NgbTypeahead],
-    templateUrl: './combobox.component.html',
-    styleUrl: './combobox.component.css',
-    providers: [
-        {
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => ComboboxComponent),
-            multi: true,
-        },
-    ]
+  selector: 'lib-combobox',
+  imports: [FormsModule, NgbTypeahead],
+  templateUrl: './combobox.component.html',
+  styleUrl: './combobox.component.css',
+  changeDetection: ChangeDetectionStrategy.Eager,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => ComboboxComponent),
+      multi: true,
+    },
+  ],
 })
 export class ComboboxComponent implements ControlValueAccessor {
   @ViewChild('instance', { static: true })
@@ -57,14 +59,14 @@ export class ComboboxComponent implements ControlValueAccessor {
     ComboboxValueType,
     readonly ComboboxValueType[]
   > = (
-    text$: Observable<ComboboxValueType>
+    text$: Observable<ComboboxValueType>,
   ): Observable<ComboboxValueType[]> => {
     const debouncedText$ = text$.pipe(
       debounceTime(200),
-      distinctUntilChanged()
+      distinctUntilChanged(),
     );
     const clicksWithClosedPopup$ = this.click$.pipe(
-      filter(() => !this.instance.isPopupOpen())
+      filter(() => !this.instance.isPopupOpen()),
     );
     const inputFocus$ = this.focus$;
 
@@ -76,9 +78,9 @@ export class ComboboxComponent implements ControlValueAccessor {
               (v) =>
                 this.formatter(v)
                   .toLowerCase()
-                  .indexOf(this.formatter(term).toLowerCase()) > -1
-            )
-      )
+                  .indexOf(this.formatter(term).toLowerCase()) > -1,
+            ),
+      ),
     );
   };
 
@@ -87,7 +89,7 @@ export class ComboboxComponent implements ControlValueAccessor {
   }
 
   public registerOnChange(
-    fn: (value: ComboboxValueType | undefined) => void
+    fn: (value: ComboboxValueType | undefined) => void,
   ): void {
     this.onChange = fn;
     this.model.subscribe(fn);
@@ -128,7 +130,7 @@ export class ComboboxComponent implements ControlValueAccessor {
     const inputValue = (event.target as HTMLInputElement).value;
     const matchedOption = this.options().find(
       (option) =>
-        this.formatter(option).toLowerCase() === inputValue.toLowerCase()
+        this.formatter(option).toLowerCase() === inputValue.toLowerCase(),
     );
 
     if (matchedOption) {

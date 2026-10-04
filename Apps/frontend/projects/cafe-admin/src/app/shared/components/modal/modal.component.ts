@@ -1,11 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, TemplateRef, contentChild } from '@angular/core';
+import {
+  Component,
+  input,
+  TemplateRef,
+  contentChild,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-modal',
   imports: [CommonModule],
   templateUrl: './modal.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './modal.component.scss',
 })
 export class ModalComponent {

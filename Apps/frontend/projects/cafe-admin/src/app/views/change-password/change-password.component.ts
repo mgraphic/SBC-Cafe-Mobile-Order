@@ -1,4 +1,9 @@
-import { Component, inject, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  signal,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { take } from 'rxjs';
 import { SharedModule } from '../../shared/shared.module';
 import { ToastService } from '../../../../../shared-lib/src/public-api';
@@ -10,6 +15,7 @@ import { UserService } from '../../../../../shared-lib/src/lib/services/user.ser
   selector: 'app-change-password',
   imports: [SharedModule],
   templateUrl: './change-password.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './change-password.component.scss',
 })
 export class ChangePasswordComponent {

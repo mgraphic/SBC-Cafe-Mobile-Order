@@ -1,14 +1,20 @@
-import { Component, inject, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  signal,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { UsersService } from '../../shared/services/users.service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ToastService } from '../../../../../shared-lib/src/public-api';
 
 @Component({
-    selector: 'app-activate-account',
-    imports: [ReactiveFormsModule, RouterLink],
-    templateUrl: './activate-account.component.html',
-    styleUrl: './activate-account.component.scss'
+  selector: 'app-activate-account',
+  imports: [ReactiveFormsModule, RouterLink],
+  templateUrl: './activate-account.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './activate-account.component.scss',
 })
 export class ActivateAccountComponent {
   private readonly route = inject(ActivatedRoute);

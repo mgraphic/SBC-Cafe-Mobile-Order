@@ -6,6 +6,7 @@ import {
   OnDestroy,
   OnInit,
   viewChild,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuTileComponent } from './menu-tile.component';
@@ -23,6 +24,7 @@ import {
   selector: 'app-menu',
   imports: [SharedModule, MenuTileComponent],
   templateUrl: './menu.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './menu.component.scss',
 })
 export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {

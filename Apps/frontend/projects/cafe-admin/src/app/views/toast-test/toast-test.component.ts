@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Subject } from 'rxjs';
 import {
   ToastService,
@@ -9,6 +9,7 @@ import {
   selector: 'app-toast-test',
   standalone: true,
   templateUrl: './toast-test.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './toast-test.component.scss',
 })
 export class ToastTestComponent {

@@ -2,6 +2,7 @@ import {
   HTTP_INTERCEPTORS,
   provideHttpClient,
   withInterceptorsFromDi,
+  withXhr,
 } from '@angular/common/http';
 import {
   Provider,
@@ -49,7 +50,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(SharedModule.forRoot()),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(withXhr(), withInterceptorsFromDi()),
     ...interceptorProviders,
     ...jwtHelperProviders,
     SessionService,

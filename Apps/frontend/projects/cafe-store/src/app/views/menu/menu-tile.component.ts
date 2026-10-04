@@ -1,4 +1,9 @@
-import { Component, input, output } from '@angular/core';
+import {
+  Component,
+  input,
+  output,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { SharedModule } from '../../../../../shared-lib/src/public-api';
 import { StripeProductPrice } from 'sbc-cafe-shared-module';
 
@@ -6,6 +11,7 @@ import { StripeProductPrice } from 'sbc-cafe-shared-module';
   selector: 'app-menu-tile',
   imports: [SharedModule],
   templateUrl: './menu-tile.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './menu-tile.component.scss',
 })
 export class MenuTileComponent {

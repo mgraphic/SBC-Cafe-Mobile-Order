@@ -12,6 +12,7 @@ import {
   AfterViewInit,
   viewChild,
   ElementRef,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { CommonModule } from '@angular/common';
@@ -29,6 +30,7 @@ import { NumberInput } from '@angular/cdk/coercion';
   standalone: true,
   imports: [CommonModule, FormsModule, NgxsmkTelInputComponent],
   templateUrl: './phone-input.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

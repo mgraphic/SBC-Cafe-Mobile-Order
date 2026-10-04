@@ -5,6 +5,7 @@ import {
   DestroyRef,
   viewChild,
   TemplateRef,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CartItem } from '../../shared/cart.model';
@@ -30,6 +31,7 @@ import { StripeCheckoutSessionMetadata } from 'sbc-cafe-shared-module';
   selector: 'app-cart',
   imports: [SharedModule, ReactiveFormsModule, PhoneInputComponent],
   templateUrl: './cart.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './cart.component.scss',
 })
 export class CartComponent implements OnInit {

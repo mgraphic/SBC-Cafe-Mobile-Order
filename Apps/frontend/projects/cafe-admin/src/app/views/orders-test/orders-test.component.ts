@@ -1,4 +1,11 @@
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { DatePipe } from '@angular/common';
 import {
   NewOrderAlertEventPayload,
@@ -11,6 +18,7 @@ import { RealtimeService } from '../../../../../shared-lib/src/lib/services/real
 @Component({
   imports: [DatePipe],
   templateUrl: './orders-test.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './orders-test.component.scss',
 })
 export class OrdersTestComponent implements OnInit, OnDestroy {

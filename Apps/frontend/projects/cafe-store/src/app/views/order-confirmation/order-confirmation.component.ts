@@ -1,4 +1,10 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  signal,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { OrderService } from '../../../../../shared-lib/src/lib/services/order.service';
 import { CartService } from '../../shared/cart.service';
@@ -11,6 +17,7 @@ import { take } from 'rxjs/internal/operators/take';
   selector: 'app-order-confirmation',
   imports: [SharedModule, RouterModule],
   templateUrl: './order-confirmation.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './order-confirmation.component.scss',
 })
 export class OrderConfirmationComponent implements OnInit {

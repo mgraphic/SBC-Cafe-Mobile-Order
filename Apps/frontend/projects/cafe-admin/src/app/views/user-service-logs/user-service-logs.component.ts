@@ -1,4 +1,11 @@
-import { Component, OnInit, inject, model, signal } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  inject,
+  model,
+  signal,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { take, switchMap, Observable } from 'rxjs';
 import {
@@ -19,10 +26,11 @@ import { UsersService } from '../../shared/services/users.service';
 import { SharedModule } from '../../shared/shared.module';
 
 @Component({
-    selector: 'app-user-service-logs',
-    imports: [SharedModule, PaginatedComponent, ComboboxComponent],
-    templateUrl: './user-service-logs.component.html',
-    styleUrl: './user-service-logs.component.scss'
+  selector: 'app-user-service-logs',
+  imports: [SharedModule, PaginatedComponent, ComboboxComponent],
+  templateUrl: './user-service-logs.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './user-service-logs.component.scss',
 })
 export class UserServiceLogsComponent implements OnInit {
   private readonly usersService = inject(UsersService);
@@ -60,7 +68,7 @@ export class UserServiceLogsComponent implements OnInit {
           });
 
           return this.getLogs(this.pageable()).pipe(take(1));
-        })
+        }),
       )
       .subscribe({
         next: this.processLogResults.bind(this),
@@ -75,8 +83,8 @@ export class UserServiceLogsComponent implements OnInit {
           this.getLogs({
             ...this.pageable(),
             pageNumber,
-          }).pipe(take(1))
-        )
+          }).pipe(take(1)),
+        ),
       )
       .subscribe({
         next: this.processLogResults.bind(this),
@@ -94,9 +102,9 @@ export class UserServiceLogsComponent implements OnInit {
           return this.getLogs(
             this.pageable(),
             filter?.lookup,
-            filter?.value
+            filter?.value,
           ).pipe(take(1));
-        })
+        }),
       )
       .subscribe({
         next: this.processLogResults.bind(this),
@@ -134,7 +142,7 @@ export class UserServiceLogsComponent implements OnInit {
   private getLogs(
     pageable: IPageable,
     lookup?: UserTrackerLogsLookup,
-    lookupValue?: string
+    lookupValue?: string,
   ): Observable<PaginatedPayload<ITracker>> {
     return this.usersService.getLogs(pageable, lookup, lookupValue);
   }

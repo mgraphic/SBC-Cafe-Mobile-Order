@@ -1,19 +1,26 @@
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  inject,
+  signal,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CartService } from '../../cart.service';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
-    selector: 'app-header',
-    imports: [RouterModule],
-    templateUrl: './header.component.html',
-    styleUrl: './header.component.scss'
+  selector: 'app-header',
+  imports: [RouterModule],
+  templateUrl: './header.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
   private readonly cartService = inject(CartService);
   private readonly DestroyRef = inject(DestroyRef);
   protected readonly cartItemsCount = signal<number>(
-    this.cartService.getTotalQuantityCount()
+    this.cartService.getTotalQuantityCount(),
   );
 
   constructor() {
