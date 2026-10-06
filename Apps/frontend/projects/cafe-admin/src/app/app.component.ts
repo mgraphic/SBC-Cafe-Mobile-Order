@@ -7,6 +7,7 @@ import {
   viewChild,
   ChangeDetectionStrategy,
 } from '@angular/core';
+import { environment } from '../../../shared-lib/src/environment';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import {
   RealtimeService,
@@ -34,9 +35,10 @@ export class AppComponent implements OnInit, OnDestroy {
     );
   private readonly toastService = inject(ToastService);
   private readonly realtimeService = inject(RealtimeService);
-  private readonly destroySubject = new Subject<void>();
-
   protected readonly userService = inject(UserService);
+
+  private readonly destroySubject = new Subject<void>();
+  protected readonly environment = environment;
 
   ngOnInit(): void {
     const checkAndRegister = () => {

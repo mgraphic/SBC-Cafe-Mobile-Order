@@ -3,6 +3,7 @@ import { LoggerLevel } from './logger';
 
 export const sharedEnvironment = (): {
     env: string;
+    devMode: boolean;
     level: LoggerLevel;
     redactedRegex: string[];
     redactedKeys: string[];
@@ -89,6 +90,7 @@ export const sharedEnvironment = (): {
 
     return {
         env,
+        devMode: Boolean(getEnvironmentVariable('DEV_MODE', 'false')),
         level: getEnvironmentVariable('LEVEL', 'info') as LoggerLevel,
         redactedRegex,
         redactedKeys,

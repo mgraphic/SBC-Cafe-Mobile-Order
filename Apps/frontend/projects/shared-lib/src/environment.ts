@@ -11,6 +11,7 @@ export const environment: Readonly<{
   publishedSharedApiKey?: string | null;
   adminUrl: string;
   storeUrl: string;
+  devMode: boolean;
 }> = {
   realtimeGatewayServiceUrl: runtimeEnvironment.realtimeGatewayServiceUrl,
   cafeStoreServiceUrl: 'cafe-service/api/v1/store',
@@ -20,6 +21,7 @@ export const environment: Readonly<{
   publishedSharedApiKey: runtimeEnvironment.publishedSharedApiKey,
   adminUrl: runtimeEnvironment.adminUrl,
   storeUrl: runtimeEnvironment.storeUrl,
+  devMode: runtimeEnvironment.devMode,
 };
 
 export type Environment = typeof environment;

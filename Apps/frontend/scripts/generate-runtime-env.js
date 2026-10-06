@@ -40,6 +40,7 @@ config({ path: path.resolve(process.cwd(), "../../.env") });
  */
 
 export const runtimeEnvironment = {
+  devMode: ${sharedEnvValues.devMode ? "true" : "false"},
   realtimeGatewayServiceUrl: '${realtimeEndpoint}',
   publishedSharedApiKey: ${publishedSharedApiKey !== null ? `'${publishedSharedApiKey}'` : "null"},
   adminUrl: '${adminUrl}',
