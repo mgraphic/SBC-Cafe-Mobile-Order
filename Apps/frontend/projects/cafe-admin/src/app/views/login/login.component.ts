@@ -99,4 +99,16 @@ export class LoginComponent {
         },
       });
   }
+
+  protected onEnterKey(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      if (this.loginMode() === 'password') {
+        this.login();
+      } else if (this.loginMode() === 'forgot-password') {
+        this.requestOtp();
+      } else if (this.loginMode() === 'otp') {
+        this.loginWithOtp();
+      }
+    }
+  }
 }

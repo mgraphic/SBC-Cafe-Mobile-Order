@@ -10,6 +10,7 @@
             id="email"
             name="email"
             [(ngModel)]="email"
+            (keydown)="onEnterKey($event)"
           />
         </div>
         <div class="form-group">
@@ -20,6 +21,7 @@
             id="password"
             name="password"
             [(ngModel)]="password"
+            (keydown)="onEnterKey($event)"
           />
         </div>
       }
@@ -33,6 +35,7 @@
             id="email"
             name="email"
             [(ngModel)]="email"
+            (keydown)="onEnterKey($event)"
           />
         </div>
         <div class="form-group">
@@ -67,6 +70,7 @@
             id="email"
             name="email"
             [(ngModel)]="email"
+            (keydown)="onEnterKey($event)"
           />
         </div>
         <div class="form-group">
@@ -77,6 +81,7 @@
             id="otp"
             name="otp"
             [(ngModel)]="otp"
+            (keydown)="onEnterKey($event)"
           />
         </div>
       }
