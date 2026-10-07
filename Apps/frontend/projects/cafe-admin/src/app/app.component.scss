@@ -5,6 +5,18 @@
   flex-direction: column;
 }
 
+.container {
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .user-info {
+      margin-left: 1rem;
+    }
+  }
+}
+
 .content-wrapper {
   height: 100%;
   flex: auto;

@@ -1,17 +1,25 @@
 <div class="container p-3">
   <section class="header">
-    @if (userService.isLoggedInSignal()) {
-      <a routerLink="/change-password">Change Password</a> |
-      <a routerLink="/dashboard">Dashboard</a> |
-      <a routerLink="/user-logs">User Service Logs</a> |
-      <a routerLink="/user-management">User Management</a> |
-      @if (environment.devMode) {
-        <a routerLink="/toast-test">Toast Test</a> |
-        <a routerLink="/orders-test">Orders Test</a> |
+    <nav>
+      @if (userService.isLoggedInSignal()) {
+        <a routerLink="/change-password">Change Password</a> |
+        <a routerLink="/dashboard">Dashboard</a> |
+        <a routerLink="/user-logs">User Service Logs</a> |
+        <a routerLink="/user-management">User Management</a> |
+        @if (environment.devMode) {
+          <a routerLink="/toast-test">Toast Test</a> |
+          <a routerLink="/orders-test">Orders Test</a> |
+        }
+        <a routerLink="/logout">Logout</a>
+      } @else {
+        <a routerLink="/login">Login</a>
       }
-      <a routerLink="/logout">Logout</a>
-    } @else {
-      <a routerLink="/login">Login</a>
+    </nav>
+
+    @if (user()) {
+      <div class="user-info">
+        {{ user()?.firstName }} {{ user()?.lastName }}
+      </div>
     }
   </section>
 </div>

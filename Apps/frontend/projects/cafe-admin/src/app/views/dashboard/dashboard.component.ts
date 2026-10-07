@@ -15,7 +15,4 @@ import { NewOrdersComponent } from '../../shared/components/new-orders/new-order
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './dashboard.component.scss',
 })
-export class DashboardComponent {
-  private readonly authService = inject(AuthService);
-  protected readonly user = signal(this.authService.getUser());
-}
+export class DashboardComponent {}
