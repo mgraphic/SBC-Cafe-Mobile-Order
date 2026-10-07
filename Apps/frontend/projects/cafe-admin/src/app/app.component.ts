@@ -19,7 +19,7 @@ import {
   NewOrderAlertEventPayload,
   newOrderAlertRoom,
 } from 'sbc-cafe-shared-module';
-import { Subject } from 'rxjs';
+import { filter, skip, Subject, takeUntil } from 'rxjs';
 import { UserService } from '../../../shared-lib/src/lib/services/user.service';
 import { AuthService } from './shared/services/auth.service';
 
@@ -40,15 +40,32 @@ export class AppComponent implements OnInit, OnDestroy {
   protected readonly userService = inject(UserService);
   private readonly authService = inject(AuthService);
 
+  private newOrderListener?: { off: () => unknown };
   private readonly destroySubject = new Subject<void>();
   protected readonly environment = environment;
   protected readonly user = signal(this.authService.getUser());
 
   ngOnInit(): void {
+    this.registerNewOrderListener();
+
+    // Login replaces the socket, so listeners must be registered again
+    this.authService.isLoggedIn$
+      .pipe(skip(1), filter(Boolean), takeUntil(this.destroySubject))
+      .subscribe(() => {
+        this.newOrderListener?.off();
+        this.registerNewOrderListener();
+      });
+  }
+
+  private registerNewOrderListener(): void {
     const checkAndRegister = () => {
+      if (this.destroySubject.closed || this.destroySubject.isStopped) {
+        return;
+      }
+
       if (this.realtimeService.isReady()) {
         this.realtimeService.joinNewOrderAlert();
-        this.realtimeService
+        this.newOrderListener = this.realtimeService
           .registerEventListener<NewOrderAlertEventPayload>(
             newOrderAlertRoom(),
             (event): void => {

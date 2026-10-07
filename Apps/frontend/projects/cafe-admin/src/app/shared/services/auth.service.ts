@@ -14,6 +14,7 @@ import {
 import { JwtUserPayload } from 'sbc-cafe-shared-module';
 import { IAuthResponse } from '../models/auth.model';
 import { environment } from '../../../../../shared-lib/src/public-api';
+import { RealtimeService } from '../../../../../shared-lib/src/lib/services/realtime.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,7 @@ export class AuthService {
   private readonly authServiceUrl = environment.authServiceUrl;
   private readonly http = inject(HttpClient);
   private readonly jwtHelper = inject(JwtHelperService);
+  private readonly realtimeService = inject(RealtimeService);
   private readonly isLoggedInSubject = new BehaviorSubject<boolean>(
     this.hasToken(),
   );
@@ -44,6 +46,7 @@ export class AuthService {
             this.user = this.jwtHelper.decodeToken<JwtUserPayload>(
               response.accessToken,
             );
+            this.reconnectRealtime(response.accessToken);
             this.isLoggedInSubject.next(true);
           },
 
@@ -56,6 +59,12 @@ export class AuthService {
         }),
         switchMap((response) => of(response)),
       );
+  }
+
+  // Replace the pre-login socket so listeners registered after login use a fresh connection
+  private reconnectRealtime(token: string): void {
+    this.realtimeService.disconnect();
+    this.realtimeService.connect(token);
   }
 
   public logout(): void {
@@ -78,6 +87,7 @@ export class AuthService {
             this.user = this.jwtHelper.decodeToken<JwtUserPayload>(
               response.accessToken,
             );
+            this.reconnectRealtime(response.accessToken);
             this.isLoggedInSubject.next(true);
           },
 
