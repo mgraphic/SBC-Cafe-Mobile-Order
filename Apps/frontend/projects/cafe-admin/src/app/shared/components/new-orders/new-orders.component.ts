@@ -107,35 +107,27 @@ export class NewOrdersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Wait for socket to be ready before registering listener
-    const checkAndRegister = () => {
-      if (this.realtimeService.isReady()) {
-        this.realtimeService.joinNewOrderAlert();
-        this.realtimeService
-          .registerEventListener<NewOrderAlertEventPayload>(
-            newOrderAlertRoom(),
-            (): void => {
-              this.fetchOrders();
-            },
-          )
-          .takeUntilDestroyRef(this.destroyRef);
+    this.realtimeService.onReady(() => {
+      this.realtimeService.joinNewOrderAlert();
+      this.realtimeService
+        .registerEventListener<NewOrderAlertEventPayload>(
+          newOrderAlertRoom(),
+          (): void => {
+            this.fetchOrders();
+          },
+        )
+        .takeUntilDestroyRef(this.destroyRef);
 
-        this.realtimeService.joinOrderUpdated();
-        this.realtimeService
-          .registerEventListener<OrderUpdatedEventPayload>(
-            orderUpdatedRoom(),
-            (): void => {
-              this.fetchOrders();
-            },
-          )
-          .takeUntilDestroyRef(this.destroyRef);
-      } else {
-        // Retry after a short delay
-        setTimeout(checkAndRegister, 100);
-      }
-    };
-
-    checkAndRegister();
+      this.realtimeService.joinOrderUpdated();
+      this.realtimeService
+        .registerEventListener<OrderUpdatedEventPayload>(
+          orderUpdatedRoom(),
+          (): void => {
+            this.fetchOrders();
+          },
+        )
+        .takeUntilDestroyRef(this.destroyRef);
+    });
   }
 
   protected completeOrder(csid: string): void {

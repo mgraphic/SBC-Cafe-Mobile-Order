@@ -68,4 +68,12 @@ export class RealtimeService {
   public isReady(): boolean {
     return this.service.isReady();
   }
+
+  public onReady(callback: () => void): void {
+    if (this.isReady()) {
+      callback();
+    } else {
+      setTimeout(() => this.onReady(callback), 300);
+    }
+  }
 }

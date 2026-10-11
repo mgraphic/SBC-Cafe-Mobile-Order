@@ -29,24 +29,16 @@ export class OrdersTestComponent implements OnInit, OnDestroy {
   >([]);
 
   ngOnInit(): void {
-    // Wait for socket to be ready before registering listener
-    const checkAndRegister = () => {
-      if (this.realtimeService.isReady()) {
-        this.realtimeService
-          .registerEventListener<NewOrderAlertEventPayload>(
-            newOrderAlertRoom(),
-            (event): void => {
-              this.events.update((events) => [...events, event]);
-            },
-          )
-          .takeUntilObservable(this.destroySubject);
-      } else {
-        // Retry after a short delay
-        setTimeout(checkAndRegister, 100);
-      }
-    };
-
-    checkAndRegister();
+    this.realtimeService.onReady(() => {
+      this.realtimeService
+        .registerEventListener<NewOrderAlertEventPayload>(
+          newOrderAlertRoom(),
+          (event): void => {
+            this.events.update((events) => [...events, event]);
+          },
+        )
+        .takeUntilObservable(this.destroySubject);
+    });
   }
 
   ngOnDestroy(): void {

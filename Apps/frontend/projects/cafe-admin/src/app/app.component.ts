@@ -58,30 +58,23 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private registerNewOrderListener(): void {
-    const checkAndRegister = () => {
+    this.realtimeService.onReady(() => {
       if (this.destroySubject.closed || this.destroySubject.isStopped) {
         return;
       }
 
-      if (this.realtimeService.isReady()) {
-        this.realtimeService.joinNewOrderAlert();
-        this.newOrderListener = this.realtimeService
-          .registerEventListener<NewOrderAlertEventPayload>(
-            newOrderAlertRoom(),
-            (event): void => {
-              this.toastService.showInfo(this.newOrderToastRef()!, {
-                contentContext: { $implicit: event.payload },
-              });
-            },
-          )
-          .takeUntilObservable(this.destroySubject);
-      } else {
-        // Retry after a short delay
-        setTimeout(checkAndRegister, 100);
-      }
-    };
-
-    checkAndRegister();
+      this.realtimeService.joinNewOrderAlert();
+      this.newOrderListener = this.realtimeService
+        .registerEventListener<NewOrderAlertEventPayload>(
+          newOrderAlertRoom(),
+          (event): void => {
+            this.toastService.showInfo(this.newOrderToastRef()!, {
+              contentContext: { $implicit: event.payload },
+            });
+          },
+        )
+        .takeUntilObservable(this.destroySubject);
+    });
   }
 
   ngOnDestroy(): void {
