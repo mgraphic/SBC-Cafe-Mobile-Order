@@ -3,12 +3,15 @@ import {
     ApiError,
     CafeOrderDetails,
     IPageable,
+    MailerService,
     Order,
     OrderService,
     OrderUpdatedEventPayload,
     PAGINATED_DEFAULT_PAGESIZE,
     PaginatedPayload,
     RealtimePartialEvent,
+    SettingsService,
+    SmsService,
     Stripe,
     StripeCheckoutSessionMetadata,
     StripeLineItem,
@@ -247,6 +250,7 @@ export async function completeOrder(
         await orderService.completeOrder(csid);
         res.status(200).json({ success: true });
 
+        // Notify realtime subscribers about the order update
         const rtEvent: RealtimePartialEvent<OrderUpdatedEventPayload> = {
             type: 'order.updated',
             payload: { csid },
@@ -260,6 +264,76 @@ export async function completeOrder(
             },
             body: JSON.stringify(rtEvent),
         });
+
+        // Get store name
+        const organizationName =
+            (await SettingsService.getInstance().getSetting(
+                'organizationName',
+            )) as string;
+        const cafeName = (await SettingsService.getInstance().getSetting(
+            'cafeName',
+        )) as string;
+        const storeName = `${organizationName} ${cafeName}`;
+
+        // Get order details
+        // const order = await orderService.getOrderById(csid);
+        const session = await stripe.checkout.sessions.retrieve(csid);
+        const items = (await stripe.checkout.sessions.listLineItems(csid, {
+            limit: 100,
+            expand: ['data.price.product'],
+        })) as Stripe.ApiList<StripeLineItem>;
+
+        // Send order confirmation email
+        const customerEmail = session.metadata?.customerEmail;
+
+        if (customerEmail) {
+            const mailerService = MailerService.getInstance();
+
+            // Transform line items into email template format
+            const lineItems = (items.data || []).map((item) => {
+                const product = item.price?.product as Stripe.Product;
+
+                return {
+                    description: item.description || 'Order item',
+                    quantity: item.quantity || 1,
+                    unitPrice: ((item.price?.unit_amount || 0) / 100).toFixed(
+                        2,
+                    ),
+                    totalPrice: ((item.amount_total || 0) / 100).toFixed(2),
+                    imageUrl: product?.images?.[0] || undefined,
+                };
+            });
+            const totalAmount = ((session.amount_total || 0) / 100).toFixed(2);
+            const customerName = session.metadata?.customerName || 'Customer';
+
+            await mailerService.sendOrderConfirmation(
+                customerEmail,
+                `Your ${storeName} Order Is Ready To Pick Up`,
+                {
+                    customerName,
+                    orderNumber: csid,
+                    paymentStatus: session.payment_status || 'pending',
+                    items: lineItems,
+                    totalAmount,
+                    orderUrl: `${environment.ui.storeUrl}/order-confirmation?csid=${csid}`,
+                },
+                true,
+            );
+        }
+
+        // Send order ready SMS
+        const customerMobile = session.metadata?.customerMobile;
+        if (customerMobile) {
+            const smsService = new SmsService();
+
+            await smsService.sendMessage({
+                recipient: customerMobile,
+                content: `Your ${storeName} order is ready to pick up. Order details: ${environment.ui.storeUrl}/order-confirmation?csid=${csid}`,
+                type: 'transactional',
+                tag: 'alert',
+                unicodeEnabled: false,
+            });
+        }
     } catch (error) {
         res.status(500).json(
             error instanceof Error

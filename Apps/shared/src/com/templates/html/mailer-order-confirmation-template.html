@@ -87,7 +87,8 @@
                                         font-weight: bold;
                                     "
                                 >
-                                    Order Confirmed
+                                    {{#if isOrderReady}}Order Ready For
+                                    Pickup{{else}}Order Confirmed{{/if}}
                                 </h1>
                             </td>
                         </tr>
@@ -114,7 +115,9 @@
                                         line-height: 1.6;
                                     "
                                 >
-                                    Thank you for your order! Your order is being prepared.
+                                    {{#if isOrderReady}} Your order is ready for
+                                    pickup. {{else}} Thank you for your order!
+                                    Your order is being prepared. {{/if}}
                                 </p>
 
                                 <!-- Order Information -->
@@ -139,7 +142,8 @@
                                                     font-size: 14px;
                                                 "
                                             >
-                                                <strong>Order Number:</strong> {{orderNumber}}
+                                                <strong>Order Number:</strong>
+                                                {{orderNumber}}
                                             </p>
                                             <p
                                                 style="
@@ -206,7 +210,9 @@
                                                     {{#if imageUrl}}
                                                     <td
                                                         width="80"
-                                                        style="padding-right: 15px"
+                                                        style="
+                                                            padding-right: 15px;
+                                                        "
                                                     >
                                                         <img
                                                             src="{{imageUrl}}"
@@ -220,10 +226,15 @@
                                                         />
                                                     </td>
                                                     {{/if}}
-                                                    <td style="vertical-align: top">
+                                                    <td
+                                                        style="
+                                                            vertical-align: top;
+                                                        "
+                                                    >
                                                         <h4
                                                             style="
-                                                                margin: 0 0 8px 0;
+                                                                margin: 0 0 8px
+                                                                    0;
                                                                 color: #333333;
                                                                 font-size: 16px;
                                                                 font-weight: bold;
@@ -233,7 +244,8 @@
                                                         </h4>
                                                         <p
                                                             style="
-                                                                margin: 0 0 5px 0;
+                                                                margin: 0 0 5px
+                                                                    0;
                                                                 color: #666666;
                                                                 font-size: 14px;
                                                             "
@@ -276,7 +288,12 @@
 
                                     <!-- Total Row -->
                                     <tr>
-                                        <td style="padding: 20px; background-color: #f9f9f9">
+                                        <td
+                                            style="
+                                                padding: 20px;
+                                                background-color: #f9f9f9;
+                                            "
+                                        >
                                             <table
                                                 role="presentation"
                                                 cellpadding="0"
@@ -360,7 +377,8 @@
                                         line-height: 1.6;
                                     "
                                 >
-                                    If you have any questions about your order, please don't hesitate to contact us.
+                                    If you have any questions about your order,
+                                    please don't hesitate to contact us.
                                 </p>
 
                                 <p

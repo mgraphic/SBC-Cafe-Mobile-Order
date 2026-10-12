@@ -94,11 +94,13 @@ export class MailerService {
         to: string,
         subject: string,
         data: Omit<MailerTemplateOrderConfirmation, 'subject'>,
+        isOrderReady = false,
         attachments?: Attachment[],
     ): Promise<void> {
         const templateProperties = await this.getTemplateProperties();
         const templateData = {
             subject,
+            isOrderReady,
             ...templateProperties,
             ...data,
         };

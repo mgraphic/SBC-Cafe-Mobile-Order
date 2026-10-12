@@ -1,6 +1,6 @@
 Hi {{customerName}},
 
-Thank you for your order! Your order is being prepared.
+{{#if isOrderReady}}Your order is ready for pickup.{{else}}Thank you for your order! Your order is being prepared.{{/if}}
 
 Order Number: {{orderNumber}}
 Payment Status: {{paymentStatus}}
