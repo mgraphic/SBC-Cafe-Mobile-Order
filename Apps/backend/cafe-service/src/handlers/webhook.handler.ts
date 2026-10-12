@@ -150,21 +150,19 @@ export async function handleWebhook(
                         return {
                             description: item.description || 'Order item',
                             quantity: item.quantity || 1,
-                            unitPrice: Number(
-                                ((item.price?.unit_amount || 0) / 100).toFixed(
-                                    2,
-                                ),
-                            ),
-                            totalPrice: Number(
-                                ((item.amount_total || 0) / 100).toFixed(2),
-                            ),
+                            unitPrice: (
+                                (item.price?.unit_amount || 0) / 100
+                            ).toFixed(2),
+                            totalPrice: (
+                                (item.amount_total || 0) / 100
+                            ).toFixed(2),
                             imageUrl: product?.images?.[0] || undefined,
                         };
                     });
 
-                    const totalAmount = Number(
-                        ((session.amount_total || 0) / 100).toFixed(2),
-                    );
+                    const totalAmount = (
+                        (session.amount_total || 0) / 100
+                    ).toFixed(2);
 
                     const customerName =
                         session.metadata?.customerName || 'Customer';

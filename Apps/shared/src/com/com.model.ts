@@ -38,11 +38,11 @@ export type MailerTemplateOrderConfirmation = {
     items: Array<{
         description: string;
         quantity: number;
-        unitPrice: number;
-        totalPrice: number;
+        unitPrice: string;
+        totalPrice: string;
         imageUrl?: string;
     }>;
-    totalAmount: number;
+    totalAmount: string;
     orderUrl?: string;
 };
 
