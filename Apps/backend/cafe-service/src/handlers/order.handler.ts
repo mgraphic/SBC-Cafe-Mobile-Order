@@ -247,23 +247,12 @@ export async function completeOrder(
     const { csid } = req.params;
 
     try {
-        await orderService.completeOrder(csid);
-        res.status(200).json({ success: true });
-
-        // Notify realtime subscribers about the order update
-        const rtEvent: RealtimePartialEvent<OrderUpdatedEventPayload> = {
-            type: 'order.updated',
-            payload: { csid },
-        };
-
-        await fetch(`${environment.realtime.endpoint}/publish`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Internal-Api-Key': environment.privateSharedApiKey,
-            },
-            body: JSON.stringify(rtEvent),
-        });
+        // Get order details
+        const session = await stripe.checkout.sessions.retrieve(csid);
+        const items = (await stripe.checkout.sessions.listLineItems(csid, {
+            limit: 100,
+            expand: ['data.price.product'],
+        })) as Stripe.ApiList<StripeLineItem>;
 
         // Get store name
         const organizationName =
@@ -274,14 +263,6 @@ export async function completeOrder(
             'cafeName',
         )) as string;
         const storeName = `${organizationName} ${cafeName}`;
-
-        // Get order details
-        // const order = await orderService.getOrderById(csid);
-        const session = await stripe.checkout.sessions.retrieve(csid);
-        const items = (await stripe.checkout.sessions.listLineItems(csid, {
-            limit: 100,
-            expand: ['data.price.product'],
-        })) as Stripe.ApiList<StripeLineItem>;
 
         // Send order confirmation email
         const customerEmail = session.metadata?.customerEmail;
@@ -334,6 +315,25 @@ export async function completeOrder(
                 unicodeEnabled: false,
             });
         }
+
+        // Notify realtime subscribers about the order update
+        const rtEvent: RealtimePartialEvent<OrderUpdatedEventPayload> = {
+            type: 'order.updated',
+            payload: { csid },
+        };
+
+        await fetch(`${environment.realtime.endpoint}/publish`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Internal-Api-Key': environment.privateSharedApiKey,
+            },
+            body: JSON.stringify(rtEvent),
+        });
+
+        // Complete the order in the system
+        await orderService.completeOrder(csid);
+        res.status(200).json({ success: true });
     } catch (error) {
         res.status(500).json(
             error instanceof Error
