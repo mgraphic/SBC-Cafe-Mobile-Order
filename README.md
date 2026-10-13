@@ -84,6 +84,10 @@ Run this command to build and run the db and mock servers _(Stripe and Brevo alo
 docker compose -f docker-compose.dev.yml up --build -d
 ```
 
+### DB Viewer
+
+Open [DynamoDB Viewer](http://localhost:8011) to see tables and data.
+
 ### Splunk
 
 Open [Splunk Web](http://localhost:8001) and sign in with the following local credentials:
