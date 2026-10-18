@@ -4,9 +4,12 @@ import {
     IPageable,
     IUser,
     jwtPayloadFields,
+    OnDutyAlertEventPayload,
     PAGINATED_DEFAULT_PAGESIZE,
     rbacPermissions,
+    RealtimePartialEvent,
     tokenizePassword,
+    UserOnDutyUpdate,
     userRoles,
     UsersService,
     UserTrackerLogService,
@@ -14,6 +17,7 @@ import {
     Validator,
 } from 'sbc-cafe-shared-module';
 import { logger } from '../shared/logger.utils';
+import { environment } from '../environment';
 
 export async function getUsers(req: Request, res: Response): Promise<void> {
     if (!req.user?.hasPermission('USER')) {
@@ -22,7 +26,9 @@ export async function getUsers(req: Request, res: Response): Promise<void> {
     }
 
     const userService = new UsersService();
-    const users = (await userService.getAllUsers()).map((user) => ({
+    const users = (
+        await userService.getAllUsers(Boolean(req.query.activeOnly))
+    ).map((user) => ({
         ...user,
         passwordHash: undefined,
         refreshTokens: undefined,
@@ -155,6 +161,7 @@ export async function addUser(req: Request, res: Response): Promise<void> {
         mobile: mobile ?? '',
         permissions,
         role,
+        onDuty: false,
     };
 
     const success = await userService.addUser(user);
@@ -431,6 +438,152 @@ export async function activateUser(req: Request, res: Response): Promise<void> {
     } catch (error) {
         res.status(500).json({ error: 'Failed to activate user account' });
         logger.error(error);
+    }
+}
+
+export async function getUsersOnDuty(
+    req: Request,
+    res: Response,
+): Promise<void> {
+    if (!req.user?.hasPermission('USER')) {
+        res.sendStatus(403);
+        return;
+    }
+
+    const userService = new UsersService();
+    try {
+        const users = await userService.getUsersOnDuty();
+        res.status(200).json({
+            message: 'Users on duty fetched successfully',
+            data: users,
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch users on duty' });
+        logger.error(error);
+    }
+}
+
+export async function userOnDuty(req: Request, res: Response): Promise<void> {
+    const id: string = req.params.id as string;
+
+    if (!id) {
+        res.status(400).json({ error: 'ID is required' });
+        return;
+    }
+
+    if (typeof req.body.onDuty !== 'boolean') {
+        res.status(400).json({
+            error: 'onDuty status is required and must be a boolean',
+        });
+        return;
+    }
+
+    if (!req.user?.hasPermission('USER') && req.user?.getUserId() !== id) {
+        res.sendStatus(403);
+        return;
+    }
+
+    try {
+        await updateUserOnDuty(id, req.body.onDuty);
+
+        // Notify realtime subscribers about the order update
+        const rtEvent: RealtimePartialEvent<OnDutyAlertEventPayload> = {
+            type: 'on-duty-alert',
+            payload: { users: [{ id, onDuty: req.body.onDuty }] },
+        };
+
+        await fetch(`${environment.realtime.endpoint}/publish`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Internal-Api-Key': environment.privateSharedApiKey,
+            },
+            body: JSON.stringify(rtEvent),
+        });
+
+        res.status(200).json({
+            message: 'User onDuty status updated successfully',
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to update user onDuty status' });
+        logger.error(error);
+    }
+}
+
+export async function usersOnDuty(req: Request, res: Response): Promise<void> {
+    if (!req.user?.hasPermission('USER')) {
+        res.sendStatus(403);
+        return;
+    }
+
+    const usersOnDuty: UserOnDutyUpdate[] = req.body.usersOnDuty;
+
+    if (!Array.isArray(usersOnDuty) || usersOnDuty.length === 0) {
+        res.status(400).json({
+            error: 'usersOnDuty must be a non-empty array',
+        });
+        return;
+    }
+
+    if (
+        !usersOnDuty.every(
+            (user) =>
+                typeof user.id === 'string' && typeof user.onDuty === 'boolean',
+        )
+    ) {
+        res.status(400).json({
+            error: 'Each user must have a valid id and onDuty status',
+        });
+        return;
+    }
+
+    try {
+        for (const user of usersOnDuty) {
+            await updateUserOnDuty(user.id, user.onDuty);
+        }
+
+        // Notify realtime subscribers about the order update
+        const rtEvent: RealtimePartialEvent<OnDutyAlertEventPayload> = {
+            type: 'on-duty-alert',
+            payload: { users: usersOnDuty },
+        };
+
+        await fetch(`${environment.realtime.endpoint}/publish`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Internal-Api-Key': environment.privateSharedApiKey,
+            },
+            body: JSON.stringify(rtEvent),
+        });
+
+        res.status(200).json({
+            message: 'Users onDuty status updated successfully',
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to update users on duty' });
+        logger.error(error);
+    }
+}
+
+async function updateUserOnDuty(
+    userId: string,
+    onDuty: boolean,
+): Promise<void> {
+    const userService = new UsersService();
+    const user = await userService.getUserById(userId);
+
+    if (user) {
+        try {
+            await userService.setUserOnDuty(user.id, onDuty);
+        } catch (error) {
+            logger.error(
+                `Failed to update onDuty status for user ${userId}:`,
+                error,
+            );
+        }
+    } else {
+        logger.error(`User not found: ${userId}`);
     }
 }
 

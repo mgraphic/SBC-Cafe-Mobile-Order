@@ -43,6 +43,10 @@ export class RealtimeService {
     this.service.joinOrderUpdated();
   }
 
+  public joinOnDutyAlert(): void {
+    this.service.joinOnDutyAlert();
+  }
+
   public registerEventListener<T extends AnyEventPayload>(
     room: RealtimeRoom,
     callback: (event: RealtimeEvent<T>) => void,

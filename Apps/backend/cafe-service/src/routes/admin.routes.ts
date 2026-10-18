@@ -13,6 +13,9 @@ import {
     updateUser,
     disableUser,
     enableUser,
+    userOnDuty,
+    usersOnDuty,
+    getUsersOnDuty,
 } from '../handlers/user.handler';
 import {
     getCheckoutSession,
@@ -50,3 +53,6 @@ adminRouter.post('/order/cancel/:csid', cancelOrder);
 adminRouter.get('/order/:csid', getOrder);
 adminRouter.post('/openOrders', getOpenOrders);
 adminRouter.post('/openOrderDetails', getOpenOrderDetails);
+adminRouter.put('/userOnDuty/:id', userOnDuty);
+adminRouter.put('/usersOnDuty', usersOnDuty);
+adminRouter.get('/usersOnDuty', getUsersOnDuty);

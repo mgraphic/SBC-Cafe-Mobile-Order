@@ -26,6 +26,7 @@ export {
     type UserPermission,
     type UserPermissionGroup,
     type UserRole,
+    type UserOnDutyUpdate,
 } from './user/user.model';
 export { type SessionData } from './user/session.model';
 export {

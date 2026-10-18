@@ -14,6 +14,31 @@
     .user-info {
       margin-left: 1rem;
     }
+
+    ::ng-deep {
+      .mat-mdc-select-panel {
+        background-color: var(--bs-body-bg);
+      }
+    }
+
+    .on-duty {
+      position: relative;
+      margin-left: 1rem;
+
+      button {
+        white-space: nowrap;
+      }
+
+      // Hidden trigger whose bottom edge matches the button's, so the panel opens just below it
+      .staff-select {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        opacity: 0;
+        pointer-events: none;
+      }
+    }
   }
 }
 

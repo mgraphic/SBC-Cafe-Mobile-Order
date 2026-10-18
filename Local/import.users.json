@@ -17,7 +17,8 @@
                     "isActive": { "BOOL": true },
                     "role": { "S": "OWNER" },
                     "permissions": { "L": [] },
-                    "refreshTokens": { "L": [] }
+                    "refreshTokens": { "L": [] },
+                    "onDuty": { "BOOL": false }
                 }
             }
         },
@@ -38,7 +39,8 @@
                     "isActive": { "BOOL": true },
                     "role": { "S": "STAFF" },
                     "permissions": { "L": [{ "S": "ORDER_CANCEL" }] },
-                    "refreshTokens": { "L": [] }
+                    "refreshTokens": { "L": [] },
+                    "onDuty": { "BOOL": false }
                 }
             }
         },
@@ -59,7 +61,8 @@
                     "isActive": { "BOOL": true },
                     "role": { "S": "STAFF" },
                     "permissions": { "L": [] },
-                    "refreshTokens": { "L": [] }
+                    "refreshTokens": { "L": [] },
+                    "onDuty": { "BOOL": false }
                 }
             }
         }

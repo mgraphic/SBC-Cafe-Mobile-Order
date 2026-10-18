@@ -3,9 +3,9 @@ import { Server } from 'socket.io';
 import { environment } from '../environment';
 import {
     newOrderAlertRoom,
+    onDutyAlertRoom,
     OrderEventPayload,
     orderRoom,
-    OrderUpdatedEventPayload,
     orderUpdatedRoom,
     RealtimeEvent,
     RealtimeRoom,
@@ -77,6 +77,10 @@ function publishEvent(io: Server, event: RealtimeEvent): void {
 
         case 'new-order-alert':
             emitToRoom(newOrderAlertRoom());
+            break;
+
+        case 'on-duty-alert':
+            emitToRoom(onDutyAlertRoom());
             break;
 
         default:

@@ -1,11 +1,13 @@
 import type { Stripe } from 'stripe';
 import { StripeCheckoutSessionMetadata } from '../stripe/stripe.model';
+import { UserOnDutyUpdate } from '../user/user.model';
 
 export const realtimeEventTypes = [
     'order.created',
     'order.updated',
     'session.created',
     'new-order-alert',
+    'on-duty-alert',
 ] as const;
 
 export type RealtimeEventType = (typeof realtimeEventTypes)[number];
@@ -31,6 +33,10 @@ export interface OrderUpdatedEventPayload {
     csid: string;
 }
 
+export interface OnDutyAlertEventPayload {
+    users: UserOnDutyUpdate[];
+}
+
 export interface SessionEventPayload {
     sessionId: string;
 }
@@ -46,7 +52,8 @@ export type AnyEventPayload =
     | OrderEventPayload
     | OrderUpdatedEventPayload
     | SessionEventPayload
-    | NewOrderAlertEventPayload;
+    | NewOrderAlertEventPayload
+    | OnDutyAlertEventPayload;
 
 export type OrderRoomType = `csid:${string}`;
 
@@ -54,10 +61,13 @@ export type SessionRoomType = `session:${string}`;
 
 export type NewOrderAlertRoomType = 'new-order-alerts';
 
+export type OnDutyAlertRoomType = 'on-duty-alerts';
+
 export type OrderUpdatedRoomType = 'order-updated-alerts';
 
 export type RealtimeRoom =
     | OrderRoomType
     | OrderUpdatedRoomType
     | SessionRoomType
-    | NewOrderAlertRoomType;
+    | NewOrderAlertRoomType
+    | OnDutyAlertRoomType;

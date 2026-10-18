@@ -10,6 +10,7 @@ export interface IUser {
     role: UserRole;
     permissions: UserPermission[];
     refreshTokens: string[];
+    onDuty: boolean;
     otp?: string;
 }
 
@@ -74,3 +75,8 @@ export const rbacRolePermissionGroupAllowances: Readonly<
 };
 
 export type UserPasswordToken = `${string}:${string}`;
+
+export type UserOnDutyUpdate = {
+    id: string;
+    onDuty: boolean;
+};

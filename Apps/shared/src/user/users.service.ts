@@ -76,6 +76,15 @@ export class UsersService {
         return activeOnly ? users.filter((user) => user.isActive) : users;
     }
 
+    public async getUsersOnDuty(): Promise<IUser[]> {
+        const users = await this.getAllUsers(true);
+        return users.filter((user) => user.onDuty);
+    }
+
+    public async setUserOnDuty(id: string, onDuty: boolean): Promise<void> {
+        await this.updateUser(id, { onDuty });
+    }
+
     public async getUserByRefreshToken(
         token: string,
     ): Promise<IUser | undefined> {

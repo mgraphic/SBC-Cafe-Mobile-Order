@@ -8,6 +8,7 @@ import {
   PaginatedPayload,
   ITracker,
   IPageableMetadata,
+  UserOnDutyUpdate,
 } from 'sbc-cafe-shared-module';
 import { environment } from '../../../../../shared-lib/src/public-api';
 import { UserResponse } from '../models/user.model';
@@ -20,8 +21,14 @@ export class UsersService {
   private readonly baseUrl = environment.cafeAdminServiceUrl;
   private readonly http = inject(HttpClient);
 
-  getUsers(): Observable<IUser[]> {
-    return this.http.get<IUser[]>(`${this.baseUrl}/getUsers`);
+  getUsers(activeOnly = false): Observable<IUser[]> {
+    const options: { params?: { activeOnly?: string } } = {};
+
+    if (activeOnly) {
+      options.params = { activeOnly: 'true' };
+    }
+
+    return this.http.get<IUser[]>(`${this.baseUrl}/getUsers`, options);
   }
 
   getUser(email: string): Observable<IUser> {
@@ -103,5 +110,21 @@ export class UsersService {
       password,
       id,
     });
+  }
+
+  userOnDuty(id: string, onDuty: boolean): Observable<HttpResponse> {
+    return this.http.put<HttpResponse>(`${this.baseUrl}/userOnDuty/${id}`, {
+      onDuty,
+    });
+  }
+
+  usersOnDuty(usersOnDuty: UserOnDutyUpdate[]): Observable<HttpResponse> {
+    return this.http.put<HttpResponse>(`${this.baseUrl}/usersOnDuty`, {
+      usersOnDuty,
+    });
+  }
+
+  getUsersOnDuty(): Observable<HttpResponse<IUser[]>> {
+    return this.http.get<HttpResponse<IUser[]>>(`${this.baseUrl}/usersOnDuty`);
   }
 }

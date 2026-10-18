@@ -20,6 +20,32 @@
       <div class="user-info">
         {{ user()?.firstName }} {{ user()?.lastName }}
       </div>
+
+      <div class="on-duty">
+        <button
+          class="btn btn-primary"
+          type="button"
+          (click)="staffSelect.open()"
+        >
+          STAFF ON DUTY
+        </button>
+
+        <mat-select
+          #staffSelect
+          class="staff-select"
+          multiple
+          disableRipple
+          disableOptionCentering
+          aria-label="Staff on duty"
+          [(value)]="staffOnDuty"
+        >
+          @for (staff of staffOptions(); track staff.id) {
+            <mat-option [value]="staff.id"
+              >{{ staff.firstName }} {{ staff.lastName }}</mat-option
+            >
+          }
+        </mat-select>
+      </div>
     }
   </section>
 </div>
