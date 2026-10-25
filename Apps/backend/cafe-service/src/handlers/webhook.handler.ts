@@ -113,7 +113,7 @@ export async function handleWebhook(
                     try {
                         const tokenUser = new TokenUser(user);
 
-                        if (!tokenUser.hasRole('ADMIN')) {
+                        if (!tokenUser.hasRole('ADMIN') && !user.onDuty) {
                             continue;
                         }
 
