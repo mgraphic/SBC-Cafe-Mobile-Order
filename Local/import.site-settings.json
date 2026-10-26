@@ -71,6 +71,24 @@
                     }
                 }
             }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "key": {
+                        "S": "storeState"
+                    },
+                    "value": {
+                        "S": "{\"timestamp\":\"1970-01-01T00:00:00.000Z\",\"duration\":0}"
+                    },
+                    "type": {
+                        "S": "string"
+                    },
+                    "group": {
+                        "S": "status"
+                    }
+                }
+            }
         }
     ]
 }
