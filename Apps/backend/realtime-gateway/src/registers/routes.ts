@@ -11,6 +11,7 @@ import {
     RealtimeRoom,
     SessionEventPayload,
     sessionRoom,
+    storeStatusRoom,
     toRealtimeEvent,
 } from 'sbc-cafe-shared-module';
 import { logger } from '../shared/logger.utils';
@@ -81,6 +82,10 @@ function publishEvent(io: Server, event: RealtimeEvent): void {
 
         case 'on-duty-alert':
             emitToRoom(onDutyAlertRoom());
+            break;
+
+        case 'store-status-alert':
+            emitToRoom(storeStatusRoom());
             break;
 
         default:

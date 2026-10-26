@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { authVerify, userLogTracker } from 'sbc-cafe-shared-module';
+import { openStore, closeStore } from '../handlers/store.handler';
 import {
     activateUser,
     addUser,
@@ -56,3 +57,5 @@ adminRouter.post('/openOrderDetails', getOpenOrderDetails);
 adminRouter.put('/userOnDuty/:id', userOnDuty);
 adminRouter.put('/usersOnDuty', usersOnDuty);
 adminRouter.get('/usersOnDuty', getUsersOnDuty);
+adminRouter.put('/openStore', openStore);
+adminRouter.put('/closeStore', closeStore);

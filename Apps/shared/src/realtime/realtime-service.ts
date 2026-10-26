@@ -7,6 +7,7 @@ import {
     newOrderAlertRoom,
     orderUpdatedRoom,
     onDutyAlertRoom,
+    storeStatusRoom,
 } from './rooms';
 
 export class RealtimeService {
@@ -106,6 +107,16 @@ export class RealtimeService {
             onDutyAlertRoom(),
             (...ack: unknown[]) => {
                 console.log('Joined On Duty Alert Room', ...ack);
+            },
+        );
+    }
+
+    public joinStoreStatus(): void {
+        this.socket?.emit(
+            'joinRoom',
+            storeStatusRoom(),
+            (...ack: unknown[]) => {
+                console.log('Joined Store Status Room', ...ack);
             },
         );
     }

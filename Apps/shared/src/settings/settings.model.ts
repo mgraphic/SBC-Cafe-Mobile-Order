@@ -14,3 +14,8 @@ export interface CachedSetting {
     value: SettingType;
     timestamp: number;
 }
+
+export interface StoreState {
+    timestamp: string;
+    duration: number;
+}

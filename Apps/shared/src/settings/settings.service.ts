@@ -6,6 +6,7 @@ import {
     settingsTypeValues,
     SettingType,
     SettingTypeValue,
+    StoreState,
 } from './settings.model';
 
 export class SettingsService {
@@ -52,8 +53,12 @@ export class SettingsService {
         return Date.now() - timestamp > SettingsService.CACHE_DURATION;
     }
 
-    public async getSetting(key: string): Promise<SettingType> {
+    public async getSetting(
+        key: string,
+        forceRefresh = false,
+    ): Promise<SettingType> {
         if (
+            !forceRefresh &&
             key in this.cachedSettings &&
             !this.isCacheExpired(this.cachedSettings[key].timestamp)
         ) {
@@ -79,9 +84,11 @@ export class SettingsService {
 
     public async getGroupSettings(
         group: string,
+        forceRefresh = false,
     ): Promise<Record<string, SettingType>> {
         // Check if group is cached and not expired
         if (
+            !forceRefresh &&
             group in this.cachedGroups &&
             !this.isCacheExpired(this.cachedGroups[group].timestamp)
         ) {
@@ -150,6 +157,53 @@ export class SettingsService {
             ),
             timestamp: Date.now(),
         };
+    }
+
+    public async openStore(duration: number): Promise<void> {
+        const storeState: StoreState = {
+            timestamp: new Date().toISOString(),
+            duration,
+        };
+
+        await this.setSetting('storeState', JSON.stringify(storeState));
+        this.logger.info('Store successfully opened');
+    }
+
+    public async closeStore(): Promise<void> {
+        const storeState: StoreState = {
+            timestamp: new Date().toISOString(),
+            duration: 0,
+        };
+
+        await this.setSetting('storeState', JSON.stringify(storeState));
+        this.logger.info('Store successfully closed');
+    }
+
+    public async isStoreOpen(): Promise<boolean> {
+        const storeState = await this.getSetting('storeState', true);
+
+        if (storeState) {
+            try {
+                const parsedState = JSON.parse(
+                    storeState as string,
+                ) as StoreState;
+
+                if (
+                    !parsedState.timestamp ||
+                    typeof parsedState.duration !== 'number'
+                ) {
+                    return false;
+                }
+
+                const currentTime = new Date().getTime();
+                const storeOpenTime = new Date(parsedState.timestamp).getTime();
+                return currentTime < storeOpenTime + parsedState.duration;
+            } catch (error) {
+                this.logger.error('Failed to parse store state:', error);
+            }
+        }
+
+        return false;
     }
 
     private castType(type: SettingTypeValue, value: string): SettingType {

@@ -7,10 +7,12 @@ import {
     getItemBySlug,
 } from '../handlers/product.handler';
 import { getCheckoutSession, submitOrder } from '../handlers/order.handler';
+import { isStoreOpen } from '../handlers/store.handler';
 
 export const storeRouter: Router = Router();
 
 // Public API
+storeRouter.get('/is-store-open', isStoreOpen);
 
 // Middleware to check for the published shared API key via x-public-api-key
 storeRouter.use((req: Request, res: Response, next: NextFunction) => {

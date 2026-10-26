@@ -4,6 +4,7 @@ import {
     SessionRoomType,
     OrderUpdatedRoomType,
     OnDutyAlertRoomType,
+    StoreStatusRoomType,
 } from './realtime.model';
 
 export function orderRoom(orderId: string): OrderRoomType {
@@ -24,4 +25,8 @@ export function orderUpdatedRoom(): OrderUpdatedRoomType {
 
 export function onDutyAlertRoom(): OnDutyAlertRoomType {
     return 'on-duty-alerts';
+}
+
+export function storeStatusRoom(): StoreStatusRoomType {
+    return 'store-status-alerts';
 }

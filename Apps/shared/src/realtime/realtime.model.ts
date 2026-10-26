@@ -8,6 +8,7 @@ export const realtimeEventTypes = [
     'session.created',
     'new-order-alert',
     'on-duty-alert',
+    'store-status-alert',
 ] as const;
 
 export type RealtimeEventType = (typeof realtimeEventTypes)[number];
@@ -41,6 +42,11 @@ export interface SessionEventPayload {
     sessionId: string;
 }
 
+export interface StoreStatusEventPayload {
+    isStoreOpen: boolean;
+    storeOpenDuration?: number;
+}
+
 export interface NewOrderAlertEventPayload {
     csid: string;
     items: Stripe.LineItem[];
@@ -53,7 +59,8 @@ export type AnyEventPayload =
     | OrderUpdatedEventPayload
     | SessionEventPayload
     | NewOrderAlertEventPayload
-    | OnDutyAlertEventPayload;
+    | OnDutyAlertEventPayload
+    | StoreStatusEventPayload;
 
 export type OrderRoomType = `csid:${string}`;
 
@@ -65,9 +72,12 @@ export type OnDutyAlertRoomType = 'on-duty-alerts';
 
 export type OrderUpdatedRoomType = 'order-updated-alerts';
 
+export type StoreStatusRoomType = 'store-status-alerts';
+
 export type RealtimeRoom =
     | OrderRoomType
     | OrderUpdatedRoomType
     | SessionRoomType
     | NewOrderAlertRoomType
-    | OnDutyAlertRoomType;
+    | OnDutyAlertRoomType
+    | StoreStatusRoomType;
