@@ -39,6 +39,15 @@
         pointer-events: none;
       }
     }
+
+    .store-status {
+      margin-left: 1rem;
+
+      button {
+        white-space: nowrap;
+        text-transform: uppercase;
+      }
+    }
   }
 }
 

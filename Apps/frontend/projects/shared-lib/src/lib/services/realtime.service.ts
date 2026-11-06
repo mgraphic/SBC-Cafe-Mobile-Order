@@ -47,6 +47,10 @@ export class RealtimeService {
     this.service.joinOnDutyAlert();
   }
 
+  public joinStoreStatusAlert(): void {
+    this.service.joinStoreStatus();
+  }
+
   public registerEventListener<T extends AnyEventPayload>(
     room: RealtimeRoom,
     callback: (event: RealtimeEvent<T>) => void,

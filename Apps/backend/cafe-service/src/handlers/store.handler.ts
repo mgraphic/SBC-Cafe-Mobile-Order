@@ -18,8 +18,18 @@ export async function isStoreOpen(_: Request, res: Response): Promise<void> {
 }
 
 export async function openStore(req: Request, res: Response): Promise<void> {
+    if (!req.user?.hasRole('ADMIN')) {
+        res.status(403).json({ error: 'Forbidden' });
+        return;
+    }
+
     const settingsService = SettingsService.getInstance();
     const duration = Number(req.body.duration);
+
+    if (isNaN(duration) || duration <= 0) {
+        res.status(400).json({ error: 'Invalid duration' });
+        return;
+    }
 
     try {
         await settingsService.openStore(duration);
@@ -51,7 +61,12 @@ export async function openStore(req: Request, res: Response): Promise<void> {
     }
 }
 
-export async function closeStore(_: Request, res: Response): Promise<void> {
+export async function closeStore(req: Request, res: Response): Promise<void> {
+    if (!req.user?.hasRole('ADMIN')) {
+        res.status(403).json({ error: 'Forbidden' });
+        return;
+    }
+
     const settingsService = SettingsService.getInstance();
 
     try {
@@ -80,5 +95,16 @@ export async function closeStore(_: Request, res: Response): Promise<void> {
         });
     } catch (error) {
         logger.error('Failed to publish real-time event', error);
+    }
+}
+
+export async function getStoreStatus(_: Request, res: Response): Promise<void> {
+    const settingsService = SettingsService.getInstance();
+
+    try {
+        const storeState = await settingsService.getStoreState();
+        res.status(200).json(storeState);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to get store status' });
     }
 }

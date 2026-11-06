@@ -14,8 +14,10 @@ export class HomeComponent implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    setTimeout(() => {
-      this.router.navigate(['menu']);
+    setTimeout(async () => {
+      if (!(await this.router.navigate(['menu']))) {
+        this.router.navigate(['store-closed']);
+      }
     }, this.NAVIGATION_DELAY);
   }
 }

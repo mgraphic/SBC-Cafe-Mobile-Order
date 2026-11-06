@@ -206,6 +206,43 @@ export class SettingsService {
         return false;
     }
 
+    public async getStoreState(): Promise<StoreState> {
+        const storeState = await this.getSetting('storeState', true);
+
+        if (storeState) {
+            try {
+                const parsedState = JSON.parse(storeState as string);
+
+                if (
+                    !parsedState ||
+                    !('timestamp' in parsedState) ||
+                    typeof parsedState.timestamp !== 'string' ||
+                    parsedState.timestamp === '' ||
+                    !('duration' in parsedState) ||
+                    typeof parsedState.duration !== 'number' ||
+                    parsedState.duration < 0
+                ) {
+                    return {
+                        timestamp: '1970-01-01T00:00:00.000Z',
+                        duration: 0,
+                    };
+                }
+
+                return {
+                    timestamp: parsedState.timestamp,
+                    duration: parsedState.duration,
+                };
+            } catch (error) {
+                this.logger.error('Failed to parse store state:', error);
+            }
+        }
+
+        return {
+            timestamp: '1970-01-01T00:00:00.000Z',
+            duration: 0,
+        };
+    }
+
     private castType(type: SettingTypeValue, value: string): SettingType {
         switch (type) {
             case 'string':

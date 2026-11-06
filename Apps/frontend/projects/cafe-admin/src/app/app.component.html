@@ -47,6 +47,18 @@
         </mat-select>
       </div>
     }
+
+    @if (userService.isLoggedInSignal()) {
+      <div class="store-status">
+        <button
+          class="btn"
+          [ngClass]="{ 'btn-danger': !isOpen(), 'btn-success': isOpen() }"
+          (click)="toggleStoreOpen(); $event.preventDefault()"
+        >
+          Store is {{ isOpen() ? "Open" : "Closed" }}
+        </button>
+      </div>
+    }
   </section>
 </div>
 
@@ -75,4 +87,40 @@
       <div>{{ item.description }} x {{ item.quantity }}</div>
     }
   </div>
+</ng-template>
+
+<ng-template #openStoreTemplate let-modal>
+  <app-modal [modalRef]="modal" modalTitle="Open Store">
+    <ng-template #bodyContent>
+      <p>Enable the store for how long?</p>
+
+      <select class="form-select" [(ngModel)]="durationSelect">
+        @for (duration of durationOptions; track duration.value) {
+          <option [value]="duration.value">
+            {{ duration.label }}
+          </option>
+        }
+      </select>
+    </ng-template>
+
+    <ng-template #footerContent>
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        data-bs-dismiss="modal"
+        (click)="$event.preventDefault(); modal.close()"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="
+          openStore(durationSelect()); $event.preventDefault(); modal.close()
+        "
+      >
+        Open
+      </button>
+    </ng-template>
+  </app-modal>
 </ng-template>

@@ -1,7 +1,7 @@
-@if (showHeader) {
-<section class="header">
-  <app-header />
-</section>
+@if (showHeader()) {
+  <section class="header">
+    <app-header />
+  </section>
 }
 
 <div class="content-wrapper">
@@ -9,9 +9,9 @@
     <router-outlet />
   </section>
 
-  @if (showFooter) {
-  <section class="footer">
-    <app-footer />
-  </section>
+  @if (showFooter()) {
+    <section class="footer">
+      <app-footer />
+    </section>
   }
 </div>
