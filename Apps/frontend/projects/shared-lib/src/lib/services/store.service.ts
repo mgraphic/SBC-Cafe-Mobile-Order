@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Service, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { StoreState } from 'sbc-cafe-shared-module';
-import { environment } from 'shared-lib';
+import { environment } from '../../environment';
 
 @Service()
 export class StoreService {

@@ -26,8 +26,8 @@ import {
   ToastService,
   SharedModule,
   StoreService,
-  UserService,
 } from '../../../shared-lib/src/public-api';
+import { UserService } from '../../../shared-lib/src/lib/services/user.service';
 import {
   NewOrderAlertEventPayload,
   newOrderAlertRoom,

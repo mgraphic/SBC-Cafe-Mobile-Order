@@ -31,7 +31,6 @@ export * from './lib/services/toast-config.service';
 export * from './lib/services/toast-controller.service';
 export * from './lib/services/toast.service';
 export * from './lib/services/store.service';
-export * from './lib/services/user.service';
 
 // Utilities
 export * from './lib/utilities/catalog.utils';

@@ -6,7 +6,7 @@ import {
   RealtimeService as SharedRealtimeService,
 } from 'sbc-cafe-shared-module';
 import { SessionService } from './session.service';
-import { environment } from '../../public-api';
+import { environment } from '../../environment';
 import { RealtimeEventListenerWithObservable } from './realtime-event-listner';
 
 @Injectable()

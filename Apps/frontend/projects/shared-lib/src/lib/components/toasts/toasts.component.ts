@@ -9,8 +9,8 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { NgbToastModule, NgbToast } from '@ng-bootstrap/ng-bootstrap';
+import { CommonModule } from '@angular/common';
 import { take, Observable } from 'rxjs';
-import { SharedModule } from '../../../shared.module';
 import {
   RequiredToastEntityOptions,
   ToastContent,
@@ -20,7 +20,7 @@ import { ToastControllerService } from '../../services/toast-controller.service'
 
 @Component({
   selector: 'lib-toasts',
-  imports: [NgbToastModule, SharedModule],
+  imports: [NgbToastModule, CommonModule],
   templateUrl: './toasts.component.html',
   styleUrls: ['./toasts.component.scss'],
   changeDetection: ChangeDetectionStrategy.Eager,
