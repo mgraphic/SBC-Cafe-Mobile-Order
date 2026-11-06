@@ -1,0 +1,44 @@
+services:
+    cafe-store:
+        build:
+            args:
+                ADMIN_UI_URL: https://${CAFE_LAN_IP:-192.168.4.46}:8443
+                STORE_UI_URL: https://${CAFE_LAN_IP:-192.168.4.46}
+                REALTIME_GATEWAY_ENDPOINT_URL: https://${CAFE_LAN_IP:-192.168.4.46}
+
+    cafe-admin:
+        build:
+            args:
+                ADMIN_UI_URL: https://${CAFE_LAN_IP:-192.168.4.46}:8443
+                STORE_UI_URL: https://${CAFE_LAN_IP:-192.168.4.46}
+                REALTIME_GATEWAY_ENDPOINT_URL: https://${CAFE_LAN_IP:-192.168.4.46}
+
+    rt-gateway:
+        environment:
+            CORS_ORIGINS: http://localhost,http://localhost:80,http://localhost:81,http://0.0.0.0:80,http://0.0.0.0:81,https://${CAFE_LAN_IP:-192.168.4.46},https://${CAFE_LAN_IP:-192.168.4.46}:8443
+            ADMIN_UI_URL: https://${CAFE_LAN_IP:-192.168.4.46}:8443
+            STORE_UI_URL: https://${CAFE_LAN_IP:-192.168.4.46}
+
+    cafe-service:
+        environment:
+            ADMIN_UI_URL: https://${CAFE_LAN_IP:-192.168.4.46}:8443
+            STORE_UI_URL: https://${CAFE_LAN_IP:-192.168.4.46}
+
+    auth-service:
+        environment:
+            ADMIN_UI_URL: https://${CAFE_LAN_IP:-192.168.4.46}:8443
+            STORE_UI_URL: https://${CAFE_LAN_IP:-192.168.4.46}
+
+    lan-https:
+        image: nginx:stable-alpine
+        restart: always
+        ports:
+            - '443:443'
+            - '8443:8443'
+        volumes:
+            - ./Local/demo-lan-https.nginx.conf:/etc/nginx/nginx.conf:ro
+            - ${CAFE_TLS_DIR:-${HOME}/cafe-local-tls}:/etc/nginx/certs:ro
+        depends_on:
+            - store
+            - admin
+            - rt-gateway

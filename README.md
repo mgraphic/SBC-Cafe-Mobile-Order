@@ -44,6 +44,41 @@ open http://localhost:81
 open http://localhost:8025
 ```
 
+### Access the demo from the local network
+
+The optional LAN overlay serves the store and admin over HTTPS, which is
+required for browser APIs such as `crypto.randomUUID()` on a LAN IP address.
+It defaults to the host IP `192.168.4.46`; if that changes, export
+`CAFE_LAN_IP` with the new IP and regenerate the certificate before rebuilding.
+
+On the Docker host, install [mkcert](https://github.com/FiloSottile/mkcert),
+then create a locally trusted certificate outside the repository:
+
+```sh
+brew install mkcert
+mkcert -install
+mkdir -p "$HOME/cafe-local-tls"
+mkcert -cert-file "$HOME/cafe-local-tls/cert.pem" \
+  -key-file "$HOME/cafe-local-tls/key.pem" \
+  "${CAFE_LAN_IP:-192.168.4.46}"
+docker compose -f docker-compose.local.yml -f docker-compose.lan.yml up --build -d
+```
+
+On each client computer, trust the host's mkcert root CA certificate
+(`rootCA.pem` in the directory printed by `mkcert -CAROOT`) using that
+computer's trust store. Transfer only `rootCA.pem`, **never** `rootCA-key.pem`
+or the server's `key.pem`. Use the same IP in the URL and the certificate:
+
+- Store: `https://192.168.4.46`
+- Admin: `https://192.168.4.46:8443`
+
+If needed, allow inbound TCP ports 443 and 8443 through the host firewall.
+Verify `window.isSecureContext` is `true` in the browser console. This is a
+local demo with mock services and demo credentials, not a production deployment;
+use it only on a trusted network. The original HTTP ports and other demo service
+ports remain published. When using the overlay, the built frontend and backend
+links point to the LAN HTTPS URLs, even when the app is opened over HTTP.
+
 ### Demo Login Credentials
 
 | Role           | User Name      | Username/Email     | Password    |
