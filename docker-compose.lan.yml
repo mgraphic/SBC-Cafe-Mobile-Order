@@ -29,6 +29,10 @@ services:
             ADMIN_UI_URL: https://${CAFE_LAN_IP}:8443
             STORE_UI_URL: https://${CAFE_LAN_IP}
 
+    stripe-mock-api:
+        environment:
+            BASE_URL: https://${CAFE_LAN_IP}
+
     lan-https:
         image: nginx:stable-alpine
         restart: always
@@ -42,3 +46,4 @@ services:
             - store
             - admin
             - rt-gateway
+            - stripe-mock-api

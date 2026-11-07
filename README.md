@@ -102,6 +102,11 @@ or the server's `key.pem`. Use the same IP in the URL and the certificate:
 - Store: `https://192.168.X.X`
 - Admin: `https://192.168.X.X:8443`
 
+Mock checkout is served through the store's HTTPS address, so customers on the
+LAN can open the payment page and return to the store. The backend still uses
+the Docker-internal Stripe mock API. Restarting the mock container clears its
+in-memory checkout sessions; finish any active demo checkouts first.
+
 If needed, allow inbound TCP ports 443 and 8443 through the host firewall.
 Verify `window.isSecureContext` is `true` in the browser console. This is a
 local demo with mock services and demo credentials, not a production deployment;
