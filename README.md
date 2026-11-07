@@ -48,19 +48,49 @@ open http://localhost:8025
 
 The optional LAN overlay serves the store and admin over HTTPS, which is
 required for browser APIs such as `crypto.randomUUID()` on a LAN IP address.
-It defaults to the host IP `192.168.4.46`; if that changes, export
-`CAFE_LAN_IP` with the new IP and regenerate the certificate before rebuilding.
+
+Use the following to set the IP address of the network dynamically or manually.
+
+_Mac (bash/zsh):_
+
+```bash
+export CAFE_LAN_IP=$(ipconfig getifaddr en0)  # macOS (en0 is typical WiFi)
+```
+
+_Windows (powershell):_
+
+```powershell
+$CAFE_LAN_IP = (Get-NetIPAddress -AddressFamily IPv4 | Where-Object {$_.InterfaceAlias -like "*Wireless*" -or $_.InterfaceAlias -like "*Wi-Fi*"} | Select-Object -First 1).IPAddress
+```
+
+_Verify It:_
+
+```bash
+echo $CAFE_LAN_IP  # it should read something like 192.168.X.X
+
+# You can set it manually too:
+# export CAFE_LAN_IP=192.168.X.X  # Replace with a real network IP address
+```
 
 On the Docker host, install [mkcert](https://github.com/FiloSottile/mkcert),
-then create a locally trusted certificate outside the repository:
 
 ```sh
 brew install mkcert
+```
+
+then create a locally trusted certificate outside the repository:
+
+```sh
 mkcert -install
 mkdir -p "$HOME/cafe-local-tls"
 mkcert -cert-file "$HOME/cafe-local-tls/cert.pem" \
   -key-file "$HOME/cafe-local-tls/key.pem" \
-  "${CAFE_LAN_IP:-192.168.4.46}"
+  "${CAFE_LAN_IP}"
+```
+
+Docker command to build and run the demo:
+
+```sh
 docker compose -f docker-compose.local.yml -f docker-compose.lan.yml up --build -d
 ```
 
@@ -69,8 +99,8 @@ On each client computer, trust the host's mkcert root CA certificate
 computer's trust store. Transfer only `rootCA.pem`, **never** `rootCA-key.pem`
 or the server's `key.pem`. Use the same IP in the URL and the certificate:
 
-- Store: `https://192.168.4.46`
-- Admin: `https://192.168.4.46:8443`
+- Store: `https://192.168.X.X`
+- Admin: `https://192.168.X.X:8443`
 
 If needed, allow inbound TCP ports 443 and 8443 through the host firewall.
 Verify `window.isSecureContext` is `true` in the browser console. This is a

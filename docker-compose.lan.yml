@@ -2,32 +2,32 @@ services:
     cafe-store:
         build:
             args:
-                ADMIN_UI_URL: https://${CAFE_LAN_IP:-192.168.4.46}:8443
-                STORE_UI_URL: https://${CAFE_LAN_IP:-192.168.4.46}
-                REALTIME_GATEWAY_ENDPOINT_URL: https://${CAFE_LAN_IP:-192.168.4.46}
+                ADMIN_UI_URL: https://${CAFE_LAN_IP}:8443
+                STORE_UI_URL: https://${CAFE_LAN_IP}
+                REALTIME_GATEWAY_ENDPOINT_URL: https://${CAFE_LAN_IP}
 
     cafe-admin:
         build:
             args:
-                ADMIN_UI_URL: https://${CAFE_LAN_IP:-192.168.4.46}:8443
-                STORE_UI_URL: https://${CAFE_LAN_IP:-192.168.4.46}
-                REALTIME_GATEWAY_ENDPOINT_URL: https://${CAFE_LAN_IP:-192.168.4.46}
+                ADMIN_UI_URL: https://${CAFE_LAN_IP}:8443
+                STORE_UI_URL: https://${CAFE_LAN_IP}
+                REALTIME_GATEWAY_ENDPOINT_URL: https://${CAFE_LAN_IP}
 
     rt-gateway:
         environment:
-            CORS_ORIGINS: http://localhost,http://localhost:80,http://localhost:81,http://0.0.0.0:80,http://0.0.0.0:81,https://${CAFE_LAN_IP:-192.168.4.46},https://${CAFE_LAN_IP:-192.168.4.46}:8443
-            ADMIN_UI_URL: https://${CAFE_LAN_IP:-192.168.4.46}:8443
-            STORE_UI_URL: https://${CAFE_LAN_IP:-192.168.4.46}
+            CORS_ORIGINS: http://localhost,http://localhost:80,http://localhost:81,http://0.0.0.0:80,http://0.0.0.0:81,https://${CAFE_LAN_IP},https://${CAFE_LAN_IP}:8443
+            ADMIN_UI_URL: https://${CAFE_LAN_IP}:8443
+            STORE_UI_URL: https://${CAFE_LAN_IP}
 
     cafe-service:
         environment:
-            ADMIN_UI_URL: https://${CAFE_LAN_IP:-192.168.4.46}:8443
-            STORE_UI_URL: https://${CAFE_LAN_IP:-192.168.4.46}
+            ADMIN_UI_URL: https://${CAFE_LAN_IP}:8443
+            STORE_UI_URL: https://${CAFE_LAN_IP}
 
     auth-service:
         environment:
-            ADMIN_UI_URL: https://${CAFE_LAN_IP:-192.168.4.46}:8443
-            STORE_UI_URL: https://${CAFE_LAN_IP:-192.168.4.46}
+            ADMIN_UI_URL: https://${CAFE_LAN_IP}:8443
+            STORE_UI_URL: https://${CAFE_LAN_IP}
 
     lan-https:
         image: nginx:stable-alpine
